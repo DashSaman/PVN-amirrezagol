@@ -1,0 +1,3 @@
+# 021 — Ivanti Connect Secure
+
+PVNetwork research index entry. Status: research only; not implemented. See the master protocol matrix and AI handoff documentation for client, upstream, UI, storage, issue/forum, license and interoperability audit requirements.
