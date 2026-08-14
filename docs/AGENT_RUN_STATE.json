@@ -5,21 +5,21 @@
   "run_status": "IN_PROGRESS",
   "owner_scope": "All repository-documented PVNetwork research work: first complete all 93 COMPLETE-RESEARCH-v1 gates, then COMPLETE-REFERENCE-v2 for all applicable entries.",
   "total_matrix_entries": 93,
-  "v1_complete_count": 46,
+  "v1_complete_count": 47,
   "active_phase": "COMPLETE-RESEARCH-v1",
   "hard_phase_lock": {
     "enabled": true,
-    "reason": "V1 tracker is 46/93 COMPLETE-RESEARCH-v1; V2 remains locked.",
+    "reason": "V1 tracker is 47/93 COMPLETE-RESEARCH-v1; V2 remains locked.",
     "unlock_condition": "research/RESEARCH_COMPLETENESS.md contains 93 entries marked COMPLETE-RESEARCH-v1",
     "forbidden_while_locked": ["advance active_phase to COMPLETE-REFERENCE-v2","select V2-only work instead of unfinished V1","use missing runtime/device/certification evidence as a hidden V1 research gate"]
   },
-  "priority_entries": [47,48,49,50,51,52,53,54,55,56,57,58],
+  "priority_entries": [48,49,50,51,52,53,54,55,56,57,58],
   "active_work_unit": {
-    "id": "V1-ENTRY-047-NAIVEPROXY",
+    "id": "V1-ENTRY-048-SNELL",
     "status": "IN_PROGRESS",
-    "current_entry": 47,
-    "source_handoff": "research/protocols/046-entry/V1_GATE_RECONCILIATION.md",
-    "exact_next_action": "Reconcile entry 047 NaiveProxy against all 20 V1 research gates using current canonical NaiveProxy/Chromium source and release evidence plus serious client/core integrations. Pin exact source/release/license/tree/dependency evidence, map HTTPS CONNECT/HTTP2-3 padding/auth/config/platform/UI/test/security boundaries, document reuse constraints, then continue entry 048 Snell automatically."
+    "current_entry": 48,
+    "source_handoff": "research/protocols/047-entry/V1_GATE_RECONCILIATION.md",
+    "exact_next_action": "Reconcile entry 048 Snell against all 20 V1 research gates using the current authoritative Snell server/client documentation and independent open implementations where available. Do not infer open-source status for proprietary binaries or protocol rights. Pin exact versions/sources/licenses, map protocol generations/auth/config/client/platform/test/security/reuse boundaries, then continue entry 049 SOCKS4 automatically."
   },
   "campaign_sources_of_truth": {
     "matrix": "docs/PROTOCOL_MATRIX.md",
@@ -44,7 +44,7 @@
   },
   "last_checkpoint": {
     "date": "2026-08-14",
-    "summary": "Entry 046 ShadowTLS now satisfies all 20 V1 research gates with exact MIT source/release/tree pins, v1/v2/v3 generation separation, strict TLS1.3/non-strict TLS1.2 policy, real GUI/host-core evidence and explicit non-encryption composition boundary. V1 is 46/93; active work advances to entry 047 NaiveProxy.",
-    "last_known_repo_handoff": "research/protocols/046-entry/V1_GATE_RECONCILIATION.md"
+    "summary": "Entry 047 NaiveProxy now satisfies all 20 V1 research gates with exact stable Naive/Chromium pins, padding/H2-H3 CONNECT semantics, server and GUI evidence, and full third-party-license/SBOM obligations retained. V1 is 47/93; active work advances to entry 048 Snell.",
+    "last_known_repo_handoff": "research/protocols/047-entry/V1_GATE_RECONCILIATION.md"
   }
 }
