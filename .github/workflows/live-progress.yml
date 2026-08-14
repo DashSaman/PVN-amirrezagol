@@ -1,25 +1,10 @@
-name: Refresh Live Progress
+name: Refresh Legacy Markdown Progress
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'docs/AGENT_RUN_STATE.json'
-      - 'research/RESEARCH_COMPLETENESS.md'
-      - 'research/REFERENCE_V2_COMPLETENESS.md'
-      - 'AGENTS_HANDOFF_*.md'
-      - 'scripts/update_live_progress.py'
-      - '.github/workflows/live-progress.yml'
-  schedule:
-    - cron: '*/5 * * * *'
 
 permissions:
   contents: write
-
-concurrency:
-  group: live-progress-main
-  cancel-in-progress: false
 
 jobs:
   refresh:
@@ -29,22 +14,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 120
-
-      - name: Generate bilingual graphical dashboard
+      - name: Generate legacy fallback only
         run: python scripts/update_live_progress.py
-
-      - name: Commit dashboard only when state changed
+      - name: Commit legacy fallback if requested manually
         run: |
           FILES=(LIVE_PROGRESS.md LIVE_PROGRESS_EN.md assets/live-progress-fa.svg assets/live-progress-en.svg)
-          if git diff --quiet -- "${FILES[@]}" && [ -f LIVE_PROGRESS_EN.md ] && [ -f assets/live-progress-fa.svg ] && [ -f assets/live-progress-en.svg ]; then
-            echo "PASS: bilingual dashboard already matches repository state"
+          if git diff --quiet -- "${FILES[@]}"; then
+            echo "PASS: legacy fallback already current"
             exit 0
           fi
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "${FILES[@]}"
-          git commit -m "chore(progress): refresh bilingual live dashboard"
-
+          git commit -m "chore(progress): refresh legacy markdown fallback"
           git pull --rebase origin main
           git push origin HEAD:main
