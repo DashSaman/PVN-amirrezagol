@@ -240,3 +240,11 @@ Do not log every low-level API call. Log meaningful work units and decisions.
 2. Attempt tracker synchronization only through a materially different/smaller safe strategy; do not repeat the blocked full rewrite.
 3. Then choose the next highest-value incomplete family from the **actual tree + Project State + tracker**, not from chat memory.
 4. At the end of the next work unit, update `docs/RESEARCH_LOG.md`, `docs/PROJECT_STATE.md`, and this handoff again.
+
+## 17. Latest handoff pointer
+
+The newest work unit is stored in:
+
+`AGENTS_HANDOFF_2026-08-14_OPENCONNECT.md`
+
+Every next AI must read that file after `AGENTS.md` before continuing. It contains the OpenConnect/Enterprise commits, connector blockers, current conclusions and exact next action. Detailed state is also in `docs/RESEARCH_CAMPAIGN_STATUS_2026-08-14_OPENCONNECT.md` and the synchronized `docs/PROJECT_STATE.md`.
