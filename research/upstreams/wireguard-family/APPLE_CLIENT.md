@@ -26,9 +26,27 @@ The shared tree includes `TunnelConfiguration+WgQuickConfig.swift`, `NETunnelPro
 
 ## Import/export and launch-path evidence
 
-### Official WireGuard Apple
+### Official WireGuard Apple — exact pinned import source
 
-The pinned official Apple source remains the canonical implementation reference. The repository is an MIT-licensed GitHub mirror; its README identifies the zx2c4 repository as official. The application supports wg-quick text conversion through the shared model and has platform document/app UI code. External deployment documentation consistently exposes the user-facing macOS flow as **Import tunnel(s) from file...**, while iOS deployments commonly pass a `.conf` file to the app or scan a configuration QR.
+At pinned mirror commit `2fec12a6e1f6e3460b6ee483aa00ad29cddadab1`, the iOS import paths are now source-pinned rather than inferred only from user documentation:
+
+1. `Sources/WireGuardApp/UI/iOS/ViewController/TunnelsListTableViewController.swift`
+   - `addButtonTapped` exposes both **Import file** and **Scan QR code** actions.
+   - `presentViewControllerForFileImport()` creates `UIDocumentPickerViewController` accepting `com.wireguard.config.quick`, text and ZIP archive document types.
+   - `documentPicker(...didPickDocumentsAt:)` passes selected URLs to `TunnelImporter.importFromFile(...)`.
+   - `presentViewControllerForScanningQRCode()` presents `QRScanViewController`; the `QRScanViewControllerDelegate` callback receives a parsed `TunnelConfiguration` and adds it through `tunnelsManager.add(...)`.
+2. `Sources/WireGuardApp/UI/TunnelImporter.swift`
+   - `.zip` inputs are expanded through `ZipImporter.importConfigFiles`.
+   - non-ZIP inputs are treated as config text, read from the URL, and parsed through `TunnelConfiguration(fromWgQuickConfig:called:)` before `tunnelsManager.addMultiple(...)`.
+3. `Sources/WireGuardApp/UI/iOS/ViewController/MainViewController.swift`
+   - `importFromDisposableFile(url:)` routes externally opened disposable files into the same `TunnelImporter.importFromFile(...)` path and deletes the disposable copy afterward.
+
+Pinned anchors:
+- <https://github.com/WireGuard/wireguard-apple/blob/2fec12a6e1f6e3460b6ee483aa00ad29cddadab1/Sources/WireGuardApp/UI/iOS/ViewController/TunnelsListTableViewController.swift>
+- <https://github.com/WireGuard/wireguard-apple/blob/2fec12a6e1f6e3460b6ee483aa00ad29cddadab1/Sources/WireGuardApp/UI/TunnelImporter.swift>
+- <https://github.com/WireGuard/wireguard-apple/blob/2fec12a6e1f6e3460b6ee483aa00ad29cddadab1/Sources/WireGuardApp/UI/iOS/ViewController/MainViewController.swift>
+
+This closes the earlier **exact file/archive/QR import source-path gap** for the pinned official WireGuard Apple mirror. It does **not** prove current App Store binary equivalence, and it does not establish QR export.
 
 Important evidence boundary: QR generation is generally a provisioning-side concern; seeing a QR provisioning workflow does not imply the Apple app exports QR codes. PVNetwork must separately certify import and export directions.
 
@@ -43,21 +61,21 @@ The same request proposes a new `amneziawg://` URL scheme precisely because the 
 
 Evidence anchor: <https://github.com/amnezia-vpn/amnezia-client/issues/2498> (opened 2026; feature request, not implemented capability).
 
-### Deep-link decision
+A separate 2026 Amnezia issue reports that standalone `.conf` import succeeds while a hand-generated QR payload can fail with error 900. That issue is unresolved evidence about payload-format ambiguity, not proof that QR import itself is absent. PVNetwork must use source-pinned parser evidence and real-device receipts before specifying a generated standalone AWG QR format.
 
-Current classification:
+### Deep-link decision
 
 | Apple surface | File import | QR import | Custom URL/deep-link import | Export |
 |---|---|---|---|---|
-| official WireGuard Apple | supported/reference-backed | user workflow exists on iOS; source-level exact path still to pin | **not claimed** | exact file/share export path still to pin |
-| standalone AmneziaWG Apple | `.conf` via open/share path documented | documented existing path | **NOT CURRENTLY CLAIMED; feature requested** | exact export path still to pin |
-| main Amnezia client | separate codebase; do not inherit standalone behavior | separate audit | `vpn://` behavior is referenced by Amnezia issue but requires its own source audit | separate audit |
+| official WireGuard Apple | **source-pinned** (`UIDocumentPicker` -> `TunnelImporter`) | **source-pinned UI path** (`QRScanViewController` -> parsed `TunnelConfiguration`) | **not claimed** | exact file/share export path still to pin |
+| standalone AmneziaWG Apple | `.conf` via open/share path documented | documented existing path; exact parser/payload source still to pin | **NOT CURRENTLY CLAIMED; feature requested** | exact export path still to pin |
+| main Amnezia client | separate codebase; do not inherit standalone behavior | separate audit | `vpn://` behavior is separate code and requires its own source audit | separate audit |
 
 This distinction prevents a common research error: capability in the main Amnezia client must not be silently attributed to the standalone AmneziaWG Apple fork.
 
 ## Current-source freshness warning
 
-The GitHub WireGuard Apple mirror's visible commit history tops out at the pinned 2023 app version bump, while open pull requests in 2026 include fixes such as transient keychain tunnel-loss behavior and IPv6 endpoint preference. This means the pinned source is valuable architecture evidence but is **not proof that every open 2026 regression is resolved in a shipped build**. PVNetwork release certification must check the actual App Store/build revision and unresolved upstream patches at release time.
+The GitHub WireGuard Apple mirror's visible commit history tops out at the pinned app source revision, while open pull requests in 2026 include fixes such as transient keychain tunnel-loss behavior and IPv6 endpoint preference. This means the pinned source is valuable architecture evidence but is **not proof that every open 2026 regression is resolved in a shipped build**. PVNetwork release certification must check the actual App Store/build revision and unresolved upstream patches at release time.
 
 Source anchors:
 - <https://github.com/WireGuard/wireguard-apple>
@@ -77,14 +95,13 @@ Reviewed WireGuard Apple source is MIT. Reuse still requires dependency, entitle
 
 ## PVNetwork regression requirements derived from this source
 
-Future Apple tests must cover app/extension state synchronization, protected configuration create/update/delete, app-driven and OS-driven extension launch, corrupted/missing saved configuration, adapter error mapping, extension stop/restart, on-demand changes, log redaction, upgrade/migration with saved tunnels, Persian RTL with technical LTR tokens, `.conf` open/share import, QR import, duplicate-name behavior, malformed QR/file rejection, and explicit negative tests proving unsupported deep-link schemes do not get advertised as supported.
+Future Apple tests must cover app/extension state synchronization, protected configuration create/update/delete, app-driven and OS-driven extension launch, corrupted/missing saved configuration, adapter error mapping, extension stop/restart, on-demand changes, log redaction, upgrade/migration with saved tunnels, Persian RTL with technical LTR tokens, `.conf` open/share import, ZIP archive import, QR import, duplicate-name behavior, malformed QR/file rejection, and explicit negative tests proving unsupported deep-link schemes do not get advertised as supported.
 
 ## Remaining gaps
 
-- exact source file/function for official WireGuard iOS QR scan and file/archive import;
 - exact official WireGuard export/share behavior and archive semantics;
 - full entitlement/app-group inventory;
 - current shipped Store revision versus mirror revision;
 - complete test target/CI inventory and dependency/SBOM audit;
-- AmneziaWG Apple release pin and source-level QR/file path pin;
+- AmneziaWG Apple immutable revision and exact QR/file/export source-path pin;
 - real-device import/export receipts and malformed-input tests.
