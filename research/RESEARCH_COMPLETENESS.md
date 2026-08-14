@@ -7,10 +7,10 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 001 | OpenVPN | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with current OpenVPN3 3.11.7 release pin in `research/protocols/001-openvpn/V1_GATE_RECONCILIATION.md` |
 | 002 | WireGuard | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled in `research/protocols/002-wireguard/V1_GATE_RECONCILIATION.md` |
 | 003 | AmneziaWG | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with versioned AWG/platform uncertainties retained in `research/protocols/003-amneziawg/V1_GATE_RECONCILIATION.md` |
-| 004 | IKEv2/IPsec | EVIDENCE-GAPS — strongSwan/native research started; detailed dossier write blocked |
-| 005 | IKEv1/IPsec | EVIDENCE-GAPS — strongSwan/native research started; detailed dossier write blocked |
-| 006 | IPsec ESP | EVIDENCE-GAPS — shared strongSwan/native evidence started |
-| 007 | IPsec AH | EVIDENCE-GAPS — shared strongSwan/native evidence started |
+| 004 | IKEv2/IPsec | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with strongSwan 6.0.7/native-platform evidence in `research/protocols/004-ikev2-ipsec/V1_GATE_RECONCILIATION.md` |
+| 005 | IKEv1/IPsec | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with explicit legacy/vendor-compatibility policy in `research/protocols/005-ikev1-ipsec/V1_GATE_RECONCILIATION.md` |
+| 006 | IPsec ESP | COMPLETE-RESEARCH-v1 — all applicable original research gates reconciled as an IPsec data-plane capability in `research/protocols/006-ipsec-esp/V1_GATE_RECONCILIATION.md` |
+| 007 | IPsec AH | COMPLETE-RESEARCH-v1 — all applicable original research gates reconciled with non-encrypting/advanced/N-A-standalone treatment in `research/protocols/007-ipsec-ah/V1_GATE_RECONCILIATION.md` |
 | 008 | L2TP/IPsec | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled as a layered IPsec + L2TPv2 + PPP composition in `research/protocols/008-l2tp-ipsec/V1_GATE_RECONCILIATION.md` |
 | 009 | L2TPv3 | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with infrastructure peer/N-A consumer treatment in `research/protocols/009-l2tpv3/V1_GATE_RECONCILIATION.md` |
 | 010 | L2TPv3/IPsec | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled as a protected L2TPv3 + typed IPsec composition in `research/protocols/010-l2tpv3-ipsec/V1_GATE_RECONCILIATION.md` |
@@ -101,6 +101,7 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 ## Shared upstream dossiers currently created
 - `research/upstreams/openvpn-family/`
 - `research/upstreams/wireguard-family/`
+- `research/upstreams/strongswan-family/`
 - `research/upstreams/openconnect-family/`
 - `research/upstreams/softether-family/`
 - `research/upstreams/hysteria-family/`
@@ -113,11 +114,9 @@ Important client-reference dossiers/indexes now include OpenVPN Connect/OpenVPN3
 Many numbered entries share the same codebase. To avoid duplicating thousands of identical source-tree notes, exhaustive source/client analysis belongs under `research/upstreams/`, with protocol-specific conclusions linked from each numbered dossier.
 
 ## Current known connector/documentation blockers
-- Some detailed networking research files are rejected by the GitHub write safety layer even when the underlying research is legitimate. Do not repeat the same blocked write unchanged more than twice.
-- ics-openvpn Android evidence was collected from pinned public source, but the dedicated detailed dossier write was repeatedly blocked. Evidence must be recovered from research history and split into smaller documentation units later.
-- detailed Xray/Mihomo shared dossier writes were blocked; pinned license/source findings remain verified and must be persisted through smaller safe documents later.
-- strongSwan detailed/shared dossier writes were blocked; pinned source/license evidence exists and remains an explicit gap.
-- protocol slots 056–093 could not all be materialized as separate folders in this work unit because even neutral folder writes began triggering connector filtering. Do not hide this; continue from the tracker.
+- Some detailed networking research files were historically rejected by the GitHub write safety layer. Do not repeat the same blocked write unchanged more than twice; use smaller evidence-backed documents.
+- Detailed Xray/Mihomo shared dossier writes had earlier connector filtering; pinned findings must remain traceable through smaller documents.
+- Some protocol slots 056–093 were not initially materialized as separate detailed folders. Continue from tracker truth rather than treating absence of a folder as completion.
 
 ## Research campaign rule
 Never change an entry from `SKELETON`, `RESERVED`, `PENDING`, `IN-RESEARCH`, or `EVIDENCE-GAPS` to `COMPLETE-RESEARCH-v1` just because one client was found. Completion requires the full template, traceable evidence, source-tree references, license review, issues/forums/release review, UI/config/storage analysis and an explicit PVNetwork reuse decision.
