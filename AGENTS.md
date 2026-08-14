@@ -200,3 +200,22 @@ Before ending a meaningful work unit:
 ## 15. Repository over chat
 
 If chat history and repository state disagree, verify and prefer the repository and current primary-source evidence.
+
+## 16. Continuous handoff rule
+
+The owner requires every meaningful work unit to remain resumable from the repository. After each meaningful inspection, research unit, decision, file change, or blocker:
+
+1. record the detailed evidence in the relevant research file and `docs/RESEARCH_LOG.md`;
+2. keep `docs/PROJECT_STATE.md` synchronized with the real repository state;
+3. add a compact session/handoff note to this file before ending the work unit;
+4. include the exact next action so another AI can continue without chat history.
+
+Do not log every low-level API call. Log meaningful work units and decisions.
+
+### Current handoff — 2026-08-14
+
+- Repository state was re-read from `main` instead of relying on chat memory.
+- The current state files were found to lag some newer research directories, so future agents must verify the actual tree and recent history as well as trackers.
+- Work is continuing from the highest-value incomplete shared research dossier.
+- Detailed technical evidence belongs in `docs/RESEARCH_LOG.md` and the relevant `research/upstreams/` dossier.
+- Next action: finish the current shared-family dossier, then synchronize the tracker and project state before moving to the next incomplete family.
