@@ -1,15 +1,29 @@
 # 025 — Check Point VPN — v1 Research Decision
 
-Status: **`V1-HANDOFF-READY / NOT IMPLEMENTED`**.
+Status: **`COMPLETE-RESEARCH-v1 / NOT IMPLEMENTED`**.
 
-Decision: **`VALUABLE OPEN-SOURCE INTEROPERABILITY REFERENCE / AGPL DIRECT-EMBED CAUTION`**.
+Formal 20-gate reconciliation:
 
-Primary open-source reference: `ancwrd1/snx-rs` (Rust, AGPL-3.0 in current research).
+`research/protocols/025-check-point-vpn/V1_GATE_RECONCILIATION.md`
 
-Use it for interoperability/source/SSO/MFA/SSL/IPsec lessons, but do not directly embed AGPL code into a closed product without an intentional compatible legal/architecture model.
+Current public-source audit:
 
-Official Check Point clients/appliances remain the authoritative interoperability target.
+`research/protocols/025-check-point-vpn/SNX_RS_SOURCE_AUDIT.md`
 
-Shared evidence: `research/upstreams/vendor-enterprise-family/`.
+Decision:
 
-Later v2 adds server/gateway versions, full client menus, auth/crypto/wire flow and deployment/install references.
+**`VALUABLE OPEN-SOURCE INTEROPERABILITY REFERENCE / AGPL DIRECT-EMBED CAUTION / OFFICIAL-VENDOR CERTIFICATION REQUIRED`**
+
+Primary open-source reference: `ancwrd1/snx-rs` **v6.2.4**, exact reviewed commit `a263c47cecdbbc019bc77c482bb77525a02e20a1`, Rust/Cargo, AGPL-3.0.
+
+Use it for source-level interoperability, IPsec/SSL, SSO/MFA/certificate, routing/DNS, platform, UI, packaging, CI and regression lessons. Do not directly embed AGPL code into a closed PVNetwork product without an intentional compatible legal/architecture model.
+
+Official Check Point clients/appliances/documentation remain the authoritative proprietary interoperability target. Official code, branding and assets are reference-only and are not copied.
+
+The v1 audit explicitly preserves critical future certification cases such as effective Office Mode route equivalence and reconnect/data-path health rather than treating a reported `Connected` state as sufficient.
+
+Shared family evidence remains under:
+
+`research/upstreams/vendor-enterprise-family/`
+
+`COMPLETE-RESEARCH-v1` means research closure only. Runtime gateway interoperability, implementation, packet captures, Store/notarization work, exact production SBOM/legal model and production support remain later evidence states. Mandatory v2 later adds exhaustive gateway/server versions, full admin/client menus, cryptography/wire flow, deployment/install references and topology evidence.
