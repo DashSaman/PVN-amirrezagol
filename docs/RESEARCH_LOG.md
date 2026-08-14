@@ -59,21 +59,97 @@ No final engine set has been approved yet.
 9. Which known bugs from comparable projects should become PVNetwork regression tests?
 10. How should advanced capability remain available without making the normal UI complicated?
 
-### Next research actions
+---
 
-- Expand the technology matrix with source, license, platform feasibility, and limitations.
-- Build a dedicated dependency/license matrix.
-- Build a competitor lessons database.
-- Research current store/platform constraints.
-- Select an initial implementation component set only after enough evidence exists.
-- Keep `docs/PROJECT_STATE.md` updated after every meaningful work unit.
+## 2026-08-14 — Exhaustive 93-entry research campaign started
+
+### Research system created
+
+Added permanent campaign infrastructure:
+- `research/AI_RESEARCH_CAMPAIGN.md`
+- `research/PROTOCOL_RESEARCH_TEMPLATE.md`
+- `research/RESEARCH_COMPLETENESS.md`
+- `research/SOURCE_MIRROR_POLICY.md`
+- `research/protocols/`
+- `research/upstreams/`
+
+`AI_START_HERE.md` was updated so future AI/chat sessions must read these research files before continuing.
+
+### Research completion standard
+A numbered entry is not complete because a client name or repository was found. The mandatory template now requires evidence for source provenance, pinned revisions, licensing, complete source-tree references, languages/build systems, architecture, engine boundaries, UI/menu map, configuration, storage, platform integration, diagnostics, assets, forks, issues/PRs/releases/forums, tests/CI, privacy/Store implications, and an explicit PVNetwork reuse/support decision.
+
+### Source mirroring policy
+Third-party repositories and images are not copied into PVNetwork by default. Public availability is not treated as redistribution permission. The preferred research archive is pinned source/tree references plus developer-level analysis. Vendoring requires explicit license/attribution review.
+
+### Deep/shared upstream research started
+Created or started shared research for:
+- OpenVPN family
+- WireGuard / AmneziaWG family
+- OpenConnect enterprise-client family
+- SoftEther family
+- Hysteria family
+- mesh/overlay family
+- major GUI/client references
+
+### OpenVPN family progress
+Created detailed shared files covering:
+- OpenVPN 3 core role, source and license
+- official OpenVPN Connect UX/settings/import behavior
+- OpenVPN GUI Windows source/menu/Registry/config reference
+- Tunnelblick macOS source reference
+- Pritunl Client license restriction
+- issue-derived failure lessons and future regression requirements
+
+Android ics-openvpn public source was also inspected in detail. Evidence includes profile model, profile persistence, UI files, settings/log components and GPL limitations, but repeated dedicated dossier writes were blocked by the GitHub connector; this remains a tracked documentation gap rather than being hidden.
+
+### Major license/source corrections
+Pinned source review supersedes earlier preliminary assumptions:
+
+- Mihomo: reviewed current license is **GPLv3**, not MIT.
+- Xray-core: reviewed license is **MPL-2.0**.
+- v2rayN/v2rayNG: reviewed licenses are **GPLv3**.
+- Hiddify application: reviewed current license includes additional conditions; commercial reuse cannot be assumed.
+- sing-box: reviewed current license is GPLv3-or-later plus an additional naming/association condition.
+- Pritunl Client: reviewed public license restricts commercial use/redistribution.
+- Happ Desktop: reviewed GitHub repository is not confirmed complete licensed application source; treat as product/reference evidence only until canonical source is found.
+- Amnezia Client and AmneziaWG core have different licenses and must be evaluated separately.
+- SoftEther reviewed root license is Apache-2.0.
+- Hysteria reviewed license is MIT.
+- WireGuard family reviewed components have separate platform/component licenses and canonical upstream provenance that must remain pinned.
+
+### Successful client architecture research
+- Clash Verge Rev: pinned source and deep developer dossier created. Source shows TypeScript frontend plus Rust/Tauri native layer, centralized navigation metadata, pages/services/providers/locales and native config/core/process modules.
+- FlClash: pinned source contains an upstream-authored `.agents/architecture.md` describing platform-specific core hosting, shared controller/interface, Riverpod state separation, Drift/SQLite storage, manager stack, business-action layer, packaging and local plugins. A concise research index was committed because a larger dossier write was connector-blocked.
+- Amnezia Client: pinned multi-language/multi-platform source and GPL application license recorded separately from the MIT AmneziaWG core.
+- Happ: source-availability warning documented.
+- Other active references pinned/reviewed include Karing, NekoBox, Throne and snx-rs.
+
+### Issue-derived lessons
+OpenVPN/Android issue research identified recurring classes worth converting into PVNetwork regression tests:
+- network-transition/reconnect reliability
+- address-family/reachability change
+- sleep/resume state mismatch
+- profile import/semantic conversion mismatch
+- parser/UI representation mismatch
+- stale state/race conditions
+- incorrect user-visible statistics
+
+These are now documented in `research/upstreams/openvpn-family/LESSONS_AND_TESTS.md`.
+
+### Tracker truth
+`research/RESEARCH_COMPLETENESS.md` is authoritative. No entry is currently `COMPLETE-RESEARCH-v1`. High-priority families are `IN-RESEARCH`; others remain `SKELETON`, `RESERVED`, `EVIDENCE-GAPS`, or `PENDING`.
+
+### Connector limitation recorded
+Some legitimate detailed research-file writes are rejected by the GitHub connector safety layer. The no-loop rule applies: do not repeat the same blocked write unchanged. Preserve evidence through smaller safe files and keep gaps explicit in the tracker.
+
+### Next exact action
+Continue from the tracker, finishing the highest-value incomplete shared/client dossier to the full 21-section template before calling it complete. Prioritize OpenVPN completion, WireGuard platform clients, Xray/client ecosystem persistence, and top cross-platform client UI/storage/issues research.
 
 ---
 
 ## Update format for future research
 
 Append new entries with:
-
 - Date
 - Question investigated
 - Sources/projects checked
