@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-14T22:40:00Z",
-  "heartbeat_at_utc": "2026-08-14T23:49:00Z",
-  "task": "Continue COMPLETE-REFERENCE-v2 from authoritative main tracker, currently entry 039 Trojan, applying all exact 16 gates with evidence reuse and gap-only research.",
-  "note": "Manual foreground session active. This promotion batch advances authoritative V2 to 38/93 and entry 039 first PENDING if the final non-force main update succeeds; repository state must be re-fetched immediately after publish."
+  "heartbeat_at_utc": "2026-08-14T23:53:00Z",
+  "task": "Continue COMPLETE-REFERENCE-v2 from authoritative main tracker, currently entry 040 Shadowsocks, applying all exact 16 gates with evidence reuse and gap-only research.",
+  "note": "Manual foreground session active. Promotion batch targets V2 39/93 and entry 040 first PENDING; repository state will be re-fetched before and after non-force publish."
 }

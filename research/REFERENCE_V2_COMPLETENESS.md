@@ -44,7 +44,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 036 | Juniper Secure Connect | COMPLETE-REFERENCE-v2 |
 | 037 | VLESS | COMPLETE-REFERENCE-v2 |
 | 038 | VMess | COMPLETE-REFERENCE-v2 |
-| 039 | Trojan | PENDING |
+| 039 | Trojan | COMPLETE-REFERENCE-v2 |
 | 040 | Shadowsocks | PENDING |
 | 041 | Shadowsocks 2022 | PENDING |
 | 042 | Hysteria | PENDING |
