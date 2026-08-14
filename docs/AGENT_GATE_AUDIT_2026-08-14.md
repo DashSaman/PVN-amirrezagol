@@ -6,7 +6,7 @@ Owner-visible dashboard counters stayed unchanged while many research commits we
 
 ## Finding 1 — real work is happening
 
-The agent is not merely cycling on the same file. Recent research moved across distinct entries/families, including L2TP/IPsec, L2TPv3, L2TPv3/IPsec and SSTP/MS-SSTP, with new reference indexes, implementation maps, cryptography/authentication notes, install/UI/data-path/topology files and gate reconciliations.
+The agent is not merely cycling on the same file. Recent research moved across distinct entries/families, including L2TP/IPsec, L2TPv3, L2TPv3/IPsec, SSTP/MS-SSTP, PPTP and SoftEther, with new reference indexes, implementation maps, cryptography/authentication notes, install/UI/data-path/topology files and gate reconciliations.
 
 Therefore the problem is not absence of work; it is gate accounting and phase progression.
 
@@ -89,6 +89,31 @@ The scheduled `PVNetwork Overnight Run` prompt was updated on 2026-08-14 to enfo
 - no fabricated completion;
 - correct `RUN_START` / `RUN_END` ordering.
 
+## Follow-up audit — first correction was not yet controlling the already-running slice
+
+A second live audit found that the run already in progress when the automation prompt was changed continued using the old V2 state. After the first correction commit, it still created new V2 dossiers for SSTP, PPTP and SoftEther instead of returning to V1 reconciliation.
+
+The durable repository state was also still stale:
+
+- `docs/AGENT_RUN_STATE.json` still said `active_phase = COMPLETE-REFERENCE-v2` and pointed to L2TPv3/IPsec V2;
+- `research/RESEARCH_COMPLETENESS.md` still had **0 / 93** `COMPLETE-RESEARCH-v1` entries;
+- `research/REFERENCE_V2_COMPLETENESS.md` still had **0 / 93** `COMPLETE-REFERENCE-v2` entries;
+- the automation ledger recorded `RUN_END` at `2026-08-14T12:12:30Z`, yet research commits continued after that time without a new `RUN_START`.
+
+This proves the current/old run did not yet obey the corrected sequencing or logging contract.
+
+### Hard corrective action
+
+`docs/AGENT_RUN_STATE.json` was forcefully reset to:
+
+- `active_phase = COMPLETE-RESEARCH-v1`;
+- `active_work_unit = V1-GATE-RECONCILIATION`;
+- a hard phase lock forbidding V2 from becoming active before V1 reaches 93/93;
+- deterministic gate-by-gate reconciliation of existing mature V1 dossiers;
+- no hidden runtime/certification gate.
+
+Already-created V2 material is preserved as useful evidence and must not be deleted, but it is now secondary/incidental until V1 completes.
+
 ## Expected owner-visible effect
 
-The dashboard percentages may remain unchanged temporarily while existing dossiers are audited against the exact gates. After that reconciliation, counters should move only when a real research completion gate is satisfied. If they remain at zero while gate reconciliations explicitly say every written requirement passes, treat that as another accounting bug rather than evidence that no work is occurring.
+The dashboard percentages may remain unchanged briefly while existing dossiers are audited against the exact gates. After that reconciliation, counters should move only when a real research completion gate is satisfied. If the next fresh scheduled run still creates unrelated V2-only work while V1 remains below 93/93, treat that as a hard execution failure rather than legitimate progress.
