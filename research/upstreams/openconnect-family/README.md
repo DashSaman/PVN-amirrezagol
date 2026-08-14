@@ -1,81 +1,64 @@
 # OpenConnect Family — Shared Enterprise Client Research
 
-Related matrix entries: 016 Cisco AnyConnect-compatible, 017 OpenConnect/ocserv-compatible, 018 GlobalProtect, 020 Pulse Secure, 021 Ivanti Connect Secure, 022 Juniper Network Connect, 023 F5 BIG-IP, 024 Array Networks, and 019 Fortinet where current OpenConnect support applies.
+Related matrix entries: **016 Cisco AnyConnect-compatible**, **017 OpenConnect/ocserv-compatible**, **018 GlobalProtect**, **019 Fortinet FortiGate SSL VPN**, **020 Pulse Secure**, **021 Ivanti Connect Secure**, **022 Juniper Network Connect**, **023 F5 BIG-IP**, and **024 Array Networks**.
 
-Research state: `IN-RESEARCH`.
+Research state: `IN-RESEARCH`; no PVNetwork implementation claim.
+
+## Current shared evidence
+
+- `SOURCE_PIN.md` — canonical GitLab source, stable v9.21 research baseline, current public API version evidence and license/source provenance.
+- `VENDOR_COMPATIBILITY_MATRIX.md` — separate capability/limitation conclusions for entries 016–024.
+- `LESSONS_AND_TESTS.md` — release/MR failure classes converted into PVNetwork regression requirements.
 
 ## Canonical source provenance
-The GitHub repository `openconnect/openconnect` is archived and describes itself as a mirror. Its project homepage points to the active canonical project at:
-`https://gitlab.com/openconnect/openconnect`
 
-Current GitLab master observed during this research is active in 2026. The GitHub mirror remains useful as a historical machine-readable snapshot, not as the source of current release state.
+The old GitHub repository is archived and a mirror. Current release/source authority is the canonical OpenConnect GitLab project. Stable research baseline: **v9.21**. Current public API research shows API version **5.10**. License: LGPL-2.1.
 
-## Current release evidence
-Official GitLab releases show OpenConnect v9.21 released in 2026 after v9.20. The v9.21 notes include a fix for a CPU/infinite-loop text-buffer regression and compiler-warning fixes including Fortinet/Windows-related source. v9.20 restored/updated compatibility in several areas including current Cisco server behavior.
+## Architecture direction
 
-Release reference: `https://gitlab.com/openconnect/openconnect/-/releases`
+OpenConnect is primarily a reusable C library/core plus CLI, not a finished PVNetwork product UI. Evaluate it through its public API behind a PVNetwork Enterprise/Core Adapter.
 
-## License
-GitHub metadata and current upstream source headers identify OpenConnect as LGPL-2.1. Treat integration details separately from license compatibility of GUIs/front-ends and bundled dependencies.
+Keep these concerns outside private library internals:
 
-## Language/source architecture
-The project is primarily C. Current canonical tree contains platform/client source, an `android/` area, Java wrapper material, tests, translations (`po/`), documentation (`www/`), packaging/build integrations and protocol-specific source files.
+- product authentication/challenge UI;
+- browser/SSO handoff;
+- protected credential/certificate storage;
+- platform-specific service/extension lifecycle;
+- product diagnostics and redaction;
+- vendor/version compatibility certification.
 
-Canonical tree reference:
-`https://gitlab.com/openconnect/openconnect/-/tree/master`
+## Compatibility rule
 
-Public API header reference:
-`https://gitlab.com/openconnect/openconnect/-/blob/master/openconnect.h`
+Do not translate “OpenConnect implements this protocol mode” into “PVNetwork fully supports this vendor”. Cisco, GlobalProtect, Fortinet, Pulse/Ivanti, Juniper, F5 and Array all require separate capability/version evidence.
 
-The public API is a strong reason to evaluate OpenConnect as a library/core integration candidate rather than duplicating protocol implementations in PVNetwork.
+The vendor matrix records distinctions such as basic auth, browser/SSO, posture/host-check, reconnect, IPv6 and known upstream limitations.
 
-## Supported compatibility families — current official documentation
-Official OpenConnect documentation currently describes support for:
-- Cisco AnyConnect (original/default family)
-- Juniper Network Connect
-- Pulse/Ivanti Connect Secure
-- Palo Alto GlobalProtect
-- F5 BIG-IP
-- Fortinet FortiGate
-- Array Networks SSL VPN
+## Current protocol-folder synchronization
 
-Official manual/protocol reference:
-`https://www.infradead.org/openconnect/manual.html`
-`https://www.infradead.org/openconnect/protocols.html`
+Individual protocol dossiers 017, 018, 019, 020, 021, 022, 023 and 024 have been linked to the current shared evidence. Entry 016 Cisco remains a connector-write documentation gap: repeated materially different README updates were rejected, so do not retry the same path blindly. The Cisco-specific conclusions remain preserved in `VENDOR_COMPATIBILITY_MATRIX.md`, Project State, Research Log and AGENTS handoff.
 
-Support depth and authentication/posture capabilities differ by family. PVNetwork must therefore keep a per-vendor/version compatibility matrix rather than one global “OpenConnect supported” checkmark.
+## Current release/quality lessons
 
-## Front-end/UI research principle
-OpenConnect itself is primarily a library/CLI. For developer-level UX research, separately audit mature front-ends such as NetworkManager OpenConnect integration and platform-specific GUI clients. Do not treat command-line flags as a finished PVNetwork UX design.
+Current upstream release/MR evidence demonstrates that:
 
-## Important current failure/compatibility lessons
-Current release history and official protocol pages already reveal several lessons:
-- long-lived low-level bugs can surface after refactoring even in mature code, so PVNetwork needs regression tests around library upgrades;
-- server compatibility can change when vendor behavior/user-agent expectations change;
-- enterprise authentication flows differ widely and some modes remain experimental/partial;
-- Fortinet reconnect behavior can depend heavily on server version/configuration;
-- posture/host-check functionality may be absent or incomplete for some vendor families.
+- core upgrades can expose old bugs through newly used code paths;
+- mature vendor compatibility still changes as servers evolve;
+- SSO needs explicit progress/loop detection;
+- a session may require multiple browser/auth phases;
+- some vendor behavior depends on client/platform identity;
+- protocol and platform regression dimensions must be tested together.
 
-These lessons must become explicit PVNetwork capability states and future compatibility tests, not marketing assumptions.
-
-## PVNetwork reuse direction
-OpenConnect is a strong `REUSE-CANDIDATE` for compatible enterprise families because it exposes a library API and consolidates multiple vendor protocols. However:
-- pin a tested release;
-- audit LGPL linking/distribution obligations;
-- build per-protocol compatibility tests;
-- isolate browser/SSO/auth UI from the transport library;
-- never claim full compatibility for a vendor family solely because OpenConnect has a protocol mode.
+See `LESSONS_AND_TESTS.md`.
 
 ## Remaining research
-- pin current canonical GitLab commit/tag and generate complete source-tree manifest;
-- map `openconnect.h` API relevant to an adapter;
-- map protocol source modules and front-end callbacks;
-- audit GUI/front-end projects, menus and secure credential storage;
-- map platform-specific source and packaging;
-- review current issues/MRs by each protocol family;
-- review mailing-list/forum guidance;
-- inventory tests/fake servers/CI;
-- audit assets/screenshots of selected front-ends;
-- create separate vendor-specific conclusions in each numbered protocol folder.
 
-Status: `IN-RESEARCH`; no PVNetwork implementation claim.
+- full machine-readable source manifest for the stable release;
+- dependency/SBOM and LGPL distribution architecture;
+- public API ownership/threading/callback mapping through a safe documentation path;
+- selected GUI/front-end research, menus and secure credential storage;
+- platform packaging/integration review;
+- current issues/MRs mapped to merged fixes/releases per vendor;
+- complete test/CI inventory and performance evidence;
+- final numbered-entry support/reuse decisions.
+
+Nothing in this dossier means PVNetwork currently implements or production-supports any enterprise protocol.
