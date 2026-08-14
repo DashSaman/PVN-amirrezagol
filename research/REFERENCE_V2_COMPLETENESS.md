@@ -9,10 +9,10 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 001 | OpenVPN | COMPLETE-REFERENCE-v2 |
 | 002 | WireGuard | COMPLETE-REFERENCE-v2 |
 | 003 | AmneziaWG | COMPLETE-REFERENCE-v2 |
-| 004 | IKEv2/IPsec | PENDING |
-| 005 | IKEv1/IPsec | PENDING |
-| 006 | IPsec ESP | PENDING |
-| 007 | IPsec AH | PENDING |
+| 004 | IKEv2/IPsec | COMPLETE-REFERENCE-v2 |
+| 005 | IKEv1/IPsec | COMPLETE-REFERENCE-v2 |
+| 006 | IPsec ESP | COMPLETE-REFERENCE-v2 |
+| 007 | IPsec AH | COMPLETE-REFERENCE-v2 |
 | 008 | L2TP/IPsec | PENDING |
 | 009 | L2TPv3 | PENDING |
 | 010 | L2TPv3/IPsec | PENDING |
