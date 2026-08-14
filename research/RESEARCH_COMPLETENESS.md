@@ -85,7 +85,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 079 | Cloak | COMPLETE-RESEARCH-v1 |
 | 080 | TLS Fragmentation | COMPLETE-RESEARCH-v1 |
 | 081 | TCP | COMPLETE-RESEARCH-v1 |
-| 082 | UDP | PENDING |
+| 082 | UDP | COMPLETE-RESEARCH-v1 |
 | 083 | QUIC | PENDING |
 | 084 | WebSocket | PENDING |
 | 085 | HTTP/1.1 | PENDING |
