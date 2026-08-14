@@ -32,7 +32,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 024 | Array Networks SSL VPN | COMPLETE-REFERENCE-v2 |
 | 025 | Check Point VPN / SNX | COMPLETE-REFERENCE-v2 |
 | 026 | SonicWall NetExtender / SSL VPN | COMPLETE-REFERENCE-v2 |
-| 027 | SonicWall Global VPN / IPsec | PENDING |
+| 027 | SonicWall Global VPN / IPsec | COMPLETE-REFERENCE-v2 |
 | 028 | Sophos SSL VPN | PENDING |
 | 029 | Sophos IPsec Remote Access | PENDING |
 | 030 | WatchGuard IKEv2 VPN | PENDING |
