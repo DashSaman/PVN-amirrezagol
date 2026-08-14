@@ -1,107 +1,80 @@
 # WireGuard Apple Platforms — Developer Dossier
 
-Pinned source: `WireGuard/wireguard-apple@2fec12a6e1f6e3460b6ee483aa00ad29cddadab1`.
+Pinned official source: `WireGuard/wireguard-apple@2fec12a6e1f6e3460b6ee483aa00ad29cddadab1`.
+Pinned standalone AWG source: `amnezia-vpn/amneziawg-apple@fe2e2d7ebb835a0a2ad1d8de75094a6de134da4d` (observed 2026-08-14; signed GitHub commit updating awg-go version).
 
 Research state: `IN-RESEARCH`.
 
 ## Source architecture
 
-The pinned tree separates Apple integration into `Sources/WireGuardApp/` (UI/product), `Sources/WireGuardNetworkExtension/` (packet-tunnel provider), `Sources/WireGuardKit/` (adapter/library) and `Sources/Shared/` (models, keychain, logging/utilities). This supports an app + NetworkExtension + adapter/shared-model architecture rather than a generic subprocess wrapper.
-
-## NetworkExtension boundary
-
-`PacketTunnelProvider.swift` subclasses `NEPacketTunnelProvider` and owns a `WireGuardAdapter`. The product boundary is:
-
-`App UI/state -> Apple tunnel manager -> NetworkExtension -> protocol adapter/core`
-
-The UI must not directly own packet-tunnel internals.
+Both reviewed trees retain the Apple app + NetworkExtension + adapter/shared-model architecture inherited from WireGuard Apple. The product boundary remains `App UI/state -> Apple tunnel manager -> NetworkExtension -> protocol adapter/core`; UI code must not directly own packet-tunnel internals.
 
 ## Protected profile/secret storage
 
-`Sources/Shared/Keychain.swift` uses Apple Security/Keychain APIs and persistent references. Imported text is therefore an interchange format, not a suitable long-term persistence model. Deletion/migration must clean stale references and diagnostics must not expose protected material.
+The WireGuard-family Apple source uses Apple Security/Keychain APIs and persistent references. Imported text is therefore an interchange format, not a suitable long-term persistence model. Deletion/migration must clean stale references and diagnostics must not expose protected material.
 
-## Configuration/model evidence
+## Official WireGuard Apple — exact pinned import source
 
-The shared tree includes `TunnelConfiguration+WgQuickConfig.swift`, `NETunnelProviderProtocol+Extension.swift`, and tunnel-management models including `TunnelsManager.swift`. Canonical parsing should remain separate from Apple persistence and extension representation.
+At pinned mirror commit `2fec12a6e1f6e3460b6ee483aa00ad29cddadab1`:
 
-## Import/export and launch-path evidence
-
-### Official WireGuard Apple — exact pinned import source
-
-At pinned mirror commit `2fec12a6e1f6e3460b6ee483aa00ad29cddadab1`, the iOS import paths are now source-pinned rather than inferred only from user documentation:
-
-1. `Sources/WireGuardApp/UI/iOS/ViewController/TunnelsListTableViewController.swift`
-   - `addButtonTapped` exposes both **Import file** and **Scan QR code** actions.
-   - `presentViewControllerForFileImport()` creates `UIDocumentPickerViewController` accepting `com.wireguard.config.quick`, text and ZIP archive document types.
-   - `documentPicker(...didPickDocumentsAt:)` passes selected URLs to `TunnelImporter.importFromFile(...)`.
-   - `presentViewControllerForScanningQRCode()` presents `QRScanViewController`; the `QRScanViewControllerDelegate` callback receives a parsed `TunnelConfiguration` and adds it through `tunnelsManager.add(...)`.
-2. `Sources/WireGuardApp/UI/TunnelImporter.swift`
-   - `.zip` inputs are expanded through `ZipImporter.importConfigFiles`.
-   - non-ZIP inputs are treated as config text, read from the URL, and parsed through `TunnelConfiguration(fromWgQuickConfig:called:)` before `tunnelsManager.addMultiple(...)`.
-3. `Sources/WireGuardApp/UI/iOS/ViewController/MainViewController.swift`
-   - `importFromDisposableFile(url:)` routes externally opened disposable files into the same `TunnelImporter.importFromFile(...)` path and deletes the disposable copy afterward.
+- `TunnelsListTableViewController.addButtonTapped` exposes both file import and QR scan.
+- `presentViewControllerForFileImport()` accepts `com.wireguard.config.quick`, text and ZIP archive document types; the picker callback routes URLs to `TunnelImporter.importFromFile(...)`.
+- `TunnelImporter.importFromFile(...)` expands ZIPs through `ZipImporter`, otherwise reads text and parses `TunnelConfiguration(fromWgQuickConfig:called:)`, then calls `tunnelsManager.addMultiple(...)`.
+- `presentViewControllerForScanningQRCode()` presents `QRScanViewController`; its delegate receives a parsed `TunnelConfiguration` and adds it through `tunnelsManager.add(...)`.
+- `MainViewController.importFromDisposableFile(url:)` sends externally opened disposable files through the same importer and deletes the disposable copy afterward.
 
 Pinned anchors:
 - <https://github.com/WireGuard/wireguard-apple/blob/2fec12a6e1f6e3460b6ee483aa00ad29cddadab1/Sources/WireGuardApp/UI/iOS/ViewController/TunnelsListTableViewController.swift>
 - <https://github.com/WireGuard/wireguard-apple/blob/2fec12a6e1f6e3460b6ee483aa00ad29cddadab1/Sources/WireGuardApp/UI/TunnelImporter.swift>
 - <https://github.com/WireGuard/wireguard-apple/blob/2fec12a6e1f6e3460b6ee483aa00ad29cddadab1/Sources/WireGuardApp/UI/iOS/ViewController/MainViewController.swift>
 
-This closes the earlier **exact file/archive/QR import source-path gap** for the pinned official WireGuard Apple mirror. It does **not** prove current App Store binary equivalence, and it does not establish QR export.
+This closes the exact file/archive/QR **import source-path** gap for the pinned official mirror. It does not prove current App Store binary equivalence and does not establish QR export.
 
-Important evidence boundary: QR generation is generally a provisioning-side concern; seeing a QR provisioning workflow does not imply the Apple app exports QR codes. PVNetwork must separately certify import and export directions.
+## Standalone AmneziaWG Apple — current immutable source pin
 
-### Standalone AmneziaWG Apple fork
+The standalone fork was re-audited at current commit `fe2e2d7ebb835a0a2ad1d8de75094a6de134da4d`, whose upstream commit timestamp is 2026-08-14 and whose GitHub verification is valid. This removes the previous moving-branch ambiguity for the source observations below.
 
-`amnezia-vpn/amneziawg-apple` is a fork/reference for AWG on Apple platforms. A current 2026 feature request against the Amnezia project documents the standalone iOS AWG app's existing import paths as:
+At that pin, `Sources/WireGuardApp/UI/iOS/ViewController/TunnelsListTableViewController.swift` still exposes the same explicit **Import file** and **Scan QR code** actions. Its file picker accepts WireGuard quick-config, text and ZIP archive types and routes selected URLs to `TunnelImporter.importFromFile(...)`; its QR delegate receives a parsed `TunnelConfiguration` and persists it via `tunnelsManager.add(...)`.
 
-- receive/open `.conf`, then use the share sheet into AmneziaWG;
-- scan a QR code from inside AmneziaWG.
+At the same pin, `Sources/WireGuardApp/UI/TunnelImporter.swift` retains the ZIP-or-text import pipeline and parses non-ZIP content through `TunnelConfiguration(fromWgQuickConfig:called:)`. Because this is the AWG fork, the configuration model/core carries AWG-specific extensions elsewhere, while the UI import orchestration remains recognizably WireGuard-derived.
 
-The same request proposes a new `amneziawg://` URL scheme precisely because the standalone app does **not** currently provide the requested one-tap scheme import. Therefore PVNetwork must not claim deep-link import support for standalone AmneziaWG Apple today. The proposal references the existing file-import route `mainVC.importFromDisposableFile(url:)`, which is useful source-level evidence for disposable-file ingestion but not evidence of a registered custom scheme.
+Pinned anchors:
+- <https://github.com/amnezia-vpn/amneziawg-apple/commit/fe2e2d7ebb835a0a2ad1d8de75094a6de134da4d>
+- <https://github.com/amnezia-vpn/amneziawg-apple/blob/fe2e2d7ebb835a0a2ad1d8de75094a6de134da4d/Sources/WireGuardApp/UI/iOS/ViewController/TunnelsListTableViewController.swift>
+- <https://github.com/amnezia-vpn/amneziawg-apple/blob/fe2e2d7ebb835a0a2ad1d8de75094a6de134da4d/Sources/WireGuardApp/UI/TunnelImporter.swift>
 
-Evidence anchor: <https://github.com/amnezia-vpn/amnezia-client/issues/2498> (opened 2026; feature request, not implemented capability).
+A 2026 feature request still documents absence of a registered standalone custom URL scheme and proposes `amneziawg://`; therefore a one-tap custom-scheme import is **not claimed**. This is compatible with the source-pinned file and QR paths above: file/QR import can exist without a custom URL scheme.
 
-A separate 2026 Amnezia issue reports that standalone `.conf` import succeeds while a hand-generated QR payload can fail with error 900. That issue is unresolved evidence about payload-format ambiguity, not proof that QR import itself is absent. PVNetwork must use source-pinned parser evidence and real-device receipts before specifying a generated standalone AWG QR format.
+A separate 2026 issue reports `.conf` import succeeding while a hand-generated QR payload can fail with error 900. Treat that as payload-format/interoperability evidence, not as proof that QR scanning is absent. Real-device generated-QR receipts remain required before PVNetwork publishes a standalone AWG QR-generation contract.
 
-### Deep-link decision
+## Capability decision
 
-| Apple surface | File import | QR import | Custom URL/deep-link import | Export |
+| Apple surface | File/archive import | QR import | Custom URL/deep-link import | Export |
 |---|---|---|---|---|
-| official WireGuard Apple | **source-pinned** (`UIDocumentPicker` -> `TunnelImporter`) | **source-pinned UI path** (`QRScanViewController` -> parsed `TunnelConfiguration`) | **not claimed** | exact file/share export path still to pin |
-| standalone AmneziaWG Apple | `.conf` via open/share path documented | documented existing path; exact parser/payload source still to pin | **NOT CURRENTLY CLAIMED; feature requested** | exact export path still to pin |
-| main Amnezia client | separate codebase; do not inherit standalone behavior | separate audit | `vpn://` behavior is separate code and requires its own source audit | separate audit |
+| official WireGuard Apple | **source-pinned** | **source-pinned UI path** | not claimed | exact file/share/archive export still to pin |
+| standalone AmneziaWG Apple | **source-pinned at 2026-08-14 commit** | **source-pinned UI path**; generated payload contract still needs receipt | **NOT CLAIMED; feature requested** | exact export path still to pin |
+| main Amnezia client | separate codebase | separate audit | separate `vpn://` code path; do not inherit into standalone AWG | separate audit |
 
-This distinction prevents a common research error: capability in the main Amnezia client must not be silently attributed to the standalone AmneziaWG Apple fork.
+## Evidence boundaries
+
+QR provisioning and QR export are different capabilities. An app accepting QR input does not imply it can export QR. Likewise, a main-Amnezia `vpn://` URI must not be advertised as a standalone AmneziaWG URL scheme.
 
 ## Current-source freshness warning
 
-The GitHub WireGuard Apple mirror's visible commit history tops out at the pinned app source revision, while open pull requests in 2026 include fixes such as transient keychain tunnel-loss behavior and IPv6 endpoint preference. This means the pinned source is valuable architecture evidence but is **not proof that every open 2026 regression is resolved in a shipped build**. PVNetwork release certification must check the actual App Store/build revision and unresolved upstream patches at release time.
-
-Source anchors:
-- <https://github.com/WireGuard/wireguard-apple>
-- <https://github.com/WireGuard/wireguard-apple/pulls>
-
-## Logging/error model
-
-The source has shared logging plus NetworkExtension-specific error notification. PVNetwork should keep a stable product error taxonomy while retaining detailed internal context and secret-redacted support export.
-
-## Platform-specific lesson
-
-The reviewed code contains macOS-specific lifecycle handling. Shared UI/core abstractions must still allow platform-version-gated workarounds with regression tests.
+The official WireGuard GitHub mirror is architecture evidence but visibly older than the standalone AWG fork. Current release certification must check shipped Store/build revisions and unresolved patches, not infer binary freshness from either source tree alone.
 
 ## License/reuse
 
-Reviewed WireGuard Apple source is MIT. Reuse still requires dependency, entitlement, distribution, attribution/trademark and current-device testing. Current classification: `REUSE-CANDIDATE / ARCHITECTURE-REFERENCE`.
+Reviewed WireGuard Apple source is MIT; the standalone AWG fork derives from it. Reuse still requires dependency, entitlement, distribution, attribution/trademark and current-device testing. Classification remains `REUSE-CANDIDATE / ARCHITECTURE-REFERENCE`, not implemented support.
 
-## PVNetwork regression requirements derived from this source
+## PVNetwork regression requirements
 
-Future Apple tests must cover app/extension state synchronization, protected configuration create/update/delete, app-driven and OS-driven extension launch, corrupted/missing saved configuration, adapter error mapping, extension stop/restart, on-demand changes, log redaction, upgrade/migration with saved tunnels, Persian RTL with technical LTR tokens, `.conf` open/share import, ZIP archive import, QR import, duplicate-name behavior, malformed QR/file rejection, and explicit negative tests proving unsupported deep-link schemes do not get advertised as supported.
+Future Apple tests must cover app/extension state synchronization, protected configuration create/update/delete, app-driven and OS-driven extension launch, corrupted/missing saved configuration, adapter error mapping, extension stop/restart, on-demand changes, log redaction, upgrade/migration with saved tunnels, Persian RTL with technical LTR tokens, `.conf` open/share import, ZIP archive import, QR import, duplicate-name behavior, malformed QR/file rejection, AWG-specific field round-trip, and explicit negative tests proving unsupported deep-link schemes do not get advertised as supported.
 
 ## Remaining gaps
 
-- exact official WireGuard export/share behavior and archive semantics;
-- full entitlement/app-group inventory;
-- current shipped Store revision versus mirror revision;
-- complete test target/CI inventory and dependency/SBOM audit;
-- AmneziaWG Apple immutable revision and exact QR/file/export source-path pin;
-- real-device import/export receipts and malformed-input tests.
+- exact official WireGuard export/share/archive source behavior;
+- exact standalone AmneziaWG export/share/archive source behavior;
+- full entitlement/app-group inventory and current shipped Store revision mapping;
+- complete test target/CI/dependency/SBOM audit;
+- real-device import/export and malformed-input receipts, including generated AWG QR interoperability.
