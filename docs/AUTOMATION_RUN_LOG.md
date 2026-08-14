@@ -56,3 +56,4 @@ RUN_START | ts=2026-08-14T19:39:20Z | trigger=scheduled | work_unit=V1-FINAL-PRO
 RUN_END | ts=2026-08-14T19:43:30Z | status=COMPLETED_SLICE | last_research_commit=dfab8ecf7a3322664517bae73cde3a0ae124f2dd
 RUN_START | ts=2026-08-14T20:41:10Z | trigger=scheduled | work_unit=V2-ENTRY-001-OPENVPN | handoff=research/protocols/093-entry/V1_GATE_RECONCILIATION.md | resume_from=v1-93-of-93-v2-0-of-93 | manual_request=none
 RUN_END | ts=2026-08-14T20:47:30Z | status=COMPLETED_SLICE | last_research_commit=7c8b80e9f48ece6338f39cbeeac1da7011ca942d
+RUN_START | ts=2026-08-14T21:42:00Z | trigger=scheduled | work_unit=V2-ENTRY-020-PULSE-SECURE | handoff=AGENTS_HANDOFF_2026-08-14_FORTIGATE_SSLVPN_V2_COMPLETE.md | resume_from=v2-19-of-93 | manual_request=none
