@@ -40,3 +40,4 @@ RUN_END | ts=2026-08-14T10:12:30Z | status=COMPLETED_SLICE | last_research_commi
 RUN_START | ts=2026-08-14T11:04:11Z | trigger=scheduled | work_unit=WIREGUARD-AWG-COMPLETE-REFERENCE-V2 | handoff=AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_7.md | resume_from=fe586a319c096c68e406f8a9acb606bc99d13563 | manual_request=none
 RUN_END | ts=2026-08-14T11:13:30Z | status=COMPLETED_SLICE | last_research_commit=6ec255958e1d2210e81a297534bb2a9ca031ce4a
 RUN_START | ts=2026-08-14T12:02:30Z | trigger=scheduled | work_unit=L2TP-IPSEC-COMPLETE-REFERENCE-V2 | handoff=AGENTS_HANDOFF_2026-08-14_IPSEC_V2_1.md | resume_from=e48272a504062d49c0d7c06d552e1c052cad8ce6 | manual_request=none
+RUN_END | ts=2026-08-14T12:12:30Z | status=COMPLETED_SLICE | last_research_commit=1b089d6b06ceeb113bb5da745f9015badfd751f8
