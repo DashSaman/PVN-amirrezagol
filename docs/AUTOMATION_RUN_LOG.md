@@ -17,3 +17,4 @@ RUN_START | ts=2026-08-14T02:00:00Z | trigger=scheduled | work_unit=XRAY-MODERN-
 RUN_END | ts=2026-08-14T02:47:00Z | status=COMPLETED_SLICE | last_research_commit=<sha>
 INTERRUPTION | ts=2026-08-14T03:00:00Z | status=INTERRUPTED_INFERRED | prior_start=2026-08-14T02:00:00Z
 -->
+RUN_START | ts=2026-08-14T02:00:57Z | trigger=scheduled | work_unit=WIREGUARD-AMNEZIAWG-V1-CLOSURE | handoff=AGENTS_HANDOFF_2026-08-14_XRAY_V1_2.md | resume_from=252ff882b62caa9bc0ad923f67953316d40c9e1e | manual_request=none
