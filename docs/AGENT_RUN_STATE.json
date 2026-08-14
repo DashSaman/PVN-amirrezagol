@@ -5,13 +5,46 @@
   "run_status": "IN_PROGRESS",
   "owner_scope": "All repository-documented PVNetwork research work: first complete all 93 COMPLETE-RESEARCH-v1 gates, then COMPLETE-REFERENCE-v2 for all applicable entries.",
   "total_matrix_entries": 93,
-  "v1_complete_count": 34,
+  "v1_complete_count": 36,
   "active_phase": "COMPLETE-RESEARCH-v1",
-  "hard_phase_lock": {"enabled": true,"reason": "V1 tracker is 34/93 COMPLETE-RESEARCH-v1; V2 remains locked.","unlock_condition": "research/RESEARCH_COMPLETENESS.md contains 93 entries marked COMPLETE-RESEARCH-v1"},
-  "priority_entries": [35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50],
-  "active_work_unit": {"id": "V1-GATE-RECONCILIATION","status": "IN_PROGRESS","current_entry": 35,"source_handoff": "AGENTS_HANDOFF_2026-08-14_V1_GATE_RECONCILIATION_15.md","exact_next_action": "Continue with entry 035 Barracuda TINA VPN. Establish current CloudGen Firewall TINA client/gateway model, exact platform/releases/transports and proprietary source boundary, audit any public interoperability implementation, reconcile all 20 v1 gates, then continue 036 automatically."},
-  "campaign_sources_of_truth": {"matrix": "docs/PROTOCOL_MATRIX.md","v1_contract": "research/PROTOCOL_RESEARCH_TEMPLATE.md","v1_tracker": "research/RESEARCH_COMPLETENESS.md","v2_contract": "research/FULL_PROTOCOL_REFERENCE_CONTRACT.md","v2_tracker": "research/REFERENCE_V2_COMPLETENESS.md","startup": "AI_START_HERE.md","agent_rules": "AGENTS.md","continuous_execution_contract": "AGENT_EXECUTION_CONTRACT.md"},
-  "resume_policy": {"ask_owner_to_continue": false,"restart_from_chat_memory": false,"resume_from_repository_checkpoint": true,"on_single_task_blocker": "record blocker and continue independent required V1 work","on_work_unit_pass": "update tracker and continue next unfinished V1 entry until 93/93"},
-  "completion_validation": {"command": "python scripts/agent_state.py verify --require-complete","allow_done_claim_without_validator_pass": false},
-  "last_checkpoint": {"date": "2026-08-14","summary": "Entry 034 Citrix Secure Access / Gateway VPN completed all 20 original v1 gates. V1 is now 34/93; V2 remains hard-locked. Active work advances to entry 035 Barracuda TINA VPN.","last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_V1_GATE_RECONCILIATION_15.md"}
+  "hard_phase_lock": {
+    "enabled": true,
+    "reason": "V1 tracker is 36/93 COMPLETE-RESEARCH-v1; V2 remains locked.",
+    "unlock_condition": "research/RESEARCH_COMPLETENESS.md contains 93 entries marked COMPLETE-RESEARCH-v1",
+    "forbidden_while_locked": ["advance active_phase to COMPLETE-REFERENCE-v2","select V2-only work instead of unfinished V1","use missing runtime/device/certification evidence as a hidden V1 research gate"]
+  },
+  "priority_entries": [37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52],
+  "active_work_unit": {
+    "id": "V1-ENTRY-037-VLESS",
+    "status": "IN_PROGRESS",
+    "current_entry": 37,
+    "source_handoff": "AGENTS_HANDOFF_2026-08-14_V1_GATE_RECONCILIATION_16.md",
+    "exact_next_action": "Continue with entry 037 VLESS. Reuse the existing Xray/client-reference evidence but independently reconcile every one of the exact 20 V1 gates, including canonical current source/release/license pins, protocol/auth/transport/config/UI/storage/logging/lifecycle/security boundaries and an explicit PVNetwork reuse decision; do not treat shared Xray evidence alone as completion. Then continue 038 VMess automatically."
+  },
+  "campaign_sources_of_truth": {
+    "matrix": "docs/PROTOCOL_MATRIX.md",
+    "v1_contract": "research/PROTOCOL_RESEARCH_TEMPLATE.md",
+    "v1_tracker": "research/RESEARCH_COMPLETENESS.md",
+    "v2_contract": "research/FULL_PROTOCOL_REFERENCE_CONTRACT.md",
+    "v2_tracker": "research/REFERENCE_V2_COMPLETENESS.md",
+    "startup": "AI_START_HERE.md",
+    "agent_rules": "AGENTS.md",
+    "continuous_execution_contract": "AGENT_EXECUTION_CONTRACT.md"
+  },
+  "resume_policy": {
+    "ask_owner_to_continue": false,
+    "restart_from_chat_memory": false,
+    "resume_from_repository_checkpoint": true,
+    "on_single_task_blocker": "record blocker and continue independent required V1 work",
+    "on_work_unit_pass": "update tracker and continue next unfinished V1 entry until 93/93"
+  },
+  "completion_validation": {
+    "command": "python scripts/agent_state.py verify --require-complete",
+    "allow_done_claim_without_validator_pass": false
+  },
+  "last_checkpoint": {
+    "date": "2026-08-14",
+    "summary": "Entries 033 Aruba VIA, 034 Citrix Secure Access / Gateway VPN, 035 Barracuda TINA VPN, and 036 Juniper Secure Connect now satisfy all 20 original V1 research gates with current authoritative vendor evidence and explicit proprietary/source/reuse boundaries. V1 is 36/93; V2 remains hard-locked. Active work advances to entry 037 VLESS.",
+    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_V1_GATE_RECONCILIATION_16.md"
+  }
 }
