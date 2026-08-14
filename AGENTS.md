@@ -185,9 +185,13 @@ Use meaningful commit messages such as `docs(research): ...`, `docs(protocols): 
 
 Newest handoff:
 
-`AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md`
+`AGENTS_HANDOFF_2026-08-14_XRAY_V1_2.md`
 
-This is the active Xray/modern-proxy original-v1 checkpoint. It records current Xray-core and libXray pins, new source/config/dependency/client/issue dossiers, license/reuse findings, active numbered relationships, current blockers and exact next action.
+This checkpoint closes Xray/modern-proxy shared-family original research at `V1-HANDOFF-READY / NOT IMPLEMENTED`, preserves all residual gaps, and activates WireGuard/AmneziaWG residual v1 closure as the next work unit.
+
+Previous Xray handoff:
+
+`AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md`
 
 Previous family handoff:
 
@@ -199,20 +203,17 @@ Scope-expansion handoff:
 
 ## 19. Exact current next action
 
-Active work unit: `XRAY-MODERN-PROXY-V1-CLOSURE`.
+Active work unit: `WIREGUARD-AMNEZIAWG-V1-CLOSURE`.
 
-Continue from `AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md`:
-
-1. create Xray per-entry capability/support/reuse decisions;
-2. map Xray commander/API/stats runtime-control ownership;
-3. deepen libXray API/lifecycle/build/dependency/issue evidence;
-4. expand v2rayNG Android source/storage/VpnService/import/menu evidence in split files;
-5. add Xray security/dependency-advisory research;
-6. synchronize Xray `INDEX.md` and affected numbered entries;
-7. checkpoint and continue the next unfinished original-v1 family;
-8. keep WireGuard/AmneziaWG residual v1 closure queued before any overall v1 completion claim.
-
-Do **not** start mass `COMPLETE-REFERENCE-v2` work yet.
+1. read current `research/upstreams/wireguard-family/` tree and previous WireGuard evidence;
+2. close Windows source/storage/service evidence;
+3. close dependency/SBOM/license distinctions;
+4. close AmneziaWG platform/source/version gaps;
+5. finalize client/reference and issue/regression decisions;
+6. synchronize entries 002/003 and shared family index/state;
+7. if the family becomes `V1-HANDOFF-READY`, checkpoint and immediately select the next unfinished original-v1 family;
+8. keep residual implementation/device/server evidence explicit;
+9. do **not** begin mass `COMPLETE-REFERENCE-v2` work yet.
 
 ## 20. Mandatory continuous-execution bootstrap
 
