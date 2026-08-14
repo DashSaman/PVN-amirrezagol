@@ -189,13 +189,13 @@ Use meaningful commit messages such as `docs(research): ...`, `docs(protocols): 
 
 Newest handoff:
 
-`AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_9.md`
+`AGENTS_HANDOFF_2026-08-14_IPSEC_V2_1.md`
 
-This checkpoint records entries 002/003 as `REFERENCE-V2-SOURCE-COMPLETE / EXECUTION-BLOCKED / NOT IMPLEMENTED`, preserves all external install/Store/signing/device/interoperability blockers, and advances the active work unit to IKE/IPsec v2.
+This checkpoint records entries 004–007 as source/reference complete with strict runtime/install/device/interoperability blockers preserved, and advances the active work unit to entry 008 L2TP/IPsec.
 
 Previous WireGuard/AWG handoff:
 
-`AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_8.md`
+`AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_9.md`
 
 OpenVPN v2 transition handoff:
 
@@ -211,29 +211,26 @@ Scope-expansion handoff:
 
 ## 19. Exact current next action
 
-Active work unit: `IKE-IPSEC-COMPLETE-REFERENCE-V2`.
+Active work unit: `L2TP-IPSEC-COMPLETE-REFERENCE-V2`.
 
-Primary entries:
+Primary entry:
 
-- 004 IKEv2/IPsec
-- 005 IKEv1/IPsec
-- 006 IPsec ESP
-- 007 IPsec AH
+- 008 L2TP/IPsec
 
 Required next sequence:
 
-1. read current strongSwan/native/IPsec evidence and numbered entry files before duplicating work;
-2. keep IKEv2 and IKEv1 negotiation/authentication distinct from ESP/AH packet protection;
-3. inventory canonical/serious server and client implementations plus major deployment/control-plane projects;
+1. read `research/protocols/008-l2tp-ipsec/V1_RESEARCH.md`, existing `classic-tunnels-family` evidence and the completed 004–007 IPsec v2 dossier;
+2. preserve the layered composition: IKE/IPsec protection -> L2TP control/data/session -> PPP/user authentication/address assignment where applicable;
+3. inventory serious L2TP server/client implementations plus native OS stacks and management products;
 4. build server OS/container/orchestration and client install matrices;
-5. map server management surfaces and major client UIs separately;
-6. document cryptographic design from RFCs/authoritative implementation source;
-7. document data path, NAT traversal, ports, IKE exchanges, CHILD_SA/IPsec SAs, ESP/AH behavior and deployment topologies;
+5. map server UI/control planes and client UIs separately;
+6. document L2TP/IPsec cryptographic boundary, wire/data flow, UDP ports, NAT-T/ESP encapsulation and L2TP/PPP sequence;
+7. document deployment topologies and failure ownership per layer;
 8. record source/license/activity/supply-chain/upgrade/uninstall/rollback evidence;
-9. checkpoint each meaningful slice and immediately continue;
-10. do not collapse vendor-native IKE/IPsec support into one generic implementation claim.
+9. reconcile all 16 v2 gates without treating completed IPsec research as proof that L2TP/PPP are complete;
+10. checkpoint and immediately continue to the next independent family.
 
-Entries 002/003 must remain strict-tracker `PENDING` until their external execution blockers are genuinely resolved; do not redo their source research unless evidence changes.
+Entries 002–007 remain strict-tracker `PENDING` until their external runtime evidence is genuinely resolved; do not redo their source/reference work unless upstream evidence changes materially.
 
 ## 20. Mandatory continuous-execution bootstrap
 
