@@ -92,11 +92,11 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 086 | HTTP/2 | COMPLETE-RESEARCH-v1 |
 | 087 | HTTP/3 | COMPLETE-RESEARCH-v1 |
 | 088 | gRPC | COMPLETE-RESEARCH-v1 |
-| 089 | mKCP | EVIDENCE-GAPS |
-| 090 | KCP | PENDING |
-| 091 | XHTTP | EVIDENCE-GAPS |
-| 092 | RAW | PENDING |
-| 093 | DTLS | IN-RESEARCH |
+| 089 | mKCP | COMPLETE-RESEARCH-v1 |
+| 090 | KCP | COMPLETE-RESEARCH-v1 |
+| 091 | XHTTP | COMPLETE-RESEARCH-v1 |
+| 092 | RAW | COMPLETE-RESEARCH-v1 |
+| 093 | DTLS | COMPLETE-RESEARCH-v1 |
 
 ## Evidence rule
 Shared upstream dossiers may satisfy reusable gates, but every numbered entry still requires an independent 20-gate conclusion or an explicit shared gate audit before promotion. Finding one client/core is not completion. Runtime/device/Store/interoperability proof remains a later evidence state unless the V1 contract explicitly requires it.
