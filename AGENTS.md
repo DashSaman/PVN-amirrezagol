@@ -2,42 +2,31 @@
 
 This file defines mandatory operating rules for all AI agents and human developers working on `DashSaman/PVN-amirrezagol`.
 
-## 1. First rule
+## 1. Mandatory startup order
 
-Read `AI_START_HERE.md` before doing anything else.
+Read these before doing meaningful work:
 
-Then read:
+1. `AI_START_HERE.md`
+2. this `AGENTS.md`
+3. the **latest `AGENTS_HANDOFF_*.md` file named below**
+4. `docs/PROJECT_STATE.md`
+5. `docs/RESEARCH_LOG.md`
+6. the newest `docs/RESEARCH_CAMPAIGN_STATUS_*.md` snapshot
+7. `docs/ROADMAP.md`
+8. `docs/PROTOCOL_MATRIX.md`
+9. `research/RESEARCH_COMPLETENESS.md`
+10. the relevant numbered/shared research dossiers
+11. recent Git history and actual repository tree
 
-- `PVNETWORK_MASTER_CONTEXT.md`
-- `docs/PROJECT_STATE.md`
-- `docs/ROADMAP.md`
-- `docs/ARCHITECTURE.md`
-- `docs/PROTOCOL_MATRIX.md`
-- `docs/RESEARCH_LOG.md`
+Repository evidence wins over chat memory. Some trackers can lag newer commits because connector writes may be rejected.
 
 ## 2. Current phase
 
-The repository is currently in the **research / requirements / architecture phase**.
+The repository is in the **research / requirements / architecture phase**.
 
-Do not claim implementation, protocol support, successful builds, tests, store readiness, or production readiness unless repository evidence exists.
+Do not claim implementation, protocol support, successful builds, tests, Store readiness, or production readiness without repository evidence.
 
-## 3. Documentation is persistent memory
-
-Important discoveries must be committed to the repository.
-
-Use:
-
-- `docs/RESEARCH_LOG.md` for chronological research findings
-- `docs/PROJECT_STATE.md` for the exact current handoff state
-- `docs/PROTOCOL_MATRIX.md` for protocol/core status
-- `docs/ARCHITECTURE.md` for architectural direction
-- `docs/ROADMAP.md` for phase progression
-- `PVNETWORK_MASTER_CONTEXT.md` for consolidated product context
-- `AI_START_HERE.md` for the reusable master AI prompt and mandatory continuation rules
-
-## 4. Evidence rules
-
-Keep these states separate:
+## 3. Evidence states must stay separate
 
 1. Researched
 2. Candidate identified
@@ -54,197 +43,146 @@ Keep these states separate:
 
 Never promote a feature without evidence.
 
-## 5. Research rules
+## 4. Persistent-memory rule
 
-For current or changing facts, prefer current primary sources:
+Important discoveries must be committed. Use:
 
-- official project repositories
-- official project documentation
-- official platform/store documentation
-- release notes
-- source code
-- issue/PR history
+- `docs/RESEARCH_LOG.md` for chronological findings;
+- `docs/PROJECT_STATE.md` for compact current state;
+- dated `docs/RESEARCH_CAMPAIGN_STATUS_*.md` when a larger state/log update is safer;
+- `AGENTS_HANDOFF_*.md` for exact resumable work-unit handoff;
+- relevant files under `research/protocols/` and `research/upstreams/` for durable technical evidence.
 
-When selecting an engine, investigate:
+Do not leave important decisions only in chat.
 
-- protocol coverage
-- current maintenance
-- license
-- security history
-- supported platforms
-- store compatibility
-- embedding/redistribution model
-- binary size
-- performance
-- dependency complexity
-- known regressions
+## 5. Continuous handoff — mandatory
 
-## 6. Competitor learning
+After every meaningful research/work unit:
 
-Study mature clients and cores, including but not limited to:
+1. update the relevant technical dossier(s);
+2. update Research Log/Project State or a dated status snapshot where appropriate;
+3. update or create the newest `AGENTS_HANDOFF_*.md` with what was done, commits, blockers and exact next action;
+4. update this file's **Latest handoff pointer**;
+5. record connector-write failures and do not blindly repeat the same rejected write.
 
-- v2rayN
-- v2rayNG
-- Hiddify
-- Happ
-- Amnezia VPN
-- Clash Verge Rev
-- FlClash
-- Mihomo Party
-- Karing
-- NekoBox
-- Throne
-- Xray-core
-- Mihomo
-- sing-box
-- OpenConnect
-- OpenVPN
-- WireGuard
-- SoftEther
-- strongSwan
-- Hysteria
+Do not log every low-level API call. Log meaningful work units and decisions.
 
-Learn from architecture, bugs, issues, regressions, UX, routing, DNS, permissions, crash recovery, battery, and store publication problems.
+## 6. Anti-loop rule
 
-Do not copy branding or incompatible-license code.
+If the same approach fails twice, do not repeat it unchanged a third time. Preserve evidence through a materially different/smaller file or a dated handoff/status snapshot.
 
-## 7. Branding
+## 7. Research-source rules
+
+For changing/current facts prefer primary evidence:
+
+- official repositories;
+- official protocol/spec documentation;
+- official platform/Store documentation;
+- release notes;
+- source code;
+- issue/MR/PR history;
+- authoritative standards/RFCs.
+
+Pin revisions/releases when possible. Do not treat a GitHub mirror as canonical when the repository says otherwise.
+
+## 8. License and reuse rules
+
+Do not assume open-source means commercially reusable without obligations.
+
+For every candidate record exact source/license paths, component-level differences, dependencies, redistribution/linking obligations, branding/trademark constraints and Store implications.
+
+Engineering license research is not final legal advice/sign-off.
+
+## 9. Architecture rules
+
+- Prefer a unified application/product layer and stable Core Adapter abstractions.
+- Do not couple UI directly to a specific engine.
+- Do not implement cryptography from scratch.
+- Keep import/export format, canonical profile model, protected persistence and engine-runtime representation separate.
+- Platform-specific implementations are allowed and often required behind one product-facing contract.
+
+## 10. Localization / branding
 
 Product name: **PVNetwork**.
 
-Use the exact supplied official logo when it becomes available in the repository.
+Persian and English are mandatory first-class languages. Persian must have correct RTL behavior while IP addresses, ports, URLs, protocol IDs, hashes, paths and logs remain readable technical LTR tokens.
 
-Never generate a replacement brand identity without explicit owner approval.
+Use the exact official PVNetwork logo when provided in the repository. Do not invent replacement branding without owner approval.
 
-## 8. Localization
-
-Persian and English are mandatory first-class languages.
-
-Persian must have proper RTL behavior.
-
-Do not break:
-
-- IP addresses
-- ports
-- URLs
-- protocol identifiers
-- hashes
-- file paths
-- logs
-
-inside RTL layouts.
-
-## 9. Platform scope
+## 11. Platform scope
 
 Long-term targets:
 
-- Android
-- Android tablets/foldables
+- Android phones/tablets/foldables
 - Android TV / Google TV
 - Windows
 - macOS
 - iPhone/iPad
 - Linux
 
-Do not assume one networking implementation fits every operating system.
+Do not assume one networking implementation fits every OS.
 
-## 10. Store rules
+## 12. Store rule
 
-Store policies change. Before release decisions, re-check official rules for:
+Store policies change. Re-check current official requirements before implementation/release decisions for Google Play, Android TV/Google TV, Apple App Store, Mac distribution, Microsoft Store and Linux package channels.
 
-- Google Play
-- Android TV / Google TV
-- Apple App Store
-- Mac App Store where relevant
-- Microsoft Store
-- chosen Linux distribution channels
+## 13. Competitor/upstream learning
 
-Never hardcode stale policy assumptions as eternal truth.
+Study mature clients/cores/server projects for architecture, menus, bugs, regressions, routing/DNS behavior, reconnect, permissions, crash recovery, battery/performance, packaging, updates, security and Store issues.
 
-## 11. Architecture rule
+Do not copy branding or incompatible-license code.
 
-Prefer a unified application layer and stable Core Adapter abstraction.
+## 14. Original research campaign remains first priority
 
-Do not couple UI directly to a specific VPN engine.
+The existing `COMPLETE-RESEARCH-v1` campaign and previously active backlog remain first priority. Do not abandon unfinished prior research merely because the full-reference scope below was added.
 
-Do not implement cryptography from scratch.
+## 15. Full protocol reference expansion — mandatory second layer
 
-## 12. Git discipline
+After the prior research gates for an entry/family are satisfied, execute:
 
-Use meaningful commit messages, e.g.:
+`research/FULL_PROTOCOL_REFERENCE_CONTRACT.md`
 
-- `docs(research): compare enterprise VPN engines`
-- `docs(protocols): expand protocol matrix`
-- `docs(architecture): record core adapter decision`
-- `feat(openvpn): add profile parser`
-- `test(dns): add leak regression test`
+The owner requires the repository to become a complete client+server engineering reference for every protocol/technology.
 
-Do not use meaningless messages such as `update`, `fix`, `stuff`.
+The second layer requires separate evidence-backed files for:
 
-## 13. Anti-loop rule
+- server implementations/forks/projects;
+- official and community server installers/deployment projects;
+- server install matrix across relevant OS/container/orchestration targets;
+- server UI/control-panel menus in detail;
+- client install matrix across all relevant operating systems/architectures/packages;
+- every major client's UI/menu map in detail;
+- cryptography;
+- data path/wire flow;
+- ports/transports/handshake;
+- deployment topologies;
+- source/license/activity/supply-chain review of server and client projects;
+- exact reference index and next action.
 
-If the same exact approach fails twice, do not repeat it unchanged a third time.
+The second-layer state is `COMPLETE-REFERENCE-v2`. It comes after `COMPLETE-RESEARCH-v1` and still does not mean implementation or production certification.
 
-Document failure evidence and change strategy.
+## 16. Server installer research rule
 
-## 14. Session end
+Research major community installers/panels because operators use them, but do not equate popularity with safety. Record source pins, root/privilege requirements, installed services/packages, firewall/routing/DNS changes, exposed admin interfaces, credential/secret defaults, update/uninstall/rollback behavior, container privileges/host networking and supply-chain risks.
 
-Before ending a meaningful work unit:
+Do not recommend blind remote-script execution without source review.
 
-1. Update relevant docs.
-2. Update `docs/RESEARCH_LOG.md` if new research was performed.
-3. Update `docs/PROJECT_STATE.md`.
-4. Commit the work.
-5. Record the next exact action.
+## 17. Git discipline
 
-## 15. Repository over chat
+Use meaningful commit messages such as `docs(research): ...`, `docs(protocols): ...`, `docs(agents): ...`. Do not use meaningless commit messages.
 
-If chat history and repository state disagree, verify and prefer the repository and current primary-source evidence.
+## 18. Latest handoff pointer — MUST READ
 
-## 16. Continuous handoff rule
+Newest handoff:
 
-The owner requires every meaningful work unit to remain resumable from the repository. After each meaningful inspection, research unit, decision, file change, or blocker:
+`AGENTS_HANDOFF_2026-08-14_REFERENCE_EXPANSION.md`
 
-1. record the detailed evidence in the relevant research file and `docs/RESEARCH_LOG.md`;
-2. keep `docs/PROJECT_STATE.md` synchronized with the real repository state;
-3. add a compact session/handoff note to this file before ending the work unit;
-4. include the exact next action so another AI can continue without chat history.
+This handoff records the owner's new full-reference requirements **and** the exact active continuation point in the previous-priority OpenConnect work.
 
-Do not log every low-level API call. Log meaningful work units and decisions.
-
-### Current handoff — 2026-08-14 — WireGuard / AmneziaWG work unit
-
-- Repository state was re-read from `main`; `docs/PROJECT_STATE.md` and parts of the completeness tracker were found to lag newer committed research. The actual tree/history must be checked before restarting any work.
-- `docs/PROJECT_STATE.md` has now been synchronized with the real research tree and explicitly records connector-blocked documentation gaps.
-- `docs/RESEARCH_LOG.md` now contains the detailed chronological WireGuard/AmneziaWG research entry.
-- WireGuard family was selected because entries 002/003 were high-value but the shared dossier was previously close to README-only.
-- New committed evidence under `research/upstreams/wireguard-family/`:
-  - `SOURCE_REVISIONS.md` — commit `fb4e4a4d451a19b55129bad4e2acf5c5d6d1abb4`
-  - `CORE_ARCHITECTURE.md` — commit `32eca180186c2b30032dc859443dd1805f3642fa`
-  - `ANDROID_CLIENT.md` — commit `162a82a782bc8c9cbc4c7c98e60268a74299a824`
-  - `APPLE_CLIENT.md` — commit `5221b0a071a516b46c2003dc1f2085b6b6871125`
-  - `AMNEZIAWG_DELTA.md` — commit `325dee3f7f3109d529f3f2adf55a61eea6a1a4c8`
-  - `LESSONS_AND_TESTS.md` — commit `cb7a1ad5cb8bc8ff01eb0a9ba2f2cff4c6116a24`
-- Pinned upstream research now covers official WireGuard Go/Windows/Android/Apple and AmneziaWG Go, with additional current platform pins for AmneziaWG Windows/Apple/Android recorded in Project State and Research Log.
-- Important architecture decisions from evidence: keep a stable PVNetwork Core Adapter above platform-specific engines; keep standard WireGuard and AmneziaWG as distinct versioned compatibility capabilities; separate import/export format, canonical profile model, protected persistence and engine runtime representation; do not reimplement cryptography.
-- Windows source research verified service/UI separation and protected DPAPI persistence, but both a detailed Windows dossier and a smaller source/UI-map write were rejected by the GitHub connector. Do not retry the same writes unchanged.
-- A synchronized rewrite of `research/upstreams/wireguard-family/README.md` was rejected; use the individual committed evidence files plus Project State/Research Log as current truth.
-- A separate AmneziaWG platform-reference file was also rejected; the verified platform pins/license findings are preserved in Project State/Research Log.
-- Official WireGuard mailing-list research was converted into regression classes in `LESSONS_AND_TESTS.md`: Android Always-On/permission conflicts, reboot/restore, control-surface state sync, delayed network/DNS readiness, network/sleep/address-family transitions, route-helper assumptions, and Apple NetworkExtension/Store release risks.
-- An attempted full synchronization of `research/RESEARCH_COMPLETENESS.md` was rejected by the connector. Do not hide this or treat the stale row text as proof that the new WireGuard files do not exist.
-- No protocol is implemented or production-tested by PVNetwork yet; this remains research evidence only.
-
-### Next exact action
-
-1. Finish remaining WireGuard-family completion gaps that can be documented safely: dependency/SBOM review, current release/fix-to-commit mapping, platform-specific AmneziaWG source deltas, assets/accessibility/UI completeness, and protocol-entry links for 002/003.
-2. Attempt tracker synchronization only through a materially different/smaller safe strategy; do not repeat the blocked full rewrite.
-3. Then choose the next highest-value incomplete family from the **actual tree + Project State + tracker**, not from chat memory.
-4. At the end of the next work unit, update `docs/RESEARCH_LOG.md`, `docs/PROJECT_STATE.md`, and this handoff again.
-
-## 17. Latest handoff pointer
-
-The newest work unit is stored in:
+Previous detailed handoff remains available at:
 
 `AGENTS_HANDOFF_2026-08-14_OPENCONNECT.md`
 
-Every next AI must read that file after `AGENTS.md` before continuing. It contains the OpenConnect/Enterprise commits, connector blockers, current conclusions and exact next action. Detailed state is also in `docs/RESEARCH_CAMPAIGN_STATUS_2026-08-14_OPENCONNECT.md` and the synchronized `docs/PROJECT_STATE.md`.
+## 19. Exact current next action
+
+Continue the previous-priority OpenConnect/Enterprise research from the newest handoff: finish issue/MR-to-fix mapping and remaining packaging/test/source gaps. Only after the original research campaign reaches its intended gates should the 93-entry `COMPLETE-REFERENCE-v2` expansion become the main campaign.
