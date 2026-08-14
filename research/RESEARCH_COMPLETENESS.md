@@ -51,7 +51,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 045 | AnyTLS | COMPLETE-RESEARCH-v1 |
 | 046 | ShadowTLS | COMPLETE-RESEARCH-v1 |
 | 047 | NaiveProxy | COMPLETE-RESEARCH-v1 |
-| 048 | Snell | SKELETON |
+| 048 | Snell | COMPLETE-RESEARCH-v1 |
 | 049 | SOCKS4 | SKELETON |
 | 050 | SOCKS4a | SKELETON |
 | 051 | SOCKS5 | SKELETON |
