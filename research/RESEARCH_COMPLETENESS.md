@@ -66,7 +66,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 060 | Nebula | COMPLETE-RESEARCH-v1 |
 | 061 | Tinc | COMPLETE-RESEARCH-v1 |
 | 062 | innernet | COMPLETE-RESEARCH-v1 |
-| 063 | GRE | PENDING |
+| 063 | GRE | COMPLETE-RESEARCH-v1 |
 | 064 | GRE over IPsec | PENDING |
 | 065 | IP-in-IP / IPIP | PENDING |
 | 066 | IPIP over IPsec | PENDING |
