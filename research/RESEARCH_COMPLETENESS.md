@@ -91,7 +91,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 085 | HTTP/1.1 | COMPLETE-RESEARCH-v1 |
 | 086 | HTTP/2 | COMPLETE-RESEARCH-v1 |
 | 087 | HTTP/3 | COMPLETE-RESEARCH-v1 |
-| 088 | gRPC | PENDING |
+| 088 | gRPC | COMPLETE-RESEARCH-v1 |
 | 089 | mKCP | EVIDENCE-GAPS |
 | 090 | KCP | PENDING |
 | 091 | XHTTP | EVIDENCE-GAPS |
