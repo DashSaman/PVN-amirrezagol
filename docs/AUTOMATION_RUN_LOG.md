@@ -33,3 +33,4 @@ RUN_START | ts=2026-08-14T07:01:20Z | trigger=scheduled | work_unit=WIREGUARD-AW
 RUN_END | ts=2026-08-14T07:07:30Z | status=COMPLETED_SLICE | last_research_commit=da69fba02c4d404310d0bcaf66b40ec9b01ecbef
 RUN_START | ts=2026-08-14T08:02:26Z | trigger=scheduled | work_unit=WIREGUARD-AWG-COMPLETE-REFERENCE-V2 | handoff=AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_4.md | resume_from=da69fba02c4d404310d0bcaf66b40ec9b01ecbef | manual_request=none
 RUN_END | ts=2026-08-14T08:12:30Z | status=COMPLETED_SLICE | last_research_commit=8114458055754375646a79efe925781fd4d51f46
+RUN_START | ts=2026-08-14T09:02:24Z | trigger=scheduled | work_unit=WIREGUARD-AWG-COMPLETE-REFERENCE-V2 | handoff=AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_5.md | resume_from=8114458055754375646a79efe925781fd4d51f46 | manual_request=none
