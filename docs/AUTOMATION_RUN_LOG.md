@@ -54,3 +54,4 @@ RUN_START | ts=2026-08-14T18:42:00Z | trigger=scheduled | work_unit=V1-ENTRY-087
 RUN_END | ts=2026-08-14T18:51:30Z | status=COMPLETED_SLICE | last_research_commit=33a89987cc7e38afc1bef7aa3d3f265b8c40c37d
 RUN_START | ts=2026-08-14T19:39:20Z | trigger=scheduled | work_unit=V1-FINAL-PROMOTION-089-093 | handoff=research/protocols/088-entry/V1_GATE_RECONCILIATION.md | resume_from=b05c6067ff3fc0117a34077d64b17d8e8112d409 | manual_request=none
 RUN_END | ts=2026-08-14T19:43:30Z | status=COMPLETED_SLICE | last_research_commit=dfab8ecf7a3322664517bae73cde3a0ae124f2dd
+RUN_START | ts=2026-08-14T20:41:10Z | trigger=scheduled | work_unit=V2-ENTRY-001-OPENVPN | handoff=research/protocols/093-entry/V1_GATE_RECONCILIATION.md | resume_from=v1-93-of-93-v2-0-of-93 | manual_request=none
