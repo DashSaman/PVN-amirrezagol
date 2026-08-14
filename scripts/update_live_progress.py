@@ -22,6 +22,7 @@ OUT = ROOT / "LIVE_PROGRESS.md"
 TOTAL = 93
 
 ROW_RE = re.compile(r"^\|\s*(\d{3})\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*$")
+PROGRESS_ONLY_RE = re.compile(r"^(chore|ci|docs|fix)\(progress\):", re.IGNORECASE)
 
 
 def tracker(path: Path) -> dict[int, tuple[str, str]]:
@@ -50,7 +51,7 @@ def bar(n: int, d: int = TOTAL, width: int = 20) -> str:
 def git_lines(limit: int = 10) -> list[tuple[str, str, str]]:
     fmt = "%H%x1f%aI%x1f%s"
     proc = subprocess.run(
-        ["git", "log", f"-{max(limit * 4, 40)}", f"--pretty=format:{fmt}"],
+        ["git", "log", f"-{max(limit * 5, 50)}", f"--pretty=format:{fmt}"],
         cwd=ROOT,
         check=False,
         capture_output=True,
@@ -64,7 +65,8 @@ def git_lines(limit: int = 10) -> list[tuple[str, str, str]]:
         if len(parts) != 3:
             continue
         sha, iso, msg = parts
-        if msg.startswith("chore(progress):"):
+        # Dashboard/workflow/README maintenance must never look like research progress.
+        if PROGRESS_ONLY_RE.match(msg):
             continue
         rows.append((sha, iso, msg))
         if len(rows) >= limit:
@@ -154,7 +156,7 @@ def main() -> int:
         "4. `IN-RESEARCH` / `EVIDENCE-GAPS` entries advance and eventually become `COMPLETE-RESEARCH-v1`;",
         "5. after V1 is complete, `COMPLETE-REFERENCE-v2` starts increasing.",
         "",
-        "If only this dashboard's own `chore(progress):` commit changes, that does **not** count as research progress; those self-update commits are deliberately excluded above.",
+        "Commits whose messages are dashboard-only `(progress)` maintenance are deliberately excluded from meaningful-work activity.",
         "",
         "## Source-of-truth files",
         "",
