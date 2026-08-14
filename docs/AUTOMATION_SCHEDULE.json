@@ -1,0 +1,6 @@
+{
+  "timezone": "Asia/Tehran",
+  "cadence": "HOURLY",
+  "minute": 10,
+  "purpose": "Dashboard-only schedule metadata for PVNetwork Overnight Run. Keep synchronized with the ChatGPT automation schedule when it changes."
+}
