@@ -1,9 +1,9 @@
 # 018 — Palo Alto GlobalProtect compatibility
 
-Status: `IN-RESEARCH`; not implemented by PVNetwork.
+V1 status: `COMPLETE-RESEARCH-v1`.
 
-Shared evidence lives in `research/upstreams/openconnect-family/SOURCE_PIN.md` and `VENDOR_COMPATIBILITY_MATRIX.md`.
+V2 status: `COMPLETE-REFERENCE-v2` as of 2026-08-14 UTC.
 
-PVNetwork must keep vendor/version and authentication/posture capability evidence separate from generic OpenConnect protocol availability.
+The V2 dossier is under `reference-v2/` and the exact 16-gate reconciliation is `V2_GATE_RECONCILIATION.md`.
 
-Remaining work: current issue/release mapping, platform/frontend research, dependency/license packaging review, and final interoperability evidence.
+Palo Alto PAN-OS/Prisma Access headends and GlobalProtect apps are proprietary vendor products and are reference/certification targets, not source-reuse candidates. OpenConnect GlobalProtect mode is tracked separately as an LGPL public compatible client implementation; it is not assumed to provide proprietary HIP/posture, SAML/external-browser, mobile-management, or exact vendor-version parity without later certification.
