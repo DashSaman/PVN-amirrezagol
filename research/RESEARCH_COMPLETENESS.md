@@ -15,7 +15,7 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 009 | L2TPv3 | SKELETON |
 | 010 | L2TPv3/IPsec | SKELETON |
 | 011 | SSTP / MS-SSTP | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled; Linux client source corrected to canonical GitLab tag 1.0.20 in `research/protocols/011-sstp/V1_GATE_RECONCILIATION.md` |
-| 012 | PPTP | SKELETON |
+| 012 | PPTP | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with obsolete-security/legacy-only policy and pinned Poptop 1.5.0 evidence in `research/protocols/012-pptp/V1_GATE_RECONCILIATION.md` |
 | 013 | SoftEther VPN Protocol | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled in `research/protocols/013-softether/V1_GATE_RECONCILIATION.md` |
 | 014 | EtherIP | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with infrastructure/N-A treatment in `research/protocols/014-etherip/V1_GATE_RECONCILIATION.md` |
 | 015 | EtherIP/IPsec | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled as an EtherIP + typed-IPsec composition in `research/protocols/015-etherip-ipsec/V1_GATE_RECONCILIATION.md` |
@@ -114,7 +114,7 @@ Many numbered entries share the same codebase. To avoid duplicating thousands of
 
 ## Current known connector/documentation blockers
 - Some detailed networking research files are rejected by the GitHub write safety layer even when the underlying research is legitimate. Do not repeat the same blocked write unchanged more than twice.
-- ics-openvpn Android evidence was collected from pinned public source, but the dedicated detailed dossier write was repeatedly blocked. Evidence must be recovered from research history and split into smaller safe documents later.
+- ics-openvpn Android evidence was collected from pinned public source, but the dedicated detailed dossier write was repeatedly blocked. Evidence must be recovered from research history and split into smaller documentation units later.
 - detailed Xray/Mihomo shared dossier writes were blocked; pinned license/source findings remain verified and must be persisted through smaller safe documents later.
 - strongSwan detailed/shared dossier writes were blocked; pinned source/license evidence exists and remains an explicit gap.
 - protocol slots 056–093 could not all be materialized as separate folders in this work unit because even neutral folder writes began triggering connector filtering. Do not hide this; continue from the tracker.
