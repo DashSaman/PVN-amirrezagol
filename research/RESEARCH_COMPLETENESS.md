@@ -79,7 +79,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 073 | GETVPN | COMPLETE-RESEARCH-v1 |
 | 074 | REALITY | COMPLETE-RESEARCH-v1 |
 | 075 | XTLS | COMPLETE-RESEARCH-v1 |
-| 076 | XTLS Vision | EVIDENCE-GAPS |
+| 076 | XTLS Vision | COMPLETE-RESEARCH-v1 |
 | 077 | TLS | PENDING |
 | 078 | uTLS / TLS Fingerprinting | PENDING |
 | 079 | Cloak | PENDING |
