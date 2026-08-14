@@ -6,12 +6,12 @@
   "owner_scope": "All repository-documented PVNetwork research work: 93-entry COMPLETE-RESEARCH-v1 campaign, all currently documented fine-grained gaps, then COMPLETE-REFERENCE-v2 for all applicable entries. Completion of one protocol/family is never overall completion.",
   "total_matrix_entries": 93,
   "active_phase": "COMPLETE-REFERENCE-v2",
-  "priority_entries": [4, 5, 6, 7],
+  "priority_entries": [8],
   "active_work_unit": {
-    "id": "IKE-IPSEC-COMPLETE-REFERENCE-V2",
+    "id": "L2TP-IPSEC-COMPLETE-REFERENCE-V2",
     "status": "IN_PROGRESS",
-    "source_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_9.md",
-    "exact_next_action": "Begin IKE/IPsec COMPLETE-REFERENCE-v2 for entries 004-007 from existing strongSwan/native evidence. Keep IKEv2, IKEv1, ESP and AH distinct; inventory canonical and major server/client implementations, installer/deployment projects, OS/client matrices, management/client UIs, cryptography, wire flow, ports/handshake and topologies. Preserve any connector/source gaps and continue independently executable work without owner prompting."
+    "source_handoff": "AGENTS_HANDOFF_2026-08-14_IPSEC_V2_1.md",
+    "exact_next_action": "Continue entry 008 L2TP/IPsec from its V1-HANDOFF-READY decision. Reuse the completed entries 004-007 IPsec reference but add the separate L2TP control/data/session and PPP/auth/addressing layers. Inventory canonical/serious L2TP server and client implementations plus native OS stacks, server installers, OS/client matrices, management/client UIs, crypto/wire flow, ports/handshake, topologies, security/legacy/reuse decisions, then reconcile all 16 v2 gates without fabricating runtime receipts."
   },
   "campaign_sources_of_truth": {
     "matrix": "docs/PROTOCOL_MATRIX.md",
@@ -36,7 +36,7 @@
     "after_every_meaningful_work_unit": true,
     "files": [
       "docs/AGENT_RUN_STATE.json",
-      "docs/AGENT_CHECKPOINT_LOG.md",
+      "docs/AGENT_CHECKPOINT_LOG.md or newer dated docs/AGENT_CHECKPOINT_*.md",
       "relevant research dossier(s)",
       "research/RESEARCH_COMPLETENESS.md or a dated status snapshot",
       "research/REFERENCE_V2_COMPLETENESS.md when v2 is active",
@@ -59,7 +59,7 @@
   },
   "last_checkpoint": {
     "date": "2026-08-14",
-    "summary": "WireGuard/AmneziaWG v2 source/reference research has been reconciled line-by-line against all 16 FULL_PROTOCOL_REFERENCE_CONTRACT categories. Apple target/build identity and Store provenance separation plus wg-easy Nitro/h3 request-boundary evidence are now durable. Entries 002/003 remain strict-tracker PENDING only because representative runtime/install/Store/signing/interoperability receipts require external environments. The active work unit advances to IKE/IPsec v2 entries 004-007.",
-    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_9.md"
+    "summary": "Entries 004-007 IKEv2/IKEv1/ESP/AH now have all 11 mandatory v2 dossier files and all 16 research/reference contract categories reconciled. strongSwan 6.0.7, Libreswan v5.4, native OS clients, OPNsense/pfSense control planes, crypto/handshake/data path/topologies and install/UI matrices are documented. Strict completion remains blocked only on external server/client/runtime/interoperability receipts. Active work advances to entry 008 L2TP/IPsec as a separate layered composition.",
+    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_IPSEC_V2_1.md"
   }
 }
