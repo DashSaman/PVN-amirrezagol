@@ -1,17 +1,27 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "repository": "DashSaman/PVN-amirrezagol",
   "execution_mode": "CONTINUOUS_UNTIL_ALL_REQUIRED_GATES_PASS",
   "run_status": "IN_PROGRESS",
-  "owner_scope": "All repository-documented PVNetwork research work: 93-entry COMPLETE-RESEARCH-v1 campaign, all currently documented fine-grained gaps, then COMPLETE-REFERENCE-v2 for all applicable entries. Completion of one protocol/family is never overall completion.",
+  "owner_scope": "All repository-documented PVNetwork research work: first complete all 93 COMPLETE-RESEARCH-v1 gates, then COMPLETE-REFERENCE-v2 for all applicable entries. Completion of one protocol/family is never overall completion.",
   "total_matrix_entries": 93,
-  "active_phase": "COMPLETE-REFERENCE-v2",
-  "priority_entries": [10],
+  "active_phase": "COMPLETE-RESEARCH-v1",
+  "hard_phase_lock": {
+    "enabled": true,
+    "reason": "V1 tracker is not 93/93 COMPLETE-RESEARCH-v1. V2 evidence may be preserved or captured incidentally, but V2 must not be the active campaign until V1 reaches 93/93.",
+    "unlock_condition": "research/RESEARCH_COMPLETENESS.md contains 93 entries marked COMPLETE-RESEARCH-v1",
+    "forbidden_while_locked": [
+      "advance active_phase to COMPLETE-REFERENCE-v2",
+      "select a new V2-only work unit instead of reconciling unfinished V1 gates",
+      "use missing runtime/device/packet-capture/certification evidence as a hidden research-completion gate unless the written V1 contract explicitly requires it"
+    ]
+  },
+  "priority_entries": [1,2,3,4,5,6,7,8,9,10,11,12,13],
   "active_work_unit": {
-    "id": "L2TPV3-IPSEC-COMPLETE-REFERENCE-V2",
+    "id": "V1-GATE-RECONCILIATION",
     "status": "IN_PROGRESS",
-    "source_handoff": "AGENTS_HANDOFF_2026-08-14_L2TPV3_V2_1.md",
-    "exact_next_action": "Execute entry 010 L2TPv3/IPsec as a separate protected pseudowire v2 work unit. Reuse entry 009 L2TPv3 source/reference plus entries 004-007 IKE/IPsec source/reference, but explicitly define direct-IP protocol-115 and UDP L2TPv3 IPsec selectors, IKE/auth/ESP policy, credential ownership, install/deployment matrices, management/peer UIs, protected data-path encapsulation order, NAT/firewall/MTU/topologies and all 16 v2 gates. Preserve live Linux/Cisco/IPsec interoperability blockers and do not fabricate runtime receipts."
+    "source_handoff": "docs/AGENT_GATE_AUDIT_2026-08-14.md",
+    "exact_next_action": "Stop expanding unrelated V2 work. Reconcile mature V1 dossiers against the exact 20-item completion checklist in research/PROTOCOL_RESEARCH_TEMPLATE.md, in deterministic matrix order starting with entry 001 unless a more mature entry can be closed immediately. For each entry: map every gate to traceable evidence; mark N/A only with evidence-backed rationale; explicitly record genuine research gaps; complete those gaps; and update research/RESEARCH_COMPLETENESS.md to COMPLETE-RESEARCH-v1 in the same work unit when all applicable research gates pass. Runtime/device/container/interoperability/packet-capture/production certification is not a hidden V1 gate unless the written contract explicitly requires it. Preserve all already-created V2 evidence; do not delete it, but do not make V2 active until V1 is 93/93."
   },
   "campaign_sources_of_truth": {
     "matrix": "docs/PROTOCOL_MATRIX.md",
@@ -19,6 +29,7 @@
     "v1_tracker": "research/RESEARCH_COMPLETENESS.md",
     "v2_contract": "research/FULL_PROTOCOL_REFERENCE_CONTRACT.md",
     "v2_tracker": "research/REFERENCE_V2_COMPLETENESS.md",
+    "gate_audit": "docs/AGENT_GATE_AUDIT_2026-08-14.md",
     "startup": "AI_START_HERE.md",
     "agent_rules": "AGENTS.md",
     "continuous_execution_contract": "AGENT_EXECUTION_CONTRACT.md"
@@ -27,9 +38,9 @@
     "ask_owner_to_continue": false,
     "restart_from_chat_memory": false,
     "resume_from_repository_checkpoint": true,
-    "on_single_task_blocker": "record blocker, change strategy after two failed attempts, continue independent required work",
+    "on_single_task_blocker": "record blocker, change strategy after two failed attempts, continue independent required V1 work",
     "on_platform_interruption": "treat as interruption not completion; next invocation resumes from repository checkpoint immediately",
-    "on_work_unit_pass": "checkpoint and immediately select next executable required work unit",
+    "on_work_unit_pass": "update tracker, checkpoint, and immediately select next unfinished V1 entry until V1 is 93/93",
     "overall_stop_gate": "all required v1 and v2 gates PASS, or every remaining task is externally blocked and no independent work remains"
   },
   "checkpoint_policy": {
@@ -38,8 +49,8 @@
       "docs/AGENT_RUN_STATE.json",
       "docs/AGENT_CHECKPOINT_LOG.md or newer dated docs/AGENT_CHECKPOINT_*.md",
       "relevant research dossier(s)",
-      "research/RESEARCH_COMPLETENESS.md or a dated status snapshot",
-      "research/REFERENCE_V2_COMPLETENESS.md when v2 is active",
+      "research/RESEARCH_COMPLETENESS.md",
+      "research/REFERENCE_V2_COMPLETENESS.md only when V2 is legitimately active",
       "docs/PROJECT_STATE.md or a dated status snapshot",
       "latest AGENTS_HANDOFF_*.md"
     ],
@@ -47,7 +58,7 @@
       "work unit/task",
       "evidence and files",
       "commit SHA(s)",
-      "tests/checks and PASS/FAIL",
+      "gate-by-gate PASS/N-A/GAP result",
       "failed approaches not to repeat",
       "blockers",
       "exact next action"
@@ -59,7 +70,7 @@
   },
   "last_checkpoint": {
     "date": "2026-08-14",
-    "summary": "Entry 009 L2TPv3 now has all 11 mandatory v2 dossier files and a formal 16-gate reconciliation. Linux kernel/iproute2/go-l2tp and Cisco IOS XE reference models, security boundaries, direct-IP/UDP transports, static/dynamic control, peer install/UI maps, Layer-2 data path and topologies are documented. Strict completion remains blocked on live Linux/Cisco/interoperability/packet-capture evidence. Active work advances to entry 010 L2TPv3/IPsec as a separate protected composition.",
-    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_L2TPV3_V2_1.md"
+    "summary": "Follow-up audit confirmed the prior run continued V2 expansion after the phase-order correction and even produced commits after a recorded RUN_END without a new RUN_START. The repository state is therefore hard-reset to V1 gate reconciliation. Existing V2 research is preserved as useful evidence but is not the active campaign. Owner-visible counters must move only through evidence-backed tracker promotion.",
+    "last_known_repo_handoff": "docs/AGENT_GATE_AUDIT_2026-08-14.md"
   }
 }
