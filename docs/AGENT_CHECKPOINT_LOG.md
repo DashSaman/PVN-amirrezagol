@@ -81,3 +81,48 @@ After recording a checkpoint, the active agent must continue to the next executa
   5. add Xray security/dependency-advisory evidence;
   6. synchronize Xray `INDEX.md`, affected numbered entries, project state and newest handoff;
   7. continue the next unfinished original-v1 family without waiting for owner.
+
+---
+
+## 2026-08-14 — Xray / modern-proxy v1 closure
+
+- Work unit: `XRAY-MODERN-PROXY-V1-CLOSURE`
+- State transition: `IN_PROGRESS -> PASS` at the **shared-family original-research handoff** level only.
+- New state: `V1-HANDOFF-READY / NOT IMPLEMENTED`.
+- Important: PASS here means the family has a reasonable v1 research handoff with residual gaps preserved. It does not mean protocol implementation/certification.
+- New technical evidence includes:
+  - per-entry support/reuse decisions for 037/038/039/040/074/075/076/084/086/088/089/091/092 — `research/upstreams/xray-family/SUPPORT_REUSE_DECISIONS.md`;
+  - Xray runtime Commander/proxyman/router/stats control map — `XRAY_API_CONTROL.md`;
+  - libXray API/lifecycle/platform deep audit — `LIBXRAY_API_LIFECYCLE.md`;
+  - libXray issue/lifecycle lessons — `LIBXRAY_ISSUE_LESSONS.md`;
+  - repository advisory/security/SBOM review — `SECURITY_AND_DEPENDENCY_ADVISORIES.md`;
+  - v2rayNG Android architecture/storage/menu/build-CI dossiers;
+  - synchronized numbered entry files for Xray protocols/security/flow/transports;
+  - shared Xray `INDEX.md` now `V1-HANDOFF-READY / NOT IMPLEMENTED`.
+- Critical security finding:
+  - Xray advisory `GHSA-5wf9-h793-w73c` records vulnerable `>= v26.1.13`, patched `>= v26.7.11`;
+  - GitHub non-prerelease `releases/latest` returned `v26.3.27`, inside the vulnerable range;
+  - therefore “latest non-prerelease” is not an acceptable product-selection rule.
+- v2rayNG native supply-chain pin:
+  - app pin `e8a82d...`;
+  - AndroidLibXrayLite submodule `b213898...` maps to exact wrapper tag `v26.7.31`;
+  - wrapper root license LGPL-3.0;
+  - wrapper embeds a 2026-07-28 Xray pseudo-version later than the known advisory patch threshold, but exact final SBOM/security review remains required.
+- Checks:
+  - primary-source repository/license/tree/workflow/advisory evidence through GitHub connector: PASS for documented research claims;
+  - no PVNetwork executable/device tests exist yet: NOT APPLICABLE TO RESEARCH HANDOFF, still required later.
+- Residual gaps preserved:
+  - exact production Xray pin/SBOM not selected;
+  - stable/prerelease/main comparison can be deepened;
+  - long-tail clients/current Android issue sampling/real-device soak/performance remain;
+  - server/crypto/wire-flow belongs to mandatory v2 phase.
+- Closure handoff:
+  - `AGENTS_HANDOFF_2026-08-14_XRAY_V1_2.md`.
+- Dated closure status:
+  - `docs/RESEARCH_CAMPAIGN_STATUS_2026-08-14_XRAY_V1_2.md`.
+- Exact next action:
+  1. activate `WIREGUARD-AMNEZIAWG-V1-CLOSURE`;
+  2. re-read the current `research/upstreams/wireguard-family/` tree and prior evidence;
+  3. close Windows/storage/dependency/Amnezia platform/reuse/issue gaps;
+  4. synchronize entries 002/003 and family state;
+  5. if handoff-ready, immediately select next unfinished original-v1 family without waiting for owner.
