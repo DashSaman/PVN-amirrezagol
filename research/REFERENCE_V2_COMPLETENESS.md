@@ -42,7 +42,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 034 | Citrix Secure Access / Gateway VPN | COMPLETE-REFERENCE-v2 |
 | 035 | Barracuda TINA VPN | COMPLETE-REFERENCE-v2 |
 | 036 | Juniper Secure Connect | COMPLETE-REFERENCE-v2 |
-| 037 | VLESS | PENDING |
+| 037 | VLESS | COMPLETE-REFERENCE-v2 |
 | 038 | VMess | PENDING |
 | 039 | Trojan | PENDING |
 | 040 | Shadowsocks | PENDING |
