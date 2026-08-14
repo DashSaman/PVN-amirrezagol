@@ -6,12 +6,12 @@
   "owner_scope": "All repository-documented PVNetwork research work: 93-entry COMPLETE-RESEARCH-v1 campaign, all currently documented fine-grained gaps, then COMPLETE-REFERENCE-v2 for all applicable entries. Completion of one protocol/family is never overall completion.",
   "total_matrix_entries": 93,
   "active_phase": "COMPLETE-RESEARCH-v1",
-  "priority_entries": [2,3],
+  "priority_entries": [42, 43],
   "active_work_unit": {
-    "id": "WIREGUARD-AMNEZIAWG-V1-CLOSURE",
+    "id": "HYSTERIA-V1-CLOSURE",
     "status": "IN_PROGRESS",
-    "source_handoff": "AGENTS_HANDOFF_2026-08-14_XRAY_V1_2.md",
-    "exact_next_action": "Re-read current wireguard-family research and previous gaps. Close high-value Windows source/storage/service evidence, dependency/SBOM/license distinctions, AmneziaWG platform/source/version evidence, client reference and issue/regression gaps, synchronize numbered entries 002/003 and shared family index/state. If the family becomes V1-HANDOFF-READY, checkpoint and immediately select the next unfinished original-v1 family without waiting for owner. Do not begin mass COMPLETE-REFERENCE-v2 yet."
+    "source_handoff": "AGENTS_HANDOFF_2026-08-14_SOFTETHER_V1.md",
+    "exact_next_action": "Read the current hysteria-family dossier and entries 042/043. Pin official Hysteria/Hysteria2 source, release and licenses; separate v1 and v2 protocol semantics; map client/server architecture, configuration/storage, QUIC/transport dependencies, platform integration, tests/CI, advisories/issues/releases and client references; write explicit per-entry support/reuse decisions; synchronize entries 042/043, checkpoint, then immediately continue the next unfinished original-v1 family without waiting for owner. Do not begin mass COMPLETE-REFERENCE-v2 yet."
   },
   "campaign_sources_of_truth": {
     "matrix": "docs/PROTOCOL_MATRIX.md",
@@ -59,7 +59,7 @@
   },
   "last_checkpoint": {
     "date": "2026-08-14",
-    "summary": "OpenConnect and Xray shared-family original-v1 research are handoff-ready with residual gaps explicit. Xray closure added advisory-aware release selection, libXray lifecycle/issue evidence, v2rayNG Android architecture/storage/menu/CI supply-chain analysis and synchronized numbered protocol/transport entries. WireGuard/AmneziaWG residual v1 closure is now active.",
-    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_XRAY_V1_2.md"
+    "summary": "WireGuard/AmneziaWG and OpenVPN were handed off at original-v1 research level. SoftEther entries 013-015 now have synchronized native-client, EtherIP, EtherIP/IPsec, config/storage/license, release/security and issue evidence with explicit reuse decisions. A high-severity upstream advisory affecting Developer Edition 5.2.5188 remains an explicit production-pin blocker. Hysteria/Hysteria2 original-v1 closure is now active.",
+    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_SOFTETHER_V1.md"
   }
 }
