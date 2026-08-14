@@ -10,7 +10,7 @@
   "active_work_unit": {
     "id": "WIREGUARD-AWG-COMPLETE-REFERENCE-V2",
     "status": "IN_PROGRESS",
-    "source_handoff": "AGENTS_HANDOFF_2026-08-14_OPENVPN_V2_TO_WIREGUARD_AWG_V2.md",
+    "source_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_1.md",
     "exact_next_action": "Continue the WireGuard/AmneziaWG v2 reference layer from research/upstreams/wireguard-family/reference-v2/. Complete SERVER_INSTALLERS_AND_PROJECTS.md and SERVER_INSTALL_MATRIX.md with source/license/supply-chain evidence, then CLIENT_INSTALL_MATRIX.md and CLIENT_UI_AND_MENUS.md. After that close DATA_PATH_AND_WIRE_FLOW.md and DEPLOYMENT_TOPOLOGIES.md, reconcile entry-specific conclusions for 002/003, and only promote tracker rows when every FULL_PROTOCOL_REFERENCE_CONTRACT gate is evidence-backed. Preserve AWG generation/version distinctions and current AWG3.1 regression evidence. Then checkpoint and continue IKE/IPsec v2 without owner prompting."
   },
   "campaign_sources_of_truth": {
@@ -59,7 +59,7 @@
   },
   "last_checkpoint": {
     "date": "2026-08-14",
-    "summary": "Recent repository history advanced into COMPLETE-REFERENCE-v2. OpenVPN has a complete v2 file-category structure at handoff level with residual evidence gaps preserved. WireGuard/AmneziaWG v2 is now active. Shared v2 reference work has created a versioned reference index, authoritative WireGuard cryptography boundary, UDP/NoiseIK/roaming/AllowedIPs and AWG packet-delta reference, plus a server/peer implementation inventory. Entries 002/003 remain below COMPLETE-REFERENCE-v2 until every contract gate is evidenced.",
-    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_OPENVPN_V2_TO_WIREGUARD_AWG_V2.md"
+    "summary": "Recent repository history advanced into COMPLETE-REFERENCE-v2. OpenVPN has a complete v2 file-category structure at handoff level with residual evidence gaps preserved. WireGuard/AmneziaWG v2 is active. Shared v2 reference work now includes a versioned reference index, authoritative WireGuard cryptography boundary, UDP/NoiseIK/roaming/AllowedIPs and AWG packet-delta reference, plus a server/peer implementation inventory. Entries 002/003 remain below COMPLETE-REFERENCE-v2 until every contract gate is evidenced.",
+    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_1.md"
   }
 }
