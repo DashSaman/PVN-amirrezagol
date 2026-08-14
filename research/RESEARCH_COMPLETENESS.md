@@ -83,7 +83,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 077 | TLS | COMPLETE-RESEARCH-v1 |
 | 078 | uTLS / TLS Fingerprinting | COMPLETE-RESEARCH-v1 |
 | 079 | Cloak | COMPLETE-RESEARCH-v1 |
-| 080 | TLS Fragmentation | PENDING |
+| 080 | TLS Fragmentation | COMPLETE-RESEARCH-v1 |
 | 081 | TCP | PENDING |
 | 082 | UDP | PENDING |
 | 083 | QUIC | PENDING |
