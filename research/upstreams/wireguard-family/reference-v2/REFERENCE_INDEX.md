@@ -1,0 +1,77 @@
+# WireGuard / AmneziaWG — COMPLETE-REFERENCE-v2 Index
+
+Review date: 2026-08-14
+
+Scope: shared evidence for entries **002 WireGuard** and **003 AmneziaWG**. The entries remain distinct: WireGuard is the baseline protocol/family; AmneziaWG is documented as a versioned derivative with additional packet-shaping/obfuscation behavior. This folder is research/reference only and does not claim PVNetwork implementation or certification.
+
+## Current state
+
+- Work unit: `WIREGUARD-AWG-COMPLETE-REFERENCE-V2`
+- State: `IN-RESEARCH / NOT COMPLETE-REFERENCE-v2 / NOT IMPLEMENTED`
+- Source provenance and exact component pins remain in `../SOURCE_REVISIONS.md`.
+- V1 architecture/client/dependency findings remain in the parent `wireguard-family/` dossier and are reused rather than duplicated.
+
+## Mandatory v2 files
+
+| Required file | State | Notes |
+|---|---|---|
+| `SERVER_IMPLEMENTATIONS.md` | started | peer/server implementations, kernel/userspace distinction, AWG variants |
+| `SERVER_INSTALLERS_AND_PROJECTS.md` | pending | community deployment projects require separate supply-chain review |
+| `SERVER_INSTALL_MATRIX.md` | pending | OS/package/container matrix |
+| `SERVER_UI_AND_MENUS.md` | pending | protocol itself has no server UI; management products must be classified separately |
+| `CLIENT_INSTALL_MATRIX.md` | pending | official WireGuard and AWG clients by OS/package |
+| `CLIENT_UI_AND_MENUS.md` | pending | detailed menus/settings/import/export/diagnostics |
+| `CRYPTOGRAPHY.md` | started | authoritative WireGuard primitives plus AWG non-equivalence rule |
+| `DATA_PATH_AND_WIRE_FLOW.md` | pending | peer routing, kernel/userspace path, roaming, keepalive |
+| `PORTS_TRANSPORTS_AND_HANDSHAKE.md` | started | UDP, Noise_IK, AllowedIPs/endpoint behavior, AWG packet deltas |
+| `DEPLOYMENT_TOPOLOGIES.md` | pending | road-warrior, site-to-site/peer mesh, hub routing, NAT scenarios |
+| `REFERENCE_INDEX.md` | started | this file |
+
+## Primary evidence pins
+
+### WireGuard baseline
+
+Use parent dossier pins:
+
+- `wireguard-go`: `ecfc5a8d54462e18e13c72173e2623d16d8e25a0`
+- WireGuard Windows: `4e6726c23ae9c5cb58e0c9910f3b7515621d133d`
+- WireGuard Android: `e7b3a3c118836e112620b1302a8ba1873ad4daac`
+- WireGuard Apple: `2fec12a6e1f6e3460b6ee483aa00ad29cddadab1`
+
+Canonical protocol evidence:
+
+- https://www.wireguard.com/protocol/
+- canonical source family linked by WireGuard mirrors: https://git.zx2c4.com/
+
+### AmneziaWG
+
+Use parent dossier pins:
+
+- `amneziawg-go`: `1b86b2ae0e493e7ea93f8c1a0f0cb6735b1551f1` (AWG3.1-era snapshot)
+- `amneziawg-android`: `d6cd6647465a9a593aa9ccadbbd20c44bf600d5b`
+- `amneziawg-apple`: `e5410a539f28b8ce5dd1d060c45e4fa555e9a210`
+- `amneziawg-windows-client`: `c8fa887db05ade03b9281b0e9de60579f744f995`
+- `amneziawg-windows`: `1326e9bbdc71be88ddcc20925e092c6f5b9513da`
+
+Authoritative/current project evidence:
+
+- https://github.com/amnezia-vpn/amneziawg-go
+- https://github.com/amnezia-vpn/amneziawg-linux-kernel-module
+
+## Separation rules
+
+1. A WireGuard peer can serve traffic for other peers, but the protocol does not define a special client/server handshake role. Documents may use “server” operationally while preserving this protocol fact.
+2. Tailscale, NetBird and similar control-plane products are not interchangeable with the WireGuard protocol implementation; they belong in topology/control-plane comparisons, not as canonical WireGuard engines.
+3. AmneziaWG changes must be described from pinned generation/source. Do not generalize one AWG generation to another.
+4. Do not claim AWG replaces WireGuard cryptography unless source/spec evidence explicitly demonstrates a primitive change. Current reviewed project documentation exposes header protection, content padding, timing ranges, junk/signature packets, header/type changes and transport-message shaping on top of WireGuard-derived code.
+5. License conclusions stay component-specific. The parent dossier records MIT/Apache-2.0/GPL-2.0 distinctions across userspace clients and the Linux AWG kernel module.
+
+## Known current regression/evidence items to preserve
+
+- AWG3.1 `RandomTrailers` / `HandshakeCookie` behavior required a current userspace fix in the pinned research snapshot.
+- Current open AWG Go issue evidence includes S4/streaming-obfuscation interoperability failures and a package-global protocol-state race report. These are research/test inputs, not proof that every platform is affected.
+- Current AWG Linux issue history includes AWG2/AWG3 compatibility/source and S3/S4 interoperability questions; platform/generation compatibility must therefore be a test dimension.
+
+## Exact next action
+
+Complete server/peer implementation inventory and install matrices, then client install/UI matrices. After that document detailed data path and deployment topologies, reconcile entry-specific conclusions for 002/003, and only promote either tracker row when every `FULL_PROTOCOL_REFERENCE_CONTRACT.md` gate has evidence.
