@@ -12,7 +12,7 @@ Read before meaningful work:
 4. `docs/AGENT_RUN_STATE.json`
 5. the **latest `AGENTS_HANDOFF_*.md` named below**
 6. `docs/PROJECT_STATE.md`
-7. `docs/AGENT_CHECKPOINT_LOG.md`
+7. `docs/AGENT_CHECKPOINT_LOG.md` plus newer dated `docs/AGENT_CHECKPOINT_*.md` files
 8. `docs/RESEARCH_LOG.md`
 9. newest `docs/RESEARCH_CAMPAIGN_STATUS_*.md`
 10. `docs/ROADMAP.md`
@@ -22,7 +22,7 @@ Read before meaningful work:
 14. relevant numbered/shared research dossiers
 15. recent Git history and actual repository tree
 
-Repository evidence wins over chat memory. Trackers may lag newer commits when connector writes are rejected.
+Repository evidence wins over chat memory. Trackers may lag newer commits when connector writes are rejected or family-level handoffs advance ahead of monolithic trackers.
 
 ## 2. Current phase
 
@@ -55,7 +55,7 @@ Important discoveries must be committed. Use:
 - `docs/PROJECT_STATE.md` for compact current state;
 - dated `docs/RESEARCH_CAMPAIGN_STATUS_*.md` snapshots;
 - `docs/AGENT_RUN_STATE.json` for machine-readable active task/state;
-- `docs/AGENT_CHECKPOINT_LOG.md` for deterministic interruption recovery;
+- `docs/AGENT_CHECKPOINT_LOG.md` and dated `docs/AGENT_CHECKPOINT_*.md` files for deterministic interruption recovery;
 - `AGENTS_HANDOFF_*.md` for exact resumable technical handoff;
 - `research/protocols/` and `research/upstreams/` for durable technical evidence.
 
@@ -74,6 +74,8 @@ After every meaningful work unit:
 7. immediately continue to the next executable required task.
 
 Do not log every low-level API call. Log meaningful work units and decisions.
+
+If the monolithic checkpoint log becomes connector-truncated, create a dated checkpoint file rather than losing recovery state or attempting a destructive blind rewrite.
 
 ## 6. Anti-loop rule
 
@@ -142,15 +144,17 @@ Study mature clients, cores, servers, installers and panels for architecture, me
 
 Do not copy branding or incompatible-license code/assets.
 
-## 14. Original research campaign remains first priority
+## 14. Original research campaign remains authoritative
 
-The existing `COMPLETE-RESEARCH-v1` campaign across all 93 entries remains first priority.
+The original `COMPLETE-RESEARCH-v1` scope across all 93 entries remains authoritative and must not be erased by v2 work.
 
-A shared family may become `V1-HANDOFF-READY` when its original research is broad enough to move on and residual gaps are explicitly preserved. This is not implementation/support certification and does not make numbered entries production-ready.
+Several shared families have advanced through explicit `V1-HANDOFF-READY` checkpoints even where the monolithic tracker still lags. That state allows continuous work to move to the second reference layer while preserving every residual v1 gap. It is not implementation/support certification and does not make numbered entries production-ready.
+
+If a later audit discovers a genuine unsatisfied v1 research gate that invalidates a v2 assumption, repair the v1 evidence first and record the dependency rather than hiding it.
 
 ## 15. Mandatory second layer — COMPLETE-REFERENCE-v2
 
-After original v1 research gates reach their intended state, execute:
+After the relevant original family has reached its intended v1 handoff/gate state, execute:
 
 `research/FULL_PROTOCOL_REFERENCE_CONTRACT.md`
 
@@ -185,17 +189,21 @@ Use meaningful commit messages such as `docs(research): ...`, `docs(protocols): 
 
 Newest handoff:
 
+`AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_9.md`
+
+This checkpoint records entries 002/003 as `REFERENCE-V2-SOURCE-COMPLETE / EXECUTION-BLOCKED / NOT IMPLEMENTED`, preserves all external install/Store/signing/device/interoperability blockers, and advances the active work unit to IKE/IPsec v2.
+
+Previous WireGuard/AWG handoff:
+
+`AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_8.md`
+
+OpenVPN v2 transition handoff:
+
+`AGENTS_HANDOFF_2026-08-14_OPENVPN_V2_TO_WIREGUARD_AWG_V2.md`
+
+Previous Xray v1 handoff:
+
 `AGENTS_HANDOFF_2026-08-14_XRAY_V1_2.md`
-
-This checkpoint closes Xray/modern-proxy shared-family original research at `V1-HANDOFF-READY / NOT IMPLEMENTED`, preserves all residual gaps, and activates WireGuard/AmneziaWG residual v1 closure as the next work unit.
-
-Previous Xray handoff:
-
-`AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md`
-
-Previous family handoff:
-
-`AGENTS_HANDOFF_2026-08-14_OPENCONNECT_V1_CLOSURE_2.md`
 
 Scope-expansion handoff:
 
@@ -203,17 +211,29 @@ Scope-expansion handoff:
 
 ## 19. Exact current next action
 
-Active work unit: `WIREGUARD-AMNEZIAWG-V1-CLOSURE`.
+Active work unit: `IKE-IPSEC-COMPLETE-REFERENCE-V2`.
 
-1. read current `research/upstreams/wireguard-family/` tree and previous WireGuard evidence;
-2. close Windows source/storage/service evidence;
-3. close dependency/SBOM/license distinctions;
-4. close AmneziaWG platform/source/version gaps;
-5. finalize client/reference and issue/regression decisions;
-6. synchronize entries 002/003 and shared family index/state;
-7. if the family becomes `V1-HANDOFF-READY`, checkpoint and immediately select the next unfinished original-v1 family;
-8. keep residual implementation/device/server evidence explicit;
-9. do **not** begin mass `COMPLETE-REFERENCE-v2` work yet.
+Primary entries:
+
+- 004 IKEv2/IPsec
+- 005 IKEv1/IPsec
+- 006 IPsec ESP
+- 007 IPsec AH
+
+Required next sequence:
+
+1. read current strongSwan/native/IPsec evidence and numbered entry files before duplicating work;
+2. keep IKEv2 and IKEv1 negotiation/authentication distinct from ESP/AH packet protection;
+3. inventory canonical/serious server and client implementations plus major deployment/control-plane projects;
+4. build server OS/container/orchestration and client install matrices;
+5. map server management surfaces and major client UIs separately;
+6. document cryptographic design from RFCs/authoritative implementation source;
+7. document data path, NAT traversal, ports, IKE exchanges, CHILD_SA/IPsec SAs, ESP/AH behavior and deployment topologies;
+8. record source/license/activity/supply-chain/upgrade/uninstall/rollback evidence;
+9. checkpoint each meaningful slice and immediately continue;
+10. do not collapse vendor-native IKE/IPsec support into one generic implementation claim.
+
+Entries 002/003 must remain strict-tracker `PENDING` until their external execution blockers are genuinely resolved; do not redo their source research unless evidence changes.
 
 ## 20. Mandatory continuous-execution bootstrap
 
@@ -221,7 +241,7 @@ The owner has authorized the entire repository-documented research/reference bac
 
 1. `AGENT_EXECUTION_CONTRACT.md`
 2. `docs/AGENT_RUN_STATE.json`
-3. `docs/AGENT_CHECKPOINT_LOG.md`
+3. `docs/AGENT_CHECKPOINT_LOG.md` and newest dated checkpoint
 4. `research/REFERENCE_V2_COMPLETENESS.md`
 
 When a checkout/Python runtime is available, run:
@@ -244,9 +264,9 @@ A platform interruption is not completion; next invocation resumes from reposito
 
 The original scope is all 93 entries in `docs/PROTOCOL_MATRIX.md`, with gates in `research/PROTOCOL_RESEARCH_TEMPLATE.md`.
 
-After original v1, continue the mandatory v2 layer tracked in `research/REFERENCE_V2_COMPLETENESS.md` and defined by `research/FULL_PROTOCOL_REFERENCE_CONTRACT.md`.
+After original v1 handoffs/gates, continue the mandatory v2 layer tracked in `research/REFERENCE_V2_COMPLETENESS.md` and defined by `research/FULL_PROTOCOL_REFERENCE_CONTRACT.md`.
 
-`docs/AGENT_BACKLOG.generated.json` is derived by agent-state tooling and helps prevent forgotten subtasks. Contracts/evidence remain authoritative.
+If `docs/AGENT_BACKLOG.generated.json` exists, it is derived by agent-state tooling and helps prevent forgotten subtasks. Its absence is not permission to stop; contracts, trackers, handoffs and evidence remain authoritative.
 
 ## 22. Strict no-fake-completion gate
 
@@ -258,7 +278,7 @@ python scripts/agent_state.py verify --require-complete
 
 passes and repository evidence confirms all required v1/v2 gates.
 
-`V1-HANDOFF-READY`, `IN-RESEARCH`, `EVIDENCE-GAPS`, `PENDING`, `SKELETON`, `RESERVED`, `BLOCKED_EXTERNAL`, or one completed family is not overall completion.
+`V1-HANDOFF-READY`, `REFERENCE-V2-SOURCE-COMPLETE`, `IN-RESEARCH`, `EVIDENCE-GAPS`, `PENDING`, `SKELETON`, `RESERVED`, `BLOCKED_EXTERNAL`, or one completed family is not overall completion.
 
 ## 23. Stop and blocker rules
 
