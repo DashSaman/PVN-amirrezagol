@@ -1,8 +1,8 @@
 # Xray Family Research Index
 
-Research state: **`IN-RESEARCH / NOT IMPLEMENTED`**.
+Research state: **`V1-HANDOFF-READY / NOT IMPLEMENTED`** at the shared-family level.
 
-This is the shared source/core/client/architecture/security evidence index for Xray-related numbered entries. It is not a product support claim.
+This is a research milestone only. It does not mean PVNetwork implements or certifies any Xray-related protocol/transport/security capability.
 
 ## Primary reviewed core
 
@@ -37,17 +37,15 @@ Upstream records:
 - severity: low
 - CWE-297 certificate-hostname validation class in certain certificate-pinning/Hy2/gRPC scenarios.
 
-GitHub's current non-prerelease `releases/latest` result was **v26.3.27**, which lies inside the advisory's vulnerable range.
+GitHub's non-prerelease `releases/latest` result during this research was **v26.3.27**, which lies inside the advisory's vulnerable range.
 
-The release list also contains newer prerelease versions such as **v26.7.28**, and current main is newer again.
+The release list contains newer prerelease versions such as **v26.7.28**, and current main is newer again.
 
 PVNetwork rule:
 
-**never select an engine release merely because an API labels it latest/stable; candidate selection must be advisory-aware and regression-tested.**
+**never select an engine release merely because an API labels it latest/stable; candidate selection must be advisory-aware, SBOM-reviewed and regression-tested.**
 
-See:
-
-`SECURITY_AND_DEPENDENCY_ADVISORIES.md`
+See `SECURITY_AND_DEPENDENCY_ADVISORIES.md`.
 
 ## Shared files
 
@@ -76,7 +74,7 @@ See:
 ### Client ecosystem
 
 - `CLIENT_ECOSYSTEM.md`
-- related detailed client files under `research/upstreams/client-references/`, including current v2rayNG Android architecture/storage/menu research and v2rayN/Karing/Throne/etc references.
+- related detailed client files under `research/upstreams/client-references/`, including v2rayNG Android architecture/storage/menu/build-CI research and v2rayN/Karing/Throne/etc references.
 
 ## libXray wrapper candidate
 
@@ -92,7 +90,7 @@ Current classification:
 
 `STRONG-WRAPPER-CANDIDATE / LEGAL+PLATFORM+LIFECYCLE REVIEW REQUIRED`
 
-Current evidence covers:
+Evidence covers:
 
 - versioned invocation API;
 - one managed in-process Xray instance;
@@ -122,7 +120,7 @@ Direct Xray-family relevance currently includes at least:
 
 Do not market all of these as separate VPN protocols.
 
-Numbered folders 037–040 and 074–076 have been upgraded from placeholders/missing generic entries to Xray-specific conclusions. Remaining related transport entries must be synchronized as part of current work.
+The numbered folders above now contain Xray-specific research decisions rather than generic placeholders/missing entries.
 
 ## Current core architecture conclusion
 
@@ -154,7 +152,7 @@ Preserve unsupported/unknown imported data where practical and mark lossy conver
 Primary source/UX references include:
 
 - v2rayN — GPLv3, desktop multi-core/source reference;
-- v2rayNG — GPLv3, Android architecture/VpnService/storage/menu reference;
+- v2rayNG — GPLv3, Android architecture/VpnService/storage/menu/CI reference;
 - Hiddify — current Extended GPLv3 with additional commercial/interface/fork conditions;
 - Karing — GPLv3-or-later plus naming/association condition;
 - NekoBox — GPL-family reference;
@@ -170,6 +168,7 @@ Under `research/upstreams/client-references/`:
 - `V2RAYNG_ANDROID_ARCHITECTURE.md`
 - `V2RAYNG_STORAGE_IMPORT.md`
 - `V2RAYNG_CLIENT_UI_AND_MENUS_V1.md`
+- `V2RAYNG_BUILD_CI.md`
 
 Current findings include:
 
@@ -177,15 +176,18 @@ Current findings include:
 - VpnService-owned route/DNS/MTU/per-app lifecycle;
 - network handover/reload behavior;
 - MMKV multi-process logical stores;
-- profile schema with sensitive fields;
+- versioned profile model containing sensitive fields;
 - no explicit MMKV cryptKey observed in reviewed manager initialization;
 - separate raw profile/import storage and normalized profiles;
 - QR/clipboard/file/manual import;
 - share-link vs generated-full-config export distinction;
 - subscriptions/routing/per-app/assets/settings/logs/backup/update/about navigation;
-- Leanback/TV launcher indicators but no proof of exhaustive D-pad/10-foot UX.
+- Leanback/TV launcher indicators but no proof of exhaustive D-pad/10-foot UX;
+- real GitHub Actions build/release/metadata CI despite an upstream internal guide claiming “No CI”;
+- current AndroidLibXrayLite submodule pin `b213898...` maps to wrapper tag `v26.7.31` and root LGPL-3.0;
+- that wrapper depends on a 2026-07-28 Xray pseudo-version later than the known advisory patch threshold.
 
-PVNetwork should improve secret storage through platform secure storage and explicit credential references.
+PVNetwork should improve secret storage through platform secure storage and explicit credential references and should control native artifact provenance/hash/SBOM in its own CI.
 
 ## Runtime-control policy
 
@@ -193,17 +195,41 @@ PVNetwork should improve secret storage through platform secure storage and expl
 
 Do not expose arbitrary Xray management gRPC to LAN/public interfaces or directly to UI/plugins. Management state is privileged and can mutate handlers/users/routes or expose privacy-sensitive stats.
 
-## Main remaining v1 closure items
+## Why v1 can move on now
 
-Before moving this shared family to `V1-HANDOFF-READY`, finish or explicitly preserve gaps for:
+The shared family now has substantial original-campaign evidence for:
 
-1. synchronize Xray-related transport numbered entries 084/086/088/089/091/092;
-2. current v2rayNG workflow/CI/native-core pin audit;
-3. stronger exact Xray patched release candidate comparison and SBOM/advisory state;
-4. current libXray issues/releases mapping to wrapper/core pins;
-5. current v2rayNG Android issue/regression sampling;
-6. final family v1 status/handoff and residual-gap list;
-7. update relevant v1 tracker/status evidence where connector allows.
+- source/release/license provenance;
+- code architecture;
+- protocol/transport/security capability modeling;
+- dependency/test/release surface;
+- security advisory state;
+- runtime management/control exposure;
+- core/wrapper reuse decisions;
+- libXray API/lifecycle/build/issue behavior;
+- major client ecosystem/license distinctions;
+- detailed v2rayNG Android service/storage/import/menu/CI architecture;
+- representative issue/regression classes;
+- per-entry research decisions for the main Xray-related numbered entries.
+
+Keeping this family permanently active solely for evidence that requires later implementation/real-device/server labs would block the overall 93-entry campaign unnecessarily.
+
+## Residual gaps — preserve explicitly
+
+These remain open and must be revisited before production selection/certification:
+
+1. choose an exact patched production Xray-core pin; current research does **not** approve v26.3.27;
+2. generate a complete resolved SBOM/license/vulnerability scan for that chosen build;
+3. stronger stable/prerelease/main regression comparison;
+4. exact libXray embedded-core/release/security mapping over time;
+5. current v2rayNG Android issue sampling for newest Android/Always-On/TV/background releases;
+6. long-tail client source/menu/issue research;
+7. real-device Android/iOS/tvOS/desktop soak, memory, handover and lifecycle evidence;
+8. performance benchmarks for actual combinations;
+9. server implementations/installers/crypto/wire-flow work belongs to mandatory `COMPLETE-REFERENCE-v2`;
+10. no product implementation/E2E certification exists.
+
+These are explicit residual gaps, not hidden completion.
 
 ## Mandatory later second layer
 
@@ -222,4 +248,6 @@ for applicable Xray-related entries. That later phase adds:
 - deployment topologies;
 - full reference indexes.
 
-Do not begin mass second-layer work while original v1 backlog remains unfinished.
+## Next original-v1 action
+
+Move to the next incomplete original-v1 family without waiting for the owner. Current recommended next target: close the remaining WireGuard/AmneziaWG v1 gaps already documented in project state/checkpoints, then continue the next incomplete family from actual repository evidence.
