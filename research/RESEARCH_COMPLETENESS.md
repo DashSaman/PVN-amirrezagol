@@ -36,7 +36,7 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 030 | WatchGuard IKEv2 VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with native Windows/macOS/iOS, Android strongSwan, optional WatchGuard Windows client, certificate/EAP-MS-CHAPv2/AuthPoint and generated profile evidence in `research/protocols/030-watchguard-ikev2/V1_GATE_RECONCILIATION.md` |
 | 031 | WatchGuard SSL VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current `client.ovpn` OpenVPN compatibility, first-party Windows/macOS SAML boundary, AuthPoint/MFA, `.wgssl`, TLS/client lifecycle and OpenVPN3-first reuse decision in `research/protocols/031-watchguard-ssl-vpn/V1_GATE_RECONCILIATION.md` |
 | 032 | WatchGuard L2TP VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with secure-default L2TP/IPsec layering, PSK/certificate tunnel auth, MS-CHAPv2/RADIUS/AuthPoint user auth, native Windows/macOS/iOS and Android 12+ native-unavailable boundary in `research/protocols/032-watchguard-l2tp/V1_GATE_RECONCILIATION.md` |
-| 033 | Aruba VIA | SKELETON — generic numbered folder |
+| 033 | Aruba VIA | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current HPE Aruba Networking VIA/VPNC profile, IKE/IPsec, auth, split/full-tunnel, five-platform client, lifecycle and proprietary-source boundaries in `research/protocols/033-aruba-via/V1_GATE_RECONCILIATION.md` |
 | 034 | Citrix Secure Access / Gateway VPN | SKELETON — generic numbered folder |
 | 035 | Barracuda TINA VPN | SKELETON — generic numbered folder |
 | 036 | Juniper Secure Connect | SKELETON — generic numbered folder |
