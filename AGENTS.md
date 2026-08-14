@@ -175,14 +175,18 @@ Use meaningful commit messages such as `docs(research): ...`, `docs(protocols): 
 
 Newest handoff:
 
+`AGENTS_HANDOFF_2026-08-14_OPENCONNECT_V1_CLOSURE.md`
+
+This checkpoint contains the latest OpenConnect dependency/LGPL, issue/MR/fix, test/CI, configuration/storage, API lifetime/callback findings, the v9.21 source-materialization blocker, and exact remaining original-research gaps.
+
+Earlier scope-expansion handoff remains available at:
+
 `AGENTS_HANDOFF_2026-08-14_REFERENCE_EXPANSION.md`
 
-This handoff records the owner's new full-reference requirements **and** the exact active continuation point in the previous-priority OpenConnect work.
-
-Previous detailed handoff remains available at:
+Previous OpenConnect handoff remains available at:
 
 `AGENTS_HANDOFF_2026-08-14_OPENCONNECT.md`
 
 ## 19. Exact current next action
 
-Continue the previous-priority OpenConnect/Enterprise research from the newest handoff: finish issue/MR-to-fix mapping and remaining packaging/test/source gaps. Only after the original research campaign reaches its intended gates should the 93-entry `COMPLETE-REFERENCE-v2` expansion become the main campaign.
+Continue the previous-priority OpenConnect/Enterprise `COMPLETE-RESEARCH-v1` closure from the newest handoff: map NetworkManager D-Bus/service/secret ownership and OpenConnect GUI screen/profile-storage internals, then security/advisory and packaging gaps. Only after the original research campaign reaches its intended gates should the 93-entry `COMPLETE-REFERENCE-v2` expansion become the main campaign.
