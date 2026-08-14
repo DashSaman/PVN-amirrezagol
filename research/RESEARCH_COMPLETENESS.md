@@ -69,7 +69,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 063 | GRE | COMPLETE-RESEARCH-v1 |
 | 064 | GRE over IPsec | COMPLETE-RESEARCH-v1 |
 | 065 | IP-in-IP / IPIP | COMPLETE-RESEARCH-v1 |
-| 066 | IPIP over IPsec | PENDING |
+| 066 | IPIP over IPsec | COMPLETE-RESEARCH-v1 |
 | 067 | VTI/IPsec | PENDING |
 | 068 | XFRM/IPsec | PENDING |
 | 069 | VXLAN | PENDING |
