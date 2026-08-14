@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-14T14:56:30Z",
-  "heartbeat_at_utc": "2026-08-14T14:56:30Z",
-  "task": "Clean up legacy dashboard paths and make dashboard distinguish scheduled automation from foreground/manual ChatGPT repository work.",
-  "note": "This file tracks interactive/foreground repository work only. Scheduled automation is tracked separately in docs/AUTOMATION_RUN_LOG.md."
+  "heartbeat_at_utc": "2026-08-14T15:04:00Z",
+  "task": "Interactive repository work is active: dashboard cleanup/status corrections are being committed while V1 research has concurrently advanced through entry 026 and the next authoritative entry is 027 SonicWall Global VPN / IPsec.",
+  "note": "Foreground/manual ChatGPT activity is separate from scheduled automation. The dashboard considers this ACTIVE heartbeat fresh for a limited window and falls back to IDLE when stale."
 }
