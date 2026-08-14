@@ -2,21 +2,23 @@
 
 > **AI agents and new chats: read `AI_START_HERE.md` first.**
 
-## 🔴 Live Research Control Center
+## 🔴 Official Live Research Control Center
 
-### **[🚀 OPEN FULL-SCREEN LIVE DASHBOARD](https://html-preview.github.io/?url=https://github.com/DashSaman/PVN-amirrezagol/blob/main/site/index.html)**
+### **[🚀 OPEN THE ONLY OFFICIAL LIVE DASHBOARD](https://html-preview.github.io/?url=https://github.com/DashSaman/PVN-amirrezagol/blob/main/site/index.html)**
 
-A responsive live control center with:
+This is the **single canonical dashboard URL** for PVNetwork research progress.
+
+Do not use commit-pinned dashboard URLs such as `.../blob/<old-sha>/site/index.html`; those are immutable historical snapshots and will not receive dashboard fixes.
+
+The official dashboard provides:
 - Persian / English instant language switching
-- current active work unit and exact next action
-- latest real research commit + heartbeat
-- strict V1/V2 and research-coverage progress
-- 5-minute watchdog countdown
-- hourly ChatGPT continuation countdown
-- automatic-run and interruption counters from durable repository logs
+- current numbered entry and active research phase
+- exact next action
+- strict V1/V2 progress
+- live automation/run-log status
+- countdown to watchdog and hourly continuation
 - manual resume request control
-
-> The old Markdown/SVG dashboard is now only a fallback. The full-screen HTML dashboard is the primary view.
+- resilient raw-data loading without browser GitHub REST API dependency
 
 Current phase: **Research / requirements / architecture**.
 
