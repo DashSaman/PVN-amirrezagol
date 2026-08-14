@@ -73,7 +73,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 067 | VTI/IPsec | COMPLETE-RESEARCH-v1 |
 | 068 | XFRM/IPsec | COMPLETE-RESEARCH-v1 |
 | 069 | VXLAN | COMPLETE-RESEARCH-v1 |
-| 070 | VXLAN over IPsec | PENDING |
+| 070 | VXLAN over IPsec | COMPLETE-RESEARCH-v1 |
 | 071 | DMVPN | COMPLETE-RESEARCH-v1 |
 | 072 | Cisco FlexVPN | COMPLETE-RESEARCH-v1 |
 | 073 | GETVPN | PENDING |
