@@ -212,10 +212,31 @@ The owner requires every meaningful work unit to remain resumable from the repos
 
 Do not log every low-level API call. Log meaningful work units and decisions.
 
-### Current handoff — 2026-08-14
+### Current handoff — 2026-08-14 — WireGuard / AmneziaWG work unit
 
-- Repository state was re-read from `main` instead of relying on chat memory.
-- The current state files were found to lag some newer research directories, so future agents must verify the actual tree and recent history as well as trackers.
-- Work is continuing from the highest-value incomplete shared research dossier.
-- Detailed technical evidence belongs in `docs/RESEARCH_LOG.md` and the relevant `research/upstreams/` dossier.
-- Next action: finish the current shared-family dossier, then synchronize the tracker and project state before moving to the next incomplete family.
+- Repository state was re-read from `main`; `docs/PROJECT_STATE.md` and parts of the completeness tracker were found to lag newer committed research. The actual tree/history must be checked before restarting any work.
+- `docs/PROJECT_STATE.md` has now been synchronized with the real research tree and explicitly records connector-blocked documentation gaps.
+- `docs/RESEARCH_LOG.md` now contains the detailed chronological WireGuard/AmneziaWG research entry.
+- WireGuard family was selected because entries 002/003 were high-value but the shared dossier was previously close to README-only.
+- New committed evidence under `research/upstreams/wireguard-family/`:
+  - `SOURCE_REVISIONS.md` — commit `fb4e4a4d451a19b55129bad4e2acf5c5d6d1abb4`
+  - `CORE_ARCHITECTURE.md` — commit `32eca180186c2b30032dc859443dd1805f3642fa`
+  - `ANDROID_CLIENT.md` — commit `162a82a782bc8c9cbc4c7c98e60268a74299a824`
+  - `APPLE_CLIENT.md` — commit `5221b0a071a516b46c2003dc1f2085b6b6871125`
+  - `AMNEZIAWG_DELTA.md` — commit `325dee3f7f3109d529f3f2adf55a61eea6a1a4c8`
+  - `LESSONS_AND_TESTS.md` — commit `cb7a1ad5cb8bc8ff01eb0a9ba2f2cff4c6116a24`
+- Pinned upstream research now covers official WireGuard Go/Windows/Android/Apple and AmneziaWG Go, with additional current platform pins for AmneziaWG Windows/Apple/Android recorded in Project State and Research Log.
+- Important architecture decisions from evidence: keep a stable PVNetwork Core Adapter above platform-specific engines; keep standard WireGuard and AmneziaWG as distinct versioned compatibility capabilities; separate import/export format, canonical profile model, protected persistence and engine runtime representation; do not reimplement cryptography.
+- Windows source research verified service/UI separation and protected DPAPI persistence, but both a detailed Windows dossier and a smaller source/UI-map write were rejected by the GitHub connector. Do not retry the same writes unchanged.
+- A synchronized rewrite of `research/upstreams/wireguard-family/README.md` was rejected; use the individual committed evidence files plus Project State/Research Log as current truth.
+- A separate AmneziaWG platform-reference file was also rejected; the verified platform pins/license findings are preserved in Project State/Research Log.
+- Official WireGuard mailing-list research was converted into regression classes in `LESSONS_AND_TESTS.md`: Android Always-On/permission conflicts, reboot/restore, control-surface state sync, delayed network/DNS readiness, network/sleep/address-family transitions, route-helper assumptions, and Apple NetworkExtension/Store release risks.
+- An attempted full synchronization of `research/RESEARCH_COMPLETENESS.md` was rejected by the connector. Do not hide this or treat the stale row text as proof that the new WireGuard files do not exist.
+- No protocol is implemented or production-tested by PVNetwork yet; this remains research evidence only.
+
+### Next exact action
+
+1. Finish remaining WireGuard-family completion gaps that can be documented safely: dependency/SBOM review, current release/fix-to-commit mapping, platform-specific AmneziaWG source deltas, assets/accessibility/UI completeness, and protocol-entry links for 002/003.
+2. Attempt tracker synchronization only through a materially different/smaller safe strategy; do not repeat the blocked full rewrite.
+3. Then choose the next highest-value incomplete family from the **actual tree + Project State + tracker**, not from chat memory.
+4. At the end of the next work unit, update `docs/RESEARCH_LOG.md`, `docs/PROJECT_STATE.md`, and this handoff again.
