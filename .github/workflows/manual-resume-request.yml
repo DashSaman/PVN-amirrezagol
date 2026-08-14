@@ -1,0 +1,65 @@
+name: Request Agent Resume
+
+on:
+  workflow_dispatch:
+    inputs:
+      note:
+        description: Optional note for the next agent run
+        required: false
+        default: Resume from latest repository checkpoint now.
+
+permissions:
+  contents: write
+
+concurrency:
+  group: manual-resume-request
+  cancel-in-progress: false
+
+jobs:
+  request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 20
+
+      - name: Write pending resume request
+        env:
+          REQUEST_NOTE: ${{ inputs.note }}
+          REQUEST_ACTOR: ${{ github.actor }}
+          REQUEST_RUN_ID: ${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          p = Path('docs/MANUAL_RESUME_REQUEST.json')
+          now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
+          data = {
+              'schema_version': 1,
+              'status': 'PENDING',
+              'request_id': f"gh-actions-{os.environ['REQUEST_RUN_ID']}",
+              'requested_at_utc': now,
+              'requested_by': os.environ['REQUEST_ACTOR'],
+              'source': 'github-actions-workflow-dispatch',
+              'note': os.environ.get('REQUEST_NOTE') or 'Resume from latest repository checkpoint now.',
+              'consumed_at_utc': None,
+              'consumed_by_run': None,
+          }
+          p.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          print(f"PASS: manual resume request {data['request_id']} is PENDING")
+          PY
+
+      - name: Commit request
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/MANUAL_RESUME_REQUEST.json
+          if git diff --cached --quiet; then
+            echo "No request change to commit"
+            exit 0
+          fi
+          git commit -m "chore(agent): request manual resume"
+          git pull --rebase origin main
+          git push origin HEAD:main
