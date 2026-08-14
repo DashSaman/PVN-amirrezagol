@@ -2,8 +2,8 @@
   "schema_version": 1,
   "status": "ACTIVE",
   "actor": "interactive-chat",
-  "started_at_utc": "2026-08-14T16:12:00Z",
-  "heartbeat_at_utc": "2026-08-14T18:05:00Z",
-  "task": "Interactive repository work is active on COMPLETE-RESEARCH-v1 entry 063 GRE and the related Linux/IPsec tunnel family entries 064-070, each with independent 20-gate conclusions.",
-  "note": "Repository tracker is authoritative. V1 is 62/93 COMPLETE-RESEARCH-v1; V2 remains hard-locked until 93/93. Shared Linux kernel/iproute2/strongSwan evidence will be reused without merging protocol identities."
+  "started_at_utc": "2026-08-14T17:45:30Z",
+  "heartbeat_at_utc": "2026-08-14T17:45:30Z",
+  "task": "Continue COMPLETE-RESEARCH-v1 from authoritative main tracker, starting at entry 063 GRE and proceeding through independent unfinished entries while capacity remains.",
+  "note": "Live tracker is 64/93 COMPLETE-RESEARCH-v1; entry 063 GRE is the first unfinished entry. V2 remains hard-locked until V1 reaches 93/93. Repository evidence and exact 20-gate conclusions are authoritative."
 }
