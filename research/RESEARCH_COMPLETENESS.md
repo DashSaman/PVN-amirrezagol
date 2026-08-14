@@ -43,8 +43,8 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 037 | VLESS | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled against pinned Xray-core/libXray and major-client architecture/license/config/storage/UI/security/test evidence in `research/protocols/037-entry/V1_GATE_RECONCILIATION.md`; exact runtime combinations remain later certification gates |
 | 038 | VMess | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled against pinned Xray-core/libXray and shared client/config/storage/UI/security/test evidence in `research/protocols/038-entry/V1_GATE_RECONCILIATION.md`; VMess remains a compatibility target distinct from VLESS |
 | 039 | Trojan | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with pinned Xray-core/libXray plus historical `trojan-gfw/trojan` and `trojan-go` source/license/release evidence in `research/protocols/039-entry/V1_GATE_RECONCILIATION.md`; Xray-first reuse, standalone GPLv3 implementations reference-only |
-| 040 | Shadowsocks | EVIDENCE-GAPS — multi-protocol client/core audit started |
-| 041 | Shadowsocks 2022 | SKELETON — generic numbered folder |
+| 040 | Shadowsocks | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current `shadowsocks-rust` 1.25.0 MIT dedicated-core evidence, Xray/sing-box alternatives, explicit unsafe stream-cipher policy and strict separation from SS2022 in `research/protocols/040-entry/V1_GATE_RECONCILIATION.md` |
+| 041 | Shadowsocks 2022 | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled against pinned official SIP022/SS2022+EIH specs and `shadowsocks-rust` 1.25.0 source evidence, with fixed-length PSK/BLAKE3/replay/session/EIH semantics separated from classic Shadowsocks in `research/protocols/041-entry/V1_GATE_RECONCILIATION.md` |
 | 042 | Hysteria | IN-RESEARCH — official Hysteria shared dossier created |
 | 043 | Hysteria2 | IN-RESEARCH — official Hysteria shared dossier created |
 | 044 | TUIC | SKELETON — generic numbered folder |
