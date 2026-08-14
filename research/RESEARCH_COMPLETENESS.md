@@ -88,7 +88,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 082 | UDP | COMPLETE-RESEARCH-v1 |
 | 083 | QUIC | COMPLETE-RESEARCH-v1 |
 | 084 | WebSocket | COMPLETE-RESEARCH-v1 |
-| 085 | HTTP/1.1 | PENDING |
+| 085 | HTTP/1.1 | COMPLETE-RESEARCH-v1 |
 | 086 | HTTP/2 | PENDING |
 | 087 | HTTP/3 | PENDING |
 | 088 | gRPC | PENDING |
