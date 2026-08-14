@@ -4,216 +4,236 @@ This file defines mandatory operating rules for all AI agents and human develope
 
 ## 1. Mandatory startup order
 
-Read before meaningful work:
+Before meaningful repository work, read:
 
 1. `AI_START_HERE.md`
 2. this `AGENTS.md`
 3. `AGENT_EXECUTION_CONTRACT.md`
 4. `docs/AGENT_RUN_STATE.json`
-5. the **latest `AGENTS_HANDOFF_*.md` named below**
-6. `docs/PROJECT_STATE.md`
-7. `docs/AGENT_CHECKPOINT_LOG.md` plus newer dated `docs/AGENT_CHECKPOINT_*.md`
-8. `docs/RESEARCH_LOG.md`
-9. newest `docs/RESEARCH_CAMPAIGN_STATUS_*.md`
-10. `docs/ROADMAP.md`
-11. `docs/PROTOCOL_MATRIX.md`
-12. `research/RESEARCH_COMPLETENESS.md`
-13. `research/REFERENCE_V2_COMPLETENESS.md`
-14. relevant numbered/shared research dossiers
-15. recent Git history and actual repository tree
+5. `research/RESEARCH_COMPLETENESS.md`
+6. `research/REFERENCE_V2_COMPLETENESS.md`
+7. the current handoff named by `docs/AGENT_RUN_STATE.json`
+8. `docs/PROJECT_STATE.md`
+9. `docs/AGENT_CHECKPOINT_LOG.md` and newer dated checkpoints
+10. relevant numbered/shared research dossiers
+11. recent Git history and the actual repository tree
 
-Repository evidence wins over chat memory. Trackers/pointers can lag newer commits; when they disagree, inspect the latest machine Run State, handoff, checkpoint and real tree before changing work.
+Repository evidence wins over chat memory. If state, handoff, tracker, or old documentation disagree, the authoritative tracker plus newest committed evidence wins; reconcile stale pointers instead of following them blindly.
 
-## 2. Current phase
+## 2. Current phase and hard phase lock
 
-The repository is in **research / requirements / architecture**. Do not claim implementation, protocol support, successful builds/tests, Store readiness or production readiness without repository evidence.
+The repository is in **research / requirements / architecture**.
 
-## 3. Evidence states stay separate
+The active campaign is **COMPLETE-RESEARCH-v1** until all 93 numbered entries are `COMPLETE-RESEARCH-v1` in `research/RESEARCH_COMPLETENESS.md`.
 
-1. Researched
-2. Candidate identified
-3. License reviewed
-4. Architecture approved
-5. Implemented
-6. Builds
-7. Unit tested
-8. Integration tested
-9. E2E tested
-10. Real-device tested
-11. Store verified
-12. Production verified
+While V1 is below 93/93:
 
-Never promote a feature without evidence.
+- do **not** make `COMPLETE-REFERENCE-v2` the active campaign;
+- do **not** choose V2-only work instead of unfinished V1 work;
+- V2 evidence may be preserved incidentally, but it must not displace V1 completion;
+- missing runtime/device/Store/container/interoperability/certification receipts are not hidden V1 research gates unless the written V1 research contract explicitly requires that exact evidence.
 
-## 4. Persistent memory
+Only after V1 reaches 93/93 may the active campaign switch to `COMPLETE-REFERENCE-v2`.
+
+## 3. Research completion is not implementation certification
+
+Keep these evidence states separate:
+
+1. researched;
+2. candidate identified;
+3. license reviewed;
+4. architecture approved;
+5. implemented;
+6. builds;
+7. unit tested;
+8. integration tested;
+9. E2E tested;
+10. real-device tested;
+11. Store verified;
+12. production verified.
+
+`COMPLETE-RESEARCH-v1` and `COMPLETE-REFERENCE-v2` are research/reference completion states. They do not by themselves mean implemented, certified, Store-ready, or production-ready.
+
+## 4. Exact V1 gate rule
+
+For every numbered V1 entry, evaluate the exact 20 checklist items in `research/PROTOCOL_RESEARCH_TEMPLATE.md`.
+
+Every PASS must map to:
+
+- canonical documentation/specification;
+- canonical upstream source/repository;
+- exact release/tag/commit pin where applicable;
+- authoritative vendor/platform documentation where source is proprietary;
+- or an evidence-backed `N/A` treatment.
+
+Generic prose is not evidence. Never invent citations, source pins, release facts, runtime receipts, licenses, capabilities, or completion.
+
+If all applicable research gates are evidence-backed and uncertainties are explicitly preserved, update the tracker to `COMPLETE-RESEARCH-v1` immediately.
+
+If a real research gate is missing, work that exact gap. If one entry is blocked, record the blocker and continue another independent unfinished V1 entry.
+
+## 5. Speed + accuracy rule
+
+The owner wants maximum useful throughput without lowering evidence quality.
+
+Inside a run:
+
+- continue entry after entry while capacity remains;
+- batch mature entries when shared family evidence legitimately applies;
+- keep entry-specific conclusions and limitations explicit;
+- reuse already-pinned evidence instead of re-researching identical facts;
+- avoid one-commit-per-sentence churn;
+- use meaningful batched research commits;
+- update the authoritative tracker as soon as one or more entries genuinely complete;
+- do not voluntarily stop after one successful entry or one family.
+
+## 6. Machine state and dashboard clarity
+
+`docs/AGENT_RUN_STATE.json` must stay synchronized with the authoritative V1 tracker.
+
+Before ending a work slice:
+
+- `v1_complete_count` must equal the actual count in `research/RESEARCH_COMPLETENESS.md`;
+- `active_phase` must remain `COMPLETE-RESEARCH-v1` until 93/93;
+- `current_entry` must identify the first unfinished numbered V1 entry;
+- `exact_next_action` must name that real entry;
+- the handoff pointer must point to the newest relevant handoff.
+
+The dashboard independently derives the first unfinished entry from the tracker so stale state must never be used to fake progress.
+
+## 7. Scheduled-run log contract
+
+Scheduled ChatGPT continuation runs use `docs/AUTOMATION_RUN_LOG.md`.
+
+- write one `RUN_START` before long scheduled research;
+- do not write `RUN_END` until the scheduled slice is actually about to stop;
+- never continue scheduled research after `RUN_END` without a new `RUN_START`;
+- if a previous `RUN_START` is unmatched, record an inferred interruption and resume from repository state.
+
+GitHub Actions watchdog runs are not ChatGPT scheduled runs and must not be counted as such.
+
+## 8. Foreground / manual chat activity contract
+
+Interactive ChatGPT work is separate from the scheduled automation.
+
+When an interactive/manual chat begins making real repository changes, update `docs/FOREGROUND_ACTIVITY.json` with:
+
+- `status: ACTIVE`;
+- actor/task description;
+- `started_at_utc`;
+- current `heartbeat_at_utc`.
+
+Refresh the heartbeat after meaningful work units if the interactive task lasts long enough that the previous heartbeat could become stale.
+
+Before the interactive/manual repository task ends normally, set:
+
+- `status: IDLE`;
+- final `heartbeat_at_utc`;
+- a short final task/result note.
+
+This file exists only so the live dashboard can distinguish:
+
+- scheduled automation running/waiting; and
+- foreground/manual ChatGPT repository work running/idle.
+
+Do not use foreground activity to fake research progress. Only tracker/evidence changes count as research completion.
+
+## 9. Anti-loop rule
+
+If the same approach fails twice, record the failure and materially change source/path/tool/granularity. Continue independent work instead of looping.
+
+Do not keep an entry permanently PENDING because of a requirement that belongs to later implementation/certification rather than the written research contract.
+
+## 10. Research source rules
+
+For current/changing facts prefer official repositories, protocol/spec documentation, official vendor/platform/Store docs, release notes, source code, issue/PR history, RFCs and authoritative standards sources.
+
+Pin revisions/releases when possible. Do not treat a mirror as canonical when upstream exists.
+
+## 11. License and reuse
+
+Open source is not automatically commercially reusable without obligations. Record component-specific licenses, dependencies, redistribution/linking obligations, trademark/branding constraints and Store implications.
+
+Client, core, wrapper and server licenses are separate. Engineering review is not final legal sign-off.
+
+## 12. Architecture rules
+
+- Prefer a unified product layer plus stable Core/Platform Adapters.
+- Do not couple UI directly to one engine.
+- Do not implement cryptography from scratch.
+- Keep imported payload, canonical profile, protected persistence, generated runtime config and transient state separate.
+- Keep reusable credentials, remembered non-secret choices and transient session state separate.
+- Platform-specific implementations belong behind shared product contracts.
+- Support/certification is exact capability/version/evidence based, not a Boolean marketing flag.
+
+## 13. Platform scope
+
+Long-term targets include Android phones/tablets/foldables, Android TV/Google TV, Windows, macOS, iPhone/iPad and Linux.
+
+Infrastructure-only technologies must not be forced into consumer-client UX when the role is not applicable. Use evidence-backed infrastructure/peer treatment instead.
+
+## 14. Store rule
+
+Store policies change. Re-check current official Google Play/TV, Apple App Store/Mac, Microsoft Store and Linux package-channel requirements before implementation/release decisions.
+
+## 15. Competitor/upstream learning
+
+Study mature clients, cores, servers, installers and panels for architecture, UI/menu/state, storage, routing/DNS, reconnect, permissions, crash recovery, packaging, updates, security and regressions.
+
+Do not copy incompatible code, assets, branding or license-restricted material.
+
+## 16. V2 layer after V1 unlocks
+
+After V1 reaches 93/93, execute `research/FULL_PROTOCOL_REFERENCE_CONTRACT.md` for applicable entries and evaluate the exact 16 V2 gates.
+
+V2 still represents reference/research completion, not implementation/certification. Runtime/device/Store evidence must not become an undocumented hidden V2 completion gate.
+
+## 17. Persistent memory and handoff
 
 Important discoveries must be committed. Use:
 
-- `docs/RESEARCH_LOG.md` and dated campaign snapshots for research chronology;
-- `docs/PROJECT_STATE.md` for compact state;
-- `docs/AGENT_RUN_STATE.json` for machine-readable active task;
-- checkpoint log/dates for deterministic interruption recovery;
-- `AGENTS_HANDOFF_*.md` for exact resumable technical handoff;
-- `research/protocols/` and `research/upstreams/` for durable evidence.
+- `research/protocols/` and `research/upstreams/` for durable evidence;
+- `research/RESEARCH_COMPLETENESS.md` as V1 completion source of truth;
+- `research/REFERENCE_V2_COMPLETENESS.md` as V2 completion source of truth;
+- `docs/AGENT_RUN_STATE.json` for machine-readable current task;
+- checkpoint files/log for interruption recovery;
+- `AGENTS_HANDOFF_*.md` for exact technical resume context;
+- `docs/FOREGROUND_ACTIVITY.json` for interactive dashboard activity only.
 
-Do not leave important decisions only in chat.
+Do not leave important technical decisions only in chat.
 
-## 5. Continuous handoff — mandatory
+## 18. Current authoritative next action
 
-After every meaningful work unit:
+Do **not** trust a hard-coded entry number in this file if newer tracker/state commits exist.
 
-1. update technical dossier(s);
-2. update Run State;
-3. add checkpoint evidence;
-4. update Project State/Research Log or dated status where useful;
-5. create/update newest handoff with work, commits, failures, blockers and exact next action;
-6. update this file's Latest handoff/current-action pointer;
-7. immediately continue to the next executable task.
+At startup derive the next entry as:
 
-If a monolithic log becomes connector-truncated, create a dated checkpoint instead of a destructive blind rewrite.
+> the first numbered row in `research/RESEARCH_COMPLETENESS.md` whose base state is not `COMPLETE-RESEARCH-v1`.
 
-## 6. Anti-loop rule
+Then confirm against `docs/AGENT_RUN_STATE.json` and newest handoff. If they disagree, reconcile stale state from the tracker before continuing.
 
-If the same approach fails twice, record it and materially change source/path/tool/granularity. Continue independent work instead of looping.
+At the time this rule was refreshed, V1 had progressed through entry 026 and the machine state had advanced to entry 027 SonicWall Global VPN / IPsec. Always re-read the tracker before acting.
 
-## 7. Research source rules
-
-For current/changing facts prefer official repositories, protocol/spec documentation, official platform/Store docs, release notes, source code, issue/MR/PR history and authoritative RFC/standards sources. Pin revisions/releases when possible. Do not treat a mirror as canonical when upstream says otherwise.
-
-## 8. License and reuse
-
-Open source is not automatically commercially reusable without obligations. Record component-specific source/license paths, dependencies, redistribution/linking obligations, branding/trademark constraints and Store implications. Client and engine licenses are separate. Engineering review is not final legal sign-off.
-
-## 9. Architecture rules
-
-- Prefer unified product layer plus stable Core/Platform Adapters.
-- Do not couple UI directly to one engine.
-- Do not implement cryptography from scratch.
-- Keep import/export, canonical profile, protected persistence and runtime backend config separate.
-- Keep reusable credentials, remembered non-secret choices and transient session state separate.
-- Platform-specific implementations are expected behind shared product contracts.
-- Support/certification is exact capability/version/evidence based, not a Boolean marketing flag.
-
-## 10. Localization / branding
-
-Product: **PVNetwork**. Persian and English are first-class. Persian is RTL, while IPs, ports, URLs, protocol IDs, hashes, paths, IDs and logs remain technical LTR spans. Use owner-supplied branding only.
-
-## 11. Platform scope
-
-Long-term targets include Android phones/tablets/foldables, Android TV/Google TV, Windows, macOS, iPhone/iPad and Linux. Infrastructure-only technologies must not be forced into consumer client UX when the role is not applicable.
-
-## 12. Store rule
-
-Store policies change. Re-check current official requirements before implementation/release decisions for Google Play/TV, Apple App Store/Mac, Microsoft Store and Linux package channels.
-
-## 13. Competitor/upstream learning
-
-Study mature clients, cores, servers, installers and panels for architecture, UI/menu/state, storage, regressions, routing/DNS, reconnect, permissions, crash recovery, performance, packaging, updates, security and Store issues. Do not copy incompatible code/assets/branding.
-
-## 14. Original v1 remains authoritative
-
-The original 93-entry `COMPLETE-RESEARCH-v1` scope remains authoritative. Family-level `V1-HANDOFF-READY` checkpoints may allow v2 work while residual v1 evidence gaps stay explicit; they are not implementation/support certification. If a v2 assumption exposes a real missing v1 prerequisite, repair and checkpoint it rather than hiding it.
-
-## 15. Mandatory second layer — COMPLETE-REFERENCE-v2
-
-For each applicable entry, execute `research/FULL_PROTOCOL_REFERENCE_CONTRACT.md` and create evidence for:
-
-- server/peer implementations;
-- installers/deployment projects;
-- server OS/container/orchestration matrix;
-- server/control UI menus;
-- client/peer install matrix;
-- client/peer UI map;
-- cryptography/security boundary;
-- data path/wire flow;
-- ports/transports/handshake;
-- deployment topologies;
-- source/license/activity/supply-chain review;
-- exact reference index and next action.
-
-For infrastructure protocols where “consumer client” is not meaningful, use evidence-backed `N/A-CONSUMER / PEER-MAPPED` treatment rather than inventing a fake app.
-
-`COMPLETE-REFERENCE-v2` still does not mean product implementation/certification.
-
-## 16. Installer/deployment rule
-
-Popularity is not safety proof. Record source pins, root/capabilities, installed packages/services, firewall/routing/DNS/network-namespace changes, exposed admin interfaces, secret defaults, update/uninstall/rollback, container privileges/host networking and supply-chain risks. Do not recommend blind remote scripts without source review.
-
-## 17. Git discipline
-
-Use meaningful commits such as `docs(research): ...`, `docs(protocols): ...`, `docs(agents): ...`.
-
-## 18. Latest handoff pointer — MUST READ
-
-Newest handoff:
-
-`AGENTS_HANDOFF_2026-08-14_L2TPV3_V2_1.md`
-
-This checkpoint records entry 009 L2TPv3 as `REFERENCE-V2-SOURCE-COMPLETE / ADVANCED-PSEUDOWIRE-EXECUTION-BLOCKED / NOT IMPLEMENTED` and advances active work to entry 010 L2TPv3/IPsec.
-
-Previous relevant handoffs:
-
-- `AGENTS_HANDOFF_2026-08-14_L2TP_IPSEC_V2_1.md`
-- `AGENTS_HANDOFF_2026-08-14_IPSEC_V2_1.md`
-- `AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_9.md`
-- `AGENTS_HANDOFF_2026-08-14_OPENVPN_V2_TO_WIREGUARD_AWG_V2.md`
-- `AGENTS_HANDOFF_2026-08-14_XRAY_V1_2.md`
-- `AGENTS_HANDOFF_2026-08-14_REFERENCE_EXPANSION.md`
-
-## 19. Exact current next action
-
-Active work unit:
-
-`L2TPV3-IPSEC-COMPLETE-REFERENCE-V2`
-
-Entry:
-
-- **010 L2TPv3/IPsec**
-
-Required sequence:
-
-1. read entry 010 v1 evidence;
-2. reuse entry 009 L2TPv3 pseudowire dossier and entries 004–007 IKE/IPsec dossier without merging their semantics;
-3. define exact IPsec selector/protection composition for direct-IP protocol 115 and UDP L2TPv3;
-4. document current IKE/auth/ESP security policy boundaries and credential ownership;
-5. map serious Linux and vendor protected-pseudowire implementations/deployments;
-6. build all 11 mandatory v2 files including server/peer install/UI matrices;
-7. document protected encapsulation/data-path order, NAT/firewall/MTU/ECN/topologies;
-8. record source/license/activity/supply-chain/upgrade/uninstall/rollback evidence;
-9. reconcile all 16 v2 gates;
-10. preserve external Linux/Cisco/IPsec packet/interoperability blockers instead of fabricating receipts;
-11. checkpoint and immediately continue the next independent entry/family.
-
-Entries 002–009 remain strict-tracker `PENDING` where external execution evidence is still missing. Do not redo their completed source/reference work unless upstream evidence materially changes.
-
-## 20. Continuous-execution bootstrap
-
-The owner has authorized the full documented backlog. Also read `AGENT_EXECUTION_CONTRACT.md`, Run State, checkpoint(s), and `research/REFERENCE_V2_COMPLETENESS.md`.
-
-When checkout/Python runtime is available:
-
-```bash
-python scripts/agent_state.py verify
-python scripts/agent_state.py build
-python scripts/agent_state.py next
-```
-
-If unavailable, record it and continue through available repo tools rather than looping.
+## 19. Continuous execution
 
 Normal loop:
 
-**work -> persist evidence -> checkpoint -> verify -> next task -> continue**
+**read authoritative state -> research exact gap -> persist evidence -> promote tracker if justified -> sync state -> checkpoint/handoff -> next entry -> continue**
 
 Do not ask the owner to say “continue” between known work units. A platform interruption is not completion.
 
-## 21. Full backlog means all 93 entries and both layers
+## 20. Strict no-fake-completion gate
 
-All 93 entries remain in scope with v1 gates plus the v2 expansion. Generated backlog state helps prevent missed subtasks but repository contracts/trackers/handoffs/evidence are authoritative.
+No overall `DONE`/`COMPLETE` claim unless the repository completion validator passes and all required tracker/evidence states agree.
 
-## 22. Strict no-fake-completion gate
+`V1-HANDOFF-READY`, `REFERENCE-V2-SOURCE-COMPLETE`, `PENDING`, `IN-RESEARCH`, `EVIDENCE-GAPS`, `BLOCKED_EXTERNAL`, or one completed family is not overall completion.
 
-No overall `DONE`/`COMPLETE` claim unless the repository completion validator passes and all required evidence agrees. `V1-HANDOFF-READY`, `REFERENCE-V2-SOURCE-COMPLETE`, `PENDING`, `IN-RESEARCH`, `BLOCKED_EXTERNAL` or one finished family is not overall completion.
+## 21. Stop/blocker rules
 
-## 23. Stop and blocker rules
+Voluntary stop only when:
 
-Voluntary stop only when the whole approved scope passes strict completion; or every remaining item is genuinely externally blocked and no independent executable work remains; or the platform/safety/capability environment forcibly prevents continuation. Blockers are not completion. Persist the exact resume state whenever writes are still available.
+- the approved scope genuinely passes strict completion; or
+- every remaining item is externally blocked and no independent executable work remains; or
+- platform/safety/capability limits forcibly prevent continuation.
+
+Blockers are not completion. Persist exact resume state whenever writes remain possible.
