@@ -10,8 +10,8 @@
   "active_work_unit": {
     "id": "WIREGUARD-AWG-COMPLETE-REFERENCE-V2",
     "status": "IN_PROGRESS",
-    "source_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_1.md",
-    "exact_next_action": "Continue the WireGuard/AmneziaWG v2 reference layer from research/upstreams/wireguard-family/reference-v2/. Complete SERVER_INSTALLERS_AND_PROJECTS.md and SERVER_INSTALL_MATRIX.md with source/license/supply-chain evidence, then CLIENT_INSTALL_MATRIX.md and CLIENT_UI_AND_MENUS.md. After that close DATA_PATH_AND_WIRE_FLOW.md and DEPLOYMENT_TOPOLOGIES.md, reconcile entry-specific conclusions for 002/003, and only promote tracker rows when every FULL_PROTOCOL_REFERENCE_CONTRACT gate is evidence-backed. Preserve AWG generation/version distinctions and current AWG3.1 regression evidence. Then checkpoint and continue IKE/IPsec v2 without owner prompting."
+    "source_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_2.md",
+    "exact_next_action": "All mandatory WireGuard/AWG v2 filenames now exist but are not strict-complete. Deepen server installer/panel supply-chain, authentication, privilege and exposure evidence; then pin Apple client UI/import/export lifecycle evidence and exact QR/file/deep-link behavior. Add generation-specific AWG interoperability/test evidence, reconcile entries 002/003 against every FULL_PROTOCOL_REFERENCE_CONTRACT gate, and keep tracker rows PENDING until every applicable gate is evidence-backed. Then checkpoint and continue the next required v2 family without owner prompting."
   },
   "campaign_sources_of_truth": {
     "matrix": "docs/PROTOCOL_MATRIX.md",
@@ -34,24 +34,8 @@
   },
   "checkpoint_policy": {
     "after_every_meaningful_work_unit": true,
-    "files": [
-      "docs/AGENT_RUN_STATE.json",
-      "docs/AGENT_CHECKPOINT_LOG.md",
-      "relevant research dossier(s)",
-      "research/RESEARCH_COMPLETENESS.md or a dated status snapshot",
-      "research/REFERENCE_V2_COMPLETENESS.md when v2 is active",
-      "docs/PROJECT_STATE.md or a dated status snapshot",
-      "latest AGENTS_HANDOFF_*.md"
-    ],
-    "record": [
-      "work unit/task",
-      "evidence and files",
-      "commit SHA(s)",
-      "tests/checks and PASS/FAIL",
-      "failed approaches not to repeat",
-      "blockers",
-      "exact next action"
-    ]
+    "files": ["docs/AGENT_RUN_STATE.json","docs/AGENT_CHECKPOINT_LOG.md","relevant research dossier(s)","research/RESEARCH_COMPLETENESS.md or a dated status snapshot","research/REFERENCE_V2_COMPLETENESS.md when v2 is active","docs/PROJECT_STATE.md or a dated status snapshot","latest AGENTS_HANDOFF_*.md"],
+    "record": ["work unit/task","evidence and files","commit SHA(s)","tests/checks and PASS/FAIL","failed approaches not to repeat","blockers","exact next action"]
   },
   "completion_validation": {
     "command": "python scripts/agent_state.py verify --require-complete",
@@ -59,7 +43,7 @@
   },
   "last_checkpoint": {
     "date": "2026-08-14",
-    "summary": "Recent repository history advanced into COMPLETE-REFERENCE-v2. OpenVPN has a complete v2 file-category structure at handoff level with residual evidence gaps preserved. WireGuard/AmneziaWG v2 is active. Shared v2 reference work now includes a versioned reference index, authoritative WireGuard cryptography boundary, UDP/NoiseIK/roaming/AllowedIPs and AWG packet-delta reference, plus a server/peer implementation inventory. Entries 002/003 remain below COMPLETE-REFERENCE-v2 until every contract gate is evidenced.",
-    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_1.md"
+    "summary": "WireGuard/AmneziaWG v2 now has all mandatory reference filenames present. This slice added pinned source-level client UI/menu evidence for official WireGuard Android/Windows and Amnezia cross-platform UI, explicit server-management UI/control-plane boundaries with wg-easy source anchors, and deployment topology/failure-domain/observability mapping. REFERENCE_INDEX was synchronized. Presence is not completion: entries 002/003 remain PENDING pending supply-chain/auth/install receipts, Apple/import-export detail, AWG interop receipts and entry-specific full-contract reconciliation.",
+    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_2.md"
   }
 }
