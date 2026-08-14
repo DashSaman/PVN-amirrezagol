@@ -42,7 +42,7 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 036 | Juniper Secure Connect | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current SRX/vSRX, IKE/IPsec, EAP/certificate, protected-network, client-platform, licensing and proprietary-source boundaries in `research/protocols/036-juniper-secure-connect/V1_GATE_RECONCILIATION.md` |
 | 037 | VLESS | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled against pinned Xray-core/libXray and major-client architecture/license/config/storage/UI/security/test evidence in `research/protocols/037-entry/V1_GATE_RECONCILIATION.md`; exact runtime combinations remain later certification gates |
 | 038 | VMess | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled against pinned Xray-core/libXray and shared client/config/storage/UI/security/test evidence in `research/protocols/038-entry/V1_GATE_RECONCILIATION.md`; VMess remains a compatibility target distinct from VLESS |
-| 039 | Trojan | EVIDENCE-GAPS — multi-protocol client/core audit started |
+| 039 | Trojan | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with pinned Xray-core/libXray plus historical `trojan-gfw/trojan` and `trojan-go` source/license/release evidence in `research/protocols/039-entry/V1_GATE_RECONCILIATION.md`; Xray-first reuse, standalone GPLv3 implementations reference-only |
 | 040 | Shadowsocks | EVIDENCE-GAPS — multi-protocol client/core audit started |
 | 041 | Shadowsocks 2022 | SKELETON — generic numbered folder |
 | 042 | Hysteria | IN-RESEARCH — official Hysteria shared dossier created |
