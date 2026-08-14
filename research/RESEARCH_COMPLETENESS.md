@@ -30,7 +30,7 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 024 | Array Networks SSL VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with limited/experimental support boundary explicit |
 | 025 | Check Point VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current snx-rs v6.2.4 exact source pin, AGPL boundary, official-vendor authority and route/reconnect regression lessons in `research/protocols/025-check-point-vpn/V1_GATE_RECONCILIATION.md` |
 | 026 | SonicWall NetExtender / SSL VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled against current NetExtender 10.3/Windows 10.3.5 official evidence, proprietary-source N/A boundary, multi-transport capability model and unmerged OpenConnect limitation in `research/protocols/026-sonicwall-netextender/V1_GATE_RECONCILIATION.md` |
-| 027 | SonicWall Global VPN / IPsec | SKELETON |
+| 027 | SonicWall Global VPN / IPsec | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current SonicWall GroupVPN/GVC provisioning/XAUTH/RCF/virtual-adapter evidence and strongSwan 6.0.7 standards-engine boundary in `research/protocols/027-sonicwall-global-vpn-ipsec/V1_GATE_RECONCILIATION.md` |
 | 028 | Sophos SSL VPN | SKELETON |
 | 029 | Sophos IPsec Remote Access | SKELETON |
 | 030 | WatchGuard IKEv2 VPN | SKELETON |
