@@ -1,6 +1,6 @@
 # PVNetwork Roadmap
 
-This roadmap is intentionally **research-first**. The repository does not yet contain a production client, so early milestones focus on evidence, architecture, licensing, and feasibility before implementation.
+This roadmap is intentionally **research-first**. The repository does not yet contain a production client, so early milestones focus on evidence, architecture, licensing, feasibility and exhaustive client/server reference work before implementation.
 
 ## R0 — Repository knowledge foundation
 
@@ -102,6 +102,45 @@ Study mature projects for:
 Exit criteria:
 
 - High-risk known failures have explicit PVNetwork mitigation/test ideas
+
+---
+
+## R4.5 — Full protocol reference expansion (`COMPLETE-REFERENCE-v2`)
+
+**Priority rule:** this phase is mandatory, but the previously defined R1–R4 research backlog remains first priority. Do not abandon unfinished original research to start mass v2 expansion.
+
+Detailed contract:
+
+`research/FULL_PROTOCOL_REFERENCE_CONTRACT.md`
+
+Goal: turn every applicable numbered dossier into a complete **client + server engineering reference**, not merely a client/core compatibility note.
+
+For each protocol/technology, research separately:
+
+- all serious server implementations, forks and community projects;
+- official packages/build paths and major server installer/deployment projects;
+- one-click installers, automation, containers, control panels and orchestration projects used by operators;
+- server installation across applicable OS/distributions, containers, CPU architectures and orchestration environments;
+- all server/admin UI menus, dialogs, routes/components and management workflows for each important panel;
+- installation of important clients on each applicable target OS/architecture/package channel;
+- every major client's UI/menu structure screen by screen;
+- protocol cryptography from authoritative specification/source evidence;
+- data path/wire flow from application packet to server forwarding and return path;
+- transports, ports, handshake, session establishment/resumption and NAT/roaming behavior;
+- deployment topologies and control-plane/data-plane relationships;
+- server/client source pins, licenses, activity and supply-chain/security risks;
+- update/uninstall/rollback behavior and operational side effects of installers.
+
+Mandatory per-protocol files and granular `server-ui/` / `client-ui/` subfiles are defined in the v2 contract.
+
+Security rule: community installer popularity is not trust. Source-review root privileges, firewall/routing changes, secret handling, exposed management interfaces, privileged containers, auto-update and remote-script supply-chain behavior. Do not recommend blind remote script execution.
+
+Exit criteria:
+
+- Every applicable entry reaches `COMPLETE-REFERENCE-v2` or has explicit evidence-backed blockers/`NOT-APPLICABLE` fields.
+- A future engineer can understand the protocol from client, server, cryptographic, wire/data-path, installation, UI and deployment perspectives using the repository alone plus pinned external evidence.
+
+`COMPLETE-REFERENCE-v2` does **not** mean PVNetwork implementation or production certification.
 
 ---
 
@@ -289,5 +328,8 @@ Only declare production readiness when evidence supports it.
 - Research may change implementation order.
 - Store or license blockers can veto a core.
 - A popular open-source project is not automatically suitable for embedding.
+- A popular community installer is not automatically safe to trust.
 - Protocol support must be verified by PVNetwork itself.
 - UI polish does not outrank networking correctness/security.
+- Original research backlog remains first priority; full-reference v2 expansion follows the prior research gates.
+- Every meaningful work unit must remain resumable through the latest AGENTS handoff.
