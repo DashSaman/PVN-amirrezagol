@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "status": "NONE",
+  "request_id": null,
+  "requested_at_utc": null,
+  "requested_by": null,
+  "source": "github-actions-workflow-dispatch",
+  "note": "A PENDING request is consumed by the next ChatGPT continuation run after real research progress is committed.",
+  "consumed_at_utc": null,
+  "consumed_by_run": null
+}
