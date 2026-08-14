@@ -38,8 +38,8 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 032 | WatchGuard L2TP VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with secure-default L2TP/IPsec layering, PSK/certificate tunnel auth, MS-CHAPv2/RADIUS/AuthPoint user auth, native Windows/macOS/iOS and Android 12+ native-unavailable boundary in `research/protocols/032-watchguard-l2tp/V1_GATE_RECONCILIATION.md` |
 | 033 | Aruba VIA | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current HPE Aruba Networking VIA/VPNC profile, IKE/IPsec, auth, split/full-tunnel, five-platform client, lifecycle and proprietary-source boundaries in `research/protocols/033-aruba-via/V1_GATE_RECONCILIATION.md` |
 | 034 | Citrix Secure Access / Gateway VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current Citrix Secure Access/NetScaler Gateway TLS-DTLS, nFactor/EPA, routing/DNS, five-platform client, 2026 release and proprietary-source boundaries in `research/protocols/034-citrix-secure-access/V1_GATE_RECONCILIATION.md` |
-| 035 | Barracuda TINA VPN | SKELETON — generic numbered folder |
-| 036 | Juniper Secure Connect | SKELETON — generic numbered folder |
+| 035 | Barracuda TINA VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current Barracuda TINA proprietary transport/auth/profile/failover, modern-crypto and official-client boundaries in `research/protocols/035-barracuda-tina/V1_GATE_RECONCILIATION.md` |
+| 036 | Juniper Secure Connect | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current SRX/vSRX, IKE/IPsec, EAP/certificate, protected-network, client-platform, licensing and proprietary-source boundaries in `research/protocols/036-juniper-secure-connect/V1_GATE_RECONCILIATION.md` |
 | 037 | VLESS | EVIDENCE-GAPS — Xray/client license/source audit started; shared dossier write blocked |
 | 038 | VMess | EVIDENCE-GAPS — Xray/client license/source audit started; shared dossier write blocked |
 | 039 | Trojan | EVIDENCE-GAPS — multi-protocol client/core audit started |
