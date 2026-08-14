@@ -62,7 +62,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 056 | Tailscale | COMPLETE-RESEARCH-v1 |
 | 057 | ZeroTier | COMPLETE-RESEARCH-v1 |
 | 058 | NetBird | COMPLETE-RESEARCH-v1 |
-| 059 | Netmaker | PENDING |
+| 059 | Netmaker | COMPLETE-RESEARCH-v1 |
 | 060 | Nebula | IN-RESEARCH |
 | 061 | Tinc | PENDING |
 | 062 | innernet | PENDING |
