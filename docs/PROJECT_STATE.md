@@ -5,146 +5,68 @@ Last synchronized: 2026-08-14
 ## Repository
 
 - Repository: `DashSaman/PVN-amirrezagol`
-- Default branch: `main`
+- Branch: `main`
 - Product: **PVNetwork**
-- Current phase: **Research / requirements / architecture**
-- Production application code: **Not started**
-- Research campaign scope: **93 numbered entries** in `docs/PROTOCOL_MATRIX.md`
+- Phase: **research / requirements / architecture**
+- Production implementation: **not started**
+- Research scope: **93 numbered entries** in `docs/PROTOCOL_MATRIX.md`
 
-## Source of truth / recovery order
+## Recovery order
 
-A future AI must read `AI_START_HERE.md` first, then `AGENTS.md`, this file, `docs/RESEARCH_LOG.md`, `research/RESEARCH_COMPLETENESS.md`, the relevant numbered protocol dossier, the relevant shared upstream dossier, and recent Git history/tree.
+A new AI must read:
 
-Important: the large completeness tracker can occasionally lag a newer committed dossier because GitHub connector write filtering has rejected some large updates. Never infer “not researched” from one stale tracker row without checking the actual tree/history.
+1. `AI_START_HERE.md`
+2. `AGENTS.md`
+3. this file
+4. `docs/RESEARCH_LOG.md`
+5. the newest `docs/RESEARCH_CAMPAIGN_STATUS_*.md` file
+6. `research/RESEARCH_COMPLETENESS.md`
+7. relevant numbered and shared research dossiers
+8. recent Git history and the actual repository tree
 
-## Current objective
+The completeness tracker can lag newer commits because some large connector writes are rejected. Do not restart work solely from a stale tracker row.
 
-Complete evidence-backed developer research for all 93 entries before pretending the product supports them. Each entry ultimately needs the completion contract in `research/PROTOCOL_RESEARCH_TEMPLATE.md`: sources/revisions, license, tree, architecture/core, UI, config, storage/secrets, platform integration, diagnostics, assets, forks, issues/releases/forums, tests, Store/privacy implications and an explicit PVNetwork reuse/support decision.
+## Current research state
 
-## Research infrastructure completed
+Major shared research exists for OpenVPN, WireGuard/AmneziaWG, OpenConnect, SoftEther, Hysteria, mesh/overlay, Xray and major client references.
 
-- `PVNETWORK_MASTER_CONTEXT.md`
-- `AI_START_HERE.md`
-- `AGENTS.md`
-- `docs/PROTOCOL_MATRIX.md`
-- `docs/RESEARCH_LOG.md`
-- `research/AI_RESEARCH_CAMPAIGN.md`
-- `research/PROTOCOL_RESEARCH_TEMPLATE.md`
-- `research/RESEARCH_COMPLETENESS.md`
-- `research/SOURCE_MIRROR_POLICY.md`
-- numbered protocol research structure under `research/protocols/`
-- shared upstream/client research under `research/upstreams/`
+### WireGuard / AmneziaWG
 
-`AGENTS.md` now requires a continuous handoff note so meaningful work remains resumable from GitHub even if the current chat stops unexpectedly.
+Deep committed evidence now covers source pins, portable-core architecture, Android, Apple, AmneziaWG compatibility/versioning and issue-derived regression requirements. Windows source-level research and AmneziaWG platform pins are preserved in Research Log/AGENTS where standalone writes were blocked.
 
-## Shared upstream research present on `main`
+### OpenConnect / Enterprise — latest work unit
 
-Verified shared directories currently include:
+Latest detailed status:
 
-- `research/upstreams/openvpn-family/`
-- `research/upstreams/wireguard-family/`
-- `research/upstreams/openconnect-family/`
-- `research/upstreams/softether-family/`
-- `research/upstreams/hysteria-family/`
-- `research/upstreams/mesh-overlay-family/`
-- `research/upstreams/xray-family/`
-- `research/upstreams/client-references/`
+`docs/RESEARCH_CAMPAIGN_STATUS_2026-08-14_OPENCONNECT.md`
 
-The presence of `xray-family/` is newer than some text in the tracker; check actual repository state before repeating old work.
+Shared evidence now includes:
 
-## High-value research already performed
+- `research/upstreams/openconnect-family/SOURCE_PIN.md`
+- `VENDOR_COMPATIBILITY_MATRIX.md`
+- `LESSONS_AND_TESTS.md`
+- synchronized shared `README.md`
 
-### OpenVPN family
+Numbered enterprise dossiers 017–024 have been linked to the current shared research. Entry 016 remains an explicit connector-write documentation gap after two materially different update attempts; its research conclusions remain in the shared matrix/status file.
 
-Deep research exists for OpenVPN 3, official Connect behavior, Windows GUI, Tunnelblick, Pritunl license restrictions and issue-derived regression lessons. Android ics-openvpn source was also inspected, but a dedicated detailed file remained connector-blocked.
+## Current architecture direction
 
-### Client/reference ecosystem
+- Keep a stable PVNetwork Core Adapter above selected upstream/native engines.
+- Keep UI/business state independent from private engine internals.
+- Do not reimplement mature protocol cryptography/security primitives.
+- Keep import/export format, canonical profile model, protected persistence and runtime engine configuration separate.
+- Enterprise compatibility must be vendor/version/capability based, not a single support boolean.
 
-Source/license/architecture research has started or been persisted for major references including Clash Verge Rev, FlClash, Karing, NekoBox, Throne, v2rayN, Amnezia Client, Happ and others. License findings must be taken from pinned source, not memory.
+## No false completion
 
-### WireGuard / AmneziaWG family — current work unit
+There is still no production PVNetwork application, build/package, automated PVNetwork test suite, E2E proof, real-device certification or Store approval. No research entry is `COMPLETE-RESEARCH-v1` merely because one upstream was inspected.
 
-The family was upgraded from a README-only skeleton to source-pinned research.
+## Known connector gaps
 
-Committed files now include:
+Several legitimate networking-research writes have been rejected. Do not repeat the same blocked write unchanged. Use smaller accepted files, dated status snapshots, `docs/RESEARCH_LOG.md`, and `AGENTS.md` as recovery evidence.
 
-- `research/upstreams/wireguard-family/SOURCE_REVISIONS.md`
-- `research/upstreams/wireguard-family/CORE_ARCHITECTURE.md`
-- `research/upstreams/wireguard-family/ANDROID_CLIENT.md`
-- `research/upstreams/wireguard-family/APPLE_CLIENT.md`
-- `research/upstreams/wireguard-family/AMNEZIAWG_DELTA.md`
-- `research/upstreams/wireguard-family/LESSONS_AND_TESTS.md`
+## Next exact action
 
-Pinned research revisions include:
+Continue from the latest OpenConnect status snapshot: current issue/MR-to-fix mapping by vendor, selected front-end/UI/credential-storage research, and dependency/SBOM/LGPL integration review. Then move to the next highest-value incomplete family from actual repository state.
 
-- `WireGuard/wireguard-go@ecfc5a8d54462e18e13c72173e2623d16d8e25a0`
-- `WireGuard/wireguard-windows@4e6726c23ae9c5cb58e0c9910f3b7515621d133d`
-- `WireGuard/wireguard-android@e7b3a3c118836e112620b1302a8ba1873ad4daac`
-- `WireGuard/wireguard-apple@2fec12a6e1f6e3460b6ee483aa00ad29cddadab1`
-- `amnezia-vpn/amneziawg-go@1b86b2ae0e493e7ea93f8c1a0f0cb6735b1551f1`
-
-Additional current platform-source research identified:
-
-- `amnezia-vpn/amneziawg-windows@1326e9bbdc71be88ddcc20925e092c6f5b9513da` — reviewed README describes an MIT-licensed embeddable tunnel library rather than a complete end-user GUI.
-- `amnezia-vpn/amneziawg-apple@e5410a539f28b8ce5dd1d060c45e4fa555e9a210` — active Swift fork derived from WireGuard Apple; GitHub metadata reports MIT.
-- `amnezia-vpn/amneziawg-android@d6cd6647465a9a593aa9ccadbbd20c44bf600d5b` — active Kotlin platform repository; GitHub metadata reports Apache-2.0.
-
-A dedicated platform-reference write for these three AmneziaWG repositories was connector-blocked, so the verified evidence is recorded here rather than hidden.
-
-## WireGuard architectural conclusions so far
-
-- PVNetwork should expose a stable Core Adapter above platform-specific WireGuard implementations, not bind UI to one engine/process.
-- Standard WireGuard and AmneziaWG should share product-level concepts but remain distinct versioned compatibility capabilities/config schemas.
-- Import/export format, canonical PVNetwork profile, protected persistence and runtime engine configuration must remain separate layers.
-- Windows source demonstrates protected DPAPI-based persisted configuration and service/UI separation.
-- Android source demonstrates a `Backend` abstraction with multiple backend paths, separate settings DataStore and profile config store.
-- Apple source demonstrates app + NetworkExtension + adapter/shared-model architecture and Keychain-protected configuration references.
-- Do not reimplement protocol cryptography.
-
-## WireGuard failure classes already converted to regression requirements
-
-Official source/mailing-list research identified recurring classes worth testing regardless of whether each historical bug remains current:
-
-- Android OS VPN authorization / Always-On conflicts;
-- reboot/restore-state behavior;
-- Quick Settings/UI/background state synchronization;
-- network readiness and delayed name resolution;
-- Wi-Fi/cellular/address-family transitions;
-- sleep/resume and stale runtime state;
-- route-helper policy assumptions;
-- Apple NetworkExtension lifecycle workarounds and Store release latency/regression risk.
-
-See `research/upstreams/wireguard-family/LESSONS_AND_TESTS.md`.
-
-## Connector/documentation blockers
-
-The GitHub connector sometimes rejects legitimate networking research writes. Current examples:
-
-- dedicated detailed WireGuard Windows dossier write;
-- a smaller Windows source/UI-map write;
-- synchronized rewrite of the WireGuard family README;
-- AmneziaWG platform-reference dossier;
-- older known gaps include detailed ics-openvpn, strongSwan and some Xray/Mihomo research writes.
-
-Anti-loop rule: do not repeat an identical blocked write. Keep verified evidence in other safe handoff/research files and continue independent work.
-
-## Not completed / no false claims
-
-- No protocol is implemented by PVNetwork yet.
-- No production UI/build/package exists.
-- No automated PVNetwork test suite exists yet.
-- No E2E or real-device compatibility evidence exists yet.
-- No Store submission is approved.
-- No research entry is `COMPLETE-RESEARCH-v1` merely because one client/core was inspected.
-- License analysis is engineering research, not final legal advice/sign-off.
-
-## Next exact actions
-
-1. Synchronize `docs/RESEARCH_LOG.md`, `research/RESEARCH_COMPLETENESS.md` where connector permits, and `AGENTS.md` with this work unit.
-2. Finish remaining WireGuard-family evidence: current release/fix mapping, dependency/SBOM review, platform-specific AmneziaWG deltas, assets/UI completeness and protocol-entry links for 002/003.
-3. Then continue to the next highest-value incomplete family from the real tracker/tree rather than restarting research already committed.
-4. Keep every meaningful work unit persisted in research files + project state + AGENTS handoff.
-
-## Handoff rule
-
-Repository evidence wins over chat memory. Do not mark a feature supported, tested or production-ready without PVNetwork implementation/test evidence.
+At the end of every meaningful work unit, update Research Log, Project State/status snapshot, and AGENTS handoff.
