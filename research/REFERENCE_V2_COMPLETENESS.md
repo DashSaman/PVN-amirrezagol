@@ -33,7 +33,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 025 | Check Point VPN / SNX | COMPLETE-REFERENCE-v2 |
 | 026 | SonicWall NetExtender / SSL VPN | COMPLETE-REFERENCE-v2 |
 | 027 | SonicWall Global VPN / IPsec | COMPLETE-REFERENCE-v2 |
-| 028 | Sophos SSL VPN | PENDING |
+| 028 | Sophos SSL VPN | COMPLETE-REFERENCE-v2 |
 | 029 | Sophos IPsec Remote Access | PENDING |
 | 030 | WatchGuard IKEv2 VPN | PENDING |
 | 031 | WatchGuard SSL VPN | PENDING |
