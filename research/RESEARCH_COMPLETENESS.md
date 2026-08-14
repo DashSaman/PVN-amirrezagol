@@ -28,7 +28,7 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 022 | Juniper Network Connect | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with legacy/browser/TNCC/IPv6 limitations explicit |
 | 023 | F5 BIG-IP SSL VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with experimental auth/DTLS limitations explicit |
 | 024 | Array Networks SSL VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with limited/experimental support boundary explicit |
-| 025 | Check Point VPN | IN-RESEARCH — snx-rs reference/license evidence collected |
+| 025 | Check Point VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current snx-rs v6.2.4 exact source pin, AGPL boundary, official-vendor authority and route/reconnect regression lessons in `research/protocols/025-check-point-vpn/V1_GATE_RECONCILIATION.md` |
 | 026 | SonicWall NetExtender / SSL VPN | SKELETON |
 | 027 | SonicWall Global VPN / IPsec | SKELETON |
 | 028 | Sophos SSL VPN | SKELETON |
