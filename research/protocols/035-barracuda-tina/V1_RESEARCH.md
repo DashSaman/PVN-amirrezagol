@@ -1,11 +1,18 @@
 # 035 — Barracuda TINA VPN — v1 Research Decision
 
-Status: **`V1-HANDOFF-READY / NOT IMPLEMENTED`**.
+Status: **`COMPLETE-RESEARCH-v1 / NOT IMPLEMENTED / NOT BARRACUDA-CERTIFIED`**.
 
-Decision: **`VENDOR-SPECIFIC TINA TARGET / OFFICIAL CLIENT PRIMARY / NO CUSTOM IMPLEMENTATION WITHOUT SOURCE+SPEC EVIDENCE`**.
+Decision: **`PROPRIETARY BARRACUDA TINA VENDOR ADAPTER/REFERENCE / OFFICIAL CLIENT REQUIRED FOR TINA INTEROP UNTIL A LEGITIMATE REUSABLE IMPLEMENTATION IS PROVEN / DO NOT SUBSTITUTE GENERIC IPSEC / PRESERVE TRANSPORT+AUTH+PROFILE+FAILOVER SEMANTICS / FIRST-PARTY CODE REFERENCE-ONLY / MODERN CRYPTO POLICY REQUIRED`**.
 
-TINA is vendor-specific. PVNetwork must not recreate its protocol/security behavior from incomplete public descriptions. Support requires a maintained legally compatible implementation or authoritative vendor integration path plus exact gateway/version tests.
+All 20 original V1 research gates are reconciled in `V1_GATE_RECONCILIATION.md`, with current Barracuda evidence consolidated in `BARRACUDA_TINA_CURRENT_AUDIT.md`.
 
-Shared evidence: `research/upstreams/vendor-enterprise-family/`.
+Key boundaries:
 
-Later v2 adds authoritative protocol/security references, gateway/client versions, installs, full menus and deployment/wire-flow evidence.
+- TINA is explicitly proprietary and distinct from standard IPsec interoperability.
+- Current Barracuda docs expose UDP, TCP, UDP+TCP hybrid, ESP and routing transports, with TCP 691/443 proxy behavior documented.
+- Current client-to-site authentication includes user/password, X.509, X.509+password, `.lic` files, SAML and TOTP surfaces depending on deployment.
+- Current CloudGen documentation exposes modern AES/GCM/SHA2-family choices alongside legacy algorithms that PVNetwork must not recommend as modern defaults.
+- Barracuda VPN Client is the canonical TINA client; Android CudaLaunch includes TINA, while iOS CudaLaunch uses native IPsec and must not be mislabeled as TINA.
+- No canonical public complete-source repository was identified; first-party code, binaries and protocol implementation remain proprietary/reference-only.
+
+Do not infer TINA support from generic IPsec support.
