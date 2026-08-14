@@ -32,7 +32,7 @@ The reviewed tree contains:
 At the reviewed commit:
 
 - there is **no repository LICENSE file in the tree**;
-- GitHub's repository-license endpoint returns 404;
+- GitHub repository metadata has no detected license;
 - the README describes the project as a reference implementation but does not grant a source-code license in the reviewed material.
 
 Therefore public source availability is **not a commercial reuse grant**.
@@ -42,6 +42,10 @@ PVNetwork classification for `anytls-go` code:
 **`REFERENCE-ONLY / DO-NOT-COPY UNTIL AN EXPLICIT COMPATIBLE LICENSE IS VERIFIED`**.
 
 Protocol interoperability can still be researched from the published specification/documentation; implementation/reuse licensing must remain separate.
+
+The same organization also publishes `anytls/sing-anytls`; its explicit LICENSE is GPL-3.0-or-later. It is useful as compatible implementation/API evidence but is not a permissive direct-code path for a closed PVNetwork GUI.
+
+An independent Rust implementation, `ssrlive/anytls-rs`, documents Cargo CI/tests and a local end-to-end smoke test. Its README currently labels the project MIT, but GitHub repository metadata does not detect a license and the expected root `LICENSE` artifact did not resolve during this audit. PVNetwork therefore does not use the README badge/text alone as legal permission to ship its code; it is interoperability/test evidence until exact license provenance is verified.
 
 ## 2. Protocol semantics from current canonical docs
 
@@ -87,19 +91,30 @@ The URI therefore contains a reusable password and must be redacted in logs/clip
 
 - repository: `SagerNet/sing-box`
 - reviewed current testing commit: `db1053f8bc16c860225afc97ac6417e42a81dc64`
-- reviewed head date: 2026-08-13
+- stable implementation evidence also checked at `v1.13.18@45ca32dcb966f07f97fc888fe8586e359dbe8405`
 - license: GPLv3-or-later plus an additional name/association condition in the reviewed LICENSE
 - current tree contains AnyTLS inbound/outbound protocol code, typed option schema, client-metadata handling and English/Chinese configuration docs.
 
+The stable typed outbound schema separates TLS from `Password`, `IdleSessionCheckInterval`, `IdleSessionTimeout`, `MinIdleSession`, and `ClientMetadata`; inbound schema separately exposes users/passwords and padding scheme. This independently confirms the canonical protocol/TLS separation.
+
 Classification: **excellent current interoperability/source reference; direct closed-product embedding requires a GPL-compatible architecture/legal decision**.
 
-### mihomo
+### Throne — actual GUI/menu/profile evidence
 
-The AnyTLS reference README lists mihomo as a server+client implementation. Existing PVNetwork research has already identified its current copyleft licensing boundary; treat it as implementation/interop/reference unless the product licensing architecture explicitly permits reuse.
+The existing PVNetwork dossier `research/upstreams/client-references/THRONE.md` pins a GPL-3.0 cross-platform desktop GUI architecture. Current source search additionally resolves dedicated AnyTLS product paths:
 
-### Apple/closed clients
+- `include/configs/outbounds/anyTLS.h`
+- `src/configs/outbounds/anyTLS.cpp`
+- `src/ui/profile/edit_anytls.cpp`
+- `include/ui/profile/edit_anytls.h`
+- `include/ui/profile/edit_anytls.ui`
+- profile database entities, outbound factory and subscription updater references.
 
-The canonical reference README lists Shadowrocket 2.2.65+ plus Stash/Loon as compatible client examples. These are behavioral/UI/interoperability references only; no source reuse is inferred.
+This is direct source evidence of a real AnyTLS profile editor/config/persistence flow in a GUI ecosystem. It is used for UI/architecture lessons only; GPL code/assets are not copied into a closed PVNetwork product by default.
+
+### mihomo and closed clients
+
+The AnyTLS reference README lists mihomo as a server+client implementation. Existing PVNetwork research already treats its copyleft/licensing boundary independently. The canonical README also lists Shadowrocket 2.2.65+ plus Stash/Loon as compatible client examples. Closed-source products are behavioral/UI/interoperability references only; no source reuse is inferred.
 
 ## 5. Canonical PVNetwork model
 
@@ -122,26 +137,26 @@ Do not merge AnyTLS with generic TLS or ShadowTLS because all use TLS-related me
 
 | # | V1 gate | Result | Evidence / AnyTLS-specific conclusion |
 |---:|---|---|---|
-| 1 | Top clients/implementations identified | PASS | Canonical README identifies anytls-go reference, sing-box, mihomo and Apple clients; roles/source visibility are separated. |
-| 2 | Canonical sources pinned | PASS | anytls-go exact commit/tree/release plus current sing-box commit are pinned. |
-| 3 | Licenses reviewed | PASS | Critical result: anytls-go has no explicit license in reviewed tree/API and is DO-NOT-COPY pending license clarification; sing-box GPLv3+ with additional naming condition; closed clients reference-only. |
-| 4 | Complete source-tree reference captured | PASS | anytls-go recursive tree is pinned and fully enumerates cmd/docs/proxy/util/module/release files; sing-box AnyTLS paths are source-indexed. |
-| 5 | Languages/build systems mapped | PASS | anytls-go Go/modules/GoReleaser; sing-box Go/modules; platform release assets and example binaries mapped. |
+| 1 | Top clients/implementations identified | PASS | Canonical README identifies anytls-go reference, sing-box, mihomo and Apple clients; same-org sing-anytls, independent anytls-rs and Throne are additional source-backed implementation/UI references. |
+| 2 | Canonical sources pinned | PASS | anytls-go exact commit/tree/release plus current/stable sing-box evidence are pinned. |
+| 3 | Licenses reviewed | PASS | Critical result: anytls-go has no explicit license in reviewed tree/API and is DO-NOT-COPY pending license clarification; sing-anytls GPLv3+; sing-box GPLv3+ with additional naming condition; Throne GPLv3; closed clients reference-only. anytls-rs README-MIT claim is not treated as sufficient while exact license artifact is unresolved. |
+| 4 | Complete source-tree reference captured | PASS | anytls-go recursive tree is pinned and fully enumerates cmd/docs/proxy/util/module/release files; sing-box and Throne AnyTLS paths are source-indexed. |
+| 5 | Languages/build systems mapped | PASS | anytls-go Go/modules/GoReleaser; sing-box Go/modules; anytls-rs Rust/Cargo; Throne C++/CMake; platform release assets mapped. |
 | 6 | Architecture mapped | PASS | TLS -> auth -> multiplexed session -> streams -> target proxy; settings/padding/pool/error layers are separated from product routing/TUN. |
 | 7 | Core/engine integration mapped | PASS | anytls-go is reference example code not legally reusable yet; sing-box is a current full implementation under GPL; adapter/subprocess/approved-engine decision remains product-level. |
-| 8 | UI/menu map completed | PASS for V1 | Reference implementation is CLI/config and correctly treated as N/A consumer GUI; third-party current clients provide profile/connect/settings references; PVNetwork owns final UI. Exhaustive menus remain V2. |
-| 9 | Config/import/export mapped | PASS | Canonical URI, protocol settings, TLS separation, extension/lossy-conversion rules and reference CLI/config behavior are documented. |
-| 10 | Persistence/secrets mapped | PASS | Password is explicit reusable secret and can appear in URI; secure-store reference/redaction requirements are mandatory. Client metadata is non-secret but privacy-relevant. |
-| 11 | Platform integrations mapped | PASS for research | Reference release assets cover major desktops; sing-box/third-party ecosystem covers broader platforms. Exact TUN/mobile lifecycle remains certification. |
+| 8 | UI/menu map completed | PASS for V1 | Throne provides dedicated `edit_anytls` UI, typed outbound config, profile database/factory and subscription-update source paths; the reference implementation itself is correctly treated as CLI/config. Exhaustive menus/screenshots remain V2. |
+| 9 | Config/import/export mapped | PASS | Canonical URI, default port, password, SNI, insecure flag, fragment, protocol settings, TLS separation and third-party extension/lossy-conversion rules are documented. |
+| 10 | Persistence/secrets mapped | PASS | Password is explicit reusable secret and can appear in URI; secure-store reference/redaction requirements are mandatory. Throne profile DB is architecture evidence, not permission to copy its storage model. Client metadata is non-secret but privacy-relevant. |
+| 11 | Platform integrations mapped | PASS for research | Reference release assets cover Windows/macOS/Linux amd64/arm64; sing-box/Throne and closed-client ecosystem cover broader host/platform patterns. Exact TUN/mobile lifecycle remains certification. |
 | 12 | Logs/diagnostics mapped | PASS | Protocol alert/server-settings/heartbeat behaviors plus implementation logs are mapped; password/URI/cert/API secret redaction and client-metadata privacy are explicit. |
-| 13 | Asset/screenshot references mapped | PASS for V1 | Reference repo is code/docs-oriented with no reusable GUI identity; third-party app assets/screenshots remain reference-only under their own rights. |
-| 14 | Meaningful forks/alternatives reviewed | PASS | sing-box/mihomo are explicit current third-party implementations; reference project itself states it is not a full production client. |
-| 15 | Issues/PRs/releases/advisories reviewed | PASS | v0.0.13 release and 2026 head reviewed; protocol-v2 timeout/recovery changes and 2026 client-metadata compatibility/privacy dispute are captured as regression/product requirements. |
-| 16 | Relevant forums/docs reviewed | PASS | Canonical protocol, FAQ, URI and client-name docs are pinned; upstream implementation docs are primary evidence. |
-| 17 | Tests/CI reviewed | PASS | Reference tree contains no substantial dedicated test/CI suite at the reviewed pin beyond build/release config; this missing coverage is explicitly documented. Current sing-box implementation/test ecosystem is supplemental; PVNetwork must create its own protocol-version/interop regression tests. |
-| 18 | Store/privacy/security implications reviewed | PASS | insecure TLS default/reference warning, password URI exposure, certificate verification, client metadata, dynamic padding, copyleft/unknown licenses and platform lifecycle are explicit. |
-| 19 | PVNetwork reuse decision documented | PASS | Do not copy unlicensed anytls-go; evaluate an already-approved licensed engine or an independently implemented non-crypto adapter against published semantics; no custom TLS cryptography. |
-| 20 | Uncertainties explicitly listed | PASS | Source-code licensing clarification, exact production engine, current dependency/SBOM/advisory state, protocol-v1/v2 interop, third-party metadata defaults, real-device lifecycle/performance and V2 deployment/UI/wire evidence remain later work. |
+| 13 | Asset/screenshot references mapped | PASS for V1 | Reference repo is code/docs-oriented; Throne has concrete UI/resource paths and closed clients provide visual behavior references. Third-party assets remain reference-only under their own rights. |
+| 14 | Meaningful forks/alternatives reviewed | PASS | sing-anytls, sing-box/mihomo, anytls-rs, shoes/server paths and GUI clients establish meaningful alternatives without inventing a single mandatory core. |
+| 15 | Issues/PRs/releases/advisories reviewed | PASS | v0.0.13 release and 2026 head reviewed; protocol-v2 timeout/recovery changes, close/reuse maintenance and client-metadata compatibility/privacy concerns are captured as regression/product requirements. |
+| 16 | Relevant forums/docs reviewed | PASS | Canonical protocol, FAQ, URI and client-name docs are pinned; upstream implementation docs/source are primary evidence. |
+| 17 | Tests/CI reviewed | PASS | Reference anytls-go tree has no substantial dedicated test/CI suite beyond build/release configuration, and that absence is explicit. Independent anytls-rs documents `cargo test` and a local build/server/client/backend end-to-end smoke test; selected host-core interop/regression tests remain mandatory before support claims. |
+| 18 | Store/privacy/security implications reviewed | PASS | insecure TLS, password URI exposure, certificate verification, client metadata, dynamic padding, unknown/copyleft licenses and platform lifecycle are explicit. Device/Store testing is not a hidden V1 research gate. |
+| 19 | PVNetwork reuse decision documented | PASS | Do not copy unlicensed anytls-go; evaluate an already-approved licensed engine or independently implemented adapter against published semantics. GPL components require deliberate packaging/legal strategy; no custom TLS cryptography. |
+| 20 | Uncertainties explicitly listed | PASS | Source-code licensing clarification, exact production engine, dependency/SBOM/advisory state, protocol-v1/v2 interop, third-party metadata defaults, real-device lifecycle/performance and V2 deployment/UI/wire evidence remain later work. |
 
 ## 7. Security/product requirements
 
