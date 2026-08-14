@@ -34,7 +34,7 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 028 | Sophos SSL VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current Sophos Connect 2.5 MR1/2.0 MR1 evidence, `.ovpn` OpenVPN compatibility, `.pro` provisioning boundary and OpenVPN3-first reuse decision in `research/protocols/028-sophos-ssl-vpn/V1_GATE_RECONCILIATION.md` |
 | 029 | Sophos IPsec Remote Access | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current SFOS modern IKEv1 remote-access mode, retired `IPsec (legacy)` separation, `.scx/.tgb/.pro` boundaries and strongSwan 6.0.7-first standards-engine decision in `research/protocols/029-sophos-ipsec-remote-access/V1_GATE_RECONCILIATION.md` |
 | 030 | WatchGuard IKEv2 VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with native Windows/macOS/iOS, Android strongSwan, optional WatchGuard Windows client, certificate/EAP-MS-CHAPv2/AuthPoint and generated profile evidence in `research/protocols/030-watchguard-ikev2/V1_GATE_RECONCILIATION.md` |
-| 031 | WatchGuard SSL VPN | SKELETON |
+| 031 | WatchGuard SSL VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current `client.ovpn` OpenVPN compatibility, first-party Windows/macOS SAML boundary, AuthPoint/MFA, `.wgssl`, TLS/client lifecycle and OpenVPN3-first reuse decision in `research/protocols/031-watchguard-ssl-vpn/V1_GATE_RECONCILIATION.md` |
 | 032 | WatchGuard L2TP VPN | SKELETON — generic numbered folder due connector write filtering |
 | 033 | Aruba VIA | SKELETON — generic numbered folder |
 | 034 | Citrix Secure Access / Gateway VPN | SKELETON — generic numbered folder |
