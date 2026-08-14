@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-14T21:13:28Z",
-  "heartbeat_at_utc": "2026-08-14T21:21:31Z",
-  "task": "Continue COMPLETE-REFERENCE-v2 from authoritative main tracker, reconciling exact 16-gate evidence and advancing through mature families without repeating completed research.",
-  "note": "Entries 008–013 classic tunnels reconciled and ready for promotion under the written V2 contract; SSTP source-pin correction and PPTP evidence-backed non-selection of obsolete historical Linux projects preserved. V2 advances to 13/93 and foreground continues at entry 014 EtherIP."
+  "heartbeat_at_utc": "2026-08-14T21:25:19Z",
+  "task": "Continue COMPLETE-REFERENCE-v2 from authoritative main tracker, building missing V2 dossiers where necessary and reusing completed evidence without hidden runtime gates.",
+  "note": "Entries 014 EtherIP and 015 EtherIP/IPsec reconciled against all exact 16 V2 gates with new dedicated V2 dossiers. V2 advances to 15/93 and foreground continues immediately at entry 016 Cisco AnyConnect."
 }

@@ -19,8 +19,8 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 011 | SSTP / MS-SSTP | COMPLETE-REFERENCE-v2 |
 | 012 | PPTP | COMPLETE-REFERENCE-v2 |
 | 013 | SoftEther VPN Protocol | COMPLETE-REFERENCE-v2 |
-| 014 | EtherIP | PENDING |
-| 015 | EtherIP/IPsec | PENDING |
+| 014 | EtherIP | COMPLETE-REFERENCE-v2 |
+| 015 | EtherIP/IPsec | COMPLETE-REFERENCE-v2 |
 | 016 | Cisco AnyConnect | PENDING |
 | 017 | OpenConnect / ocserv-compatible | PENDING |
 | 018 | Palo Alto GlobalProtect | PENDING |
