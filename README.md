@@ -2,11 +2,13 @@
 
 > **AI agents and new chats: read `AI_START_HERE.md` first.**
 
-## 🔴 Live project progress
+## 🔴 Live project progress / وضعیت زنده پروژه
 
-**[Open LIVE_PROGRESS.md — current work, percentages, latest real commit, next action](LIVE_PROGRESS.md)**
+**[🇮🇷 داشبورد فارسی](LIVE_PROGRESS.md)** · **[🇬🇧 English dashboard](LIVE_PROGRESS_EN.md)**
 
-The live page intentionally separates **research coverage** from strict `COMPLETE-*` completion so progress cannot be overstated.
+The live dashboard shows the active work unit, latest observed real research action and heartbeat, evidence-based percentages, recent research commits, and the exact next action.
+
+The page intentionally separates **research coverage** from strict `COMPLETE-*` completion so progress cannot be overstated.
 
 Current phase: **Research / requirements / architecture**.
 
