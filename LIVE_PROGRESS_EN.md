@@ -1,38 +1,38 @@
-# PVNetwork — وضعیت زنده پروژه
+# PVNetwork — Live Project Status
 
-<p align="center"><strong>🇮🇷 فارسی</strong> &nbsp;•&nbsp; <a href="LIVE_PROGRESS_EN.md">🇬🇧 English</a></p>
+<p align="center"><a href="LIVE_PROGRESS.md">🇮🇷 فارسی</a> &nbsp;•&nbsp; <strong>🇬🇧 English</strong></p>
 
-<p align="center"><img src="assets/live-progress-fa.svg" width="100%" alt="PVNetwork Live Progress"></p>
+<p align="center"><img src="assets/live-progress-en.svg" width="100%" alt="PVNetwork Live Progress"></p>
 
-> **نکته:** «پوشش تحقیق» با «تکمیل سخت‌گیرانه» فرق دارد. فقط `COMPLETE-*` به معنی عبور از همه gateهای الزامی است.
+> **Note:** research coverage is not strict completion. Only `COMPLETE-*` means all required gates have passed.
 
-## 🔴 در این لحظه چه کاری در صف فعال است؟
+## 🔴 What is active right now?
 
-- **فوکوس فعال:** `تکمیل پژوهش V1 اکوسیستم Xray / Modern Proxy`
+- **Current focus:** `Xray Modern Proxy V1 Closure`
 - **Work unit:** `XRAY-MODERN-PROXY-V1-CLOSURE`
-- **فاز:** `COMPLETE-RESEARCH-v1`
-- **وضعیت:** `IN_PROGRESS`
+- **Phase:** `COMPLETE-RESEARCH-v1`
+- **State:** `IN_PROGRESS`
 
-### آخرین کار واقعی مشاهده‌شده
+### Latest observed real research action
 
 - [`a5c9c3d3e4`](https://github.com/DashSaman/PVN-amirrezagol/commit/a5c9c3d3e4d519368b3ebf3cbb719098d05c5515) — **docs(protocols): add XTLS Vision research entry**
-- زمان commit: `2026-08-14T05:07:28+03:30`
-- Heartbeat: **فعالیت بسیار اخیر** — حدود **0 دقیقه** قبل
+- Commit time: `2026-08-14T05:07:28+03:30`
+- Heartbeat: **Very recent activity** — about **0 min** ago
 
-### اقدام بعدی ثبت‌شده در state
+### Exact next action recorded in state
 
 > Continue Xray original-v1 closure from AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md: deep-audit libXray API/lifecycle/build/dependencies/issues, create Xray per-entry capability/support-reuse decisions, expand v2rayNG source/storage/VpnService/import evidence, add security/dependency-advisory and commander/API/stats control maps, synchronize Xray INDEX and numbered entries, checkpoint, then continue the next unfinished original v1 family without waiting for owner. Keep WireGuard/AmneziaWG residual v1 work queued before any overall v1 completion claim.
 
-## 📊 درصدهای قابل اتکا
+## 📊 Evidence-based progress
 
-| شاخص | مقدار | درصد |
+| Metric | Count | Percent |
 |---|---:|---:|
-| تکمیل سخت‌گیرانه V1 | 0/93 | **0.0%** |
-| تحقیق عمیق شروع‌شده | 36/93 | **38.7%** |
-| dossier/skeleton یا بهتر | 64/93 | **68.8%** |
-| تکمیل سخت‌گیرانه V2 | 0/93 | **0.0%** |
+| Strict V1 complete | 0/93 | **0.0%** |
+| Deep research started | 36/93 | **38.7%** |
+| Dossier/skeleton or deeper | 64/93 | **68.8%** |
+| Strict V2 complete | 0/93 | **0.0%** |
 
-## 🕒 آخرین commitهای تحقیقاتی
+## 🕒 Recent research commits
 
 - `2026-08-14T05:07:28+03:30` — [`a5c9c3d3e4`](https://github.com/DashSaman/PVN-amirrezagol/commit/a5c9c3d3e4d519368b3ebf3cbb719098d05c5515) — docs(protocols): add XTLS Vision research entry
 - `2026-08-14T05:07:17+03:30` — [`a8b05c8ff8`](https://github.com/DashSaman/PVN-amirrezagol/commit/a8b05c8ff8618680b290b3e91a6cabaa21ab04db) — docs(protocols): add XTLS legacy research entry
@@ -43,8 +43,8 @@
 - `2026-08-14T05:06:14+03:30` — [`cb7d8fd30b`](https://github.com/DashSaman/PVN-amirrezagol/commit/cb7d8fd30b4467934065dd6490946c64405d758e) — docs(protocols): link VLESS entry to Xray research evidence
 - `2026-08-14T05:05:40+03:30` — [`8c1acb20fa`](https://github.com/DashSaman/PVN-amirrezagol/commit/8c1acb20fa822795c6f0ca27d575a469f7f5c7ba) — docs(research): add Xray security advisory and release safety review
 
-## ✅ از کجا بفهمم واقعاً دارد کار می‌کند؟
+## ✅ How to verify work is really moving
 
-با Refresh صفحه این سه مورد را نگاه کن: **آخرین commit تحقیقاتی، زمان Heartbeat، و Work unit فعال**. Commitهای صرفاً مربوط به خود داشبورد از این لیست حذف می‌شوند تا پیشرفت مصنوعی نشان داده نشود.
+Refresh this page and watch three things: **latest research commit, heartbeat time, and active work unit**. Dashboard-only commits are filtered out so they cannot fake progress.
 
-منابع: [`AGENT_RUN_STATE`](docs/AGENT_RUN_STATE.json) · [`V1 tracker`](research/RESEARCH_COMPLETENESS.md) · [`V2 tracker`](research/REFERENCE_V2_COMPLETENESS.md) · [`Checkpoint log`](docs/AGENT_CHECKPOINT_LOG.md)
+Sources: [`AGENT_RUN_STATE`](docs/AGENT_RUN_STATE.json) · [`V1 tracker`](research/RESEARCH_COMPLETENESS.md) · [`V2 tracker`](research/REFERENCE_V2_COMPLETENESS.md) · [`Checkpoint log`](docs/AGENT_CHECKPOINT_LOG.md)

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-label="PVNetwork Live Research Dashboard">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#0c1728"/></linearGradient>
+  <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#13243b"/><stop offset="1" stop-color="#102033"/></linearGradient>
+  <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity=".28"/></filter>
+  <style>
+    text { font-family: Inter, "Segoe UI", Tahoma, Arial, sans-serif; fill:#eef6ff; }
+    .title { font-size:30px; font-weight:700; }
+    .subtitle { font-size:14px; fill:#91a4bd; }
+    .eyebrow { font-size:13px; font-weight:700; letter-spacing:1.3px; fill:#5eead4; }
+    .focus { font-size:25px; font-weight:700; }
+    .metric { font-size:34px; font-weight:800; }
+    .small { font-size:14px; }
+    .tiny { font-size:12px; }
+    .muted { fill:#91a4bd; }
+    .mono { font-family: "SFMono-Regular", Consolas, monospace; }
+  </style>
+</defs>
+<rect width="1200" height="760" rx="28" fill="url(#bg)"/>
+<circle cx="1040" cy="70" r="110" fill="#0ea5e9" opacity=".06"/>
+<circle cx="1120" cy="165" r="70" fill="#22c55e" opacity=".05"/>
+
+<text x="58" y="64" class="title">PVNetwork Live Research Dashboard</text>
+<text x="58" y="91" class="subtitle">Repository-evidence view — coverage is not completion</text>
+<rect x="975" y="42" width="167" height="40" rx="20" fill="#0f2b24" stroke="#1f6b55"/>
+<circle cx="997" cy="62" r="6" fill="#22c55e"/>
+<text x="1012" y="67" class="small" fill="#86efac">IN_PROGRESS</text>
+
+<g filter="url(#shadow)">
+  <rect x="58" y="126" width="720" height="220" rx="22" fill="url(#hero)" stroke="#263954"/>
+  <text x="84" y="160" class="eyebrow">NOW WORKING</text>
+  <text x="84" y="205" class="focus">Xray Modern Proxy V1 Closure</text>
+  <rect x="84" y="232" width="250" height="36" rx="18" fill="#0c2b3b"/>
+  <text x="104" y="255" class="small"><tspan class="muted">Active phase: </tspan>COMPLETE-RESEARCH-v1</text>
+  <rect x="348" y="232" width="210" height="36" rx="18" fill="#1e243a"/>
+  <text x="368" y="255" class="small"><tspan class="muted">State: </tspan>IN_PROGRESS</text>
+  <text x="84" y="300" class="small muted">Latest observed research action</text>
+  <text x="84" y="326" class="small mono">docs(protocols): add XTLS Vision research entry</text>
+</g>
+
+<g filter="url(#shadow)">
+  <rect x="804" y="126" width="338" height="220" rx="22" fill="#111d2e" stroke="#263954"/>
+  <text x="830" y="160" class="eyebrow">RESEARCH HEARTBEAT</text>
+  <text x="830" y="207" class="metric">0 min ago</text>
+  <text x="830" y="236" class="small muted">Very recent activity</text>
+  <rect x="830" y="262" width="120" height="34" rx="17" fill="#102b24"/>
+  <text x="890" y="284" text-anchor="middle" class="small">RECENT</text>
+  <text x="830" y="323" class="tiny muted">2026-08-14T05:07:28+03:30</text>
+</g>
+
+<g><rect x="58" y="398" width="252" height="142" rx="18" fill="#111d2e" stroke="#23334b"/><text x="76" y="430" class="small muted">Strict V1 complete</text><text x="76" y="475" class="metric">0.0%</text><text x="263" y="473" text-anchor="end" class="small">0/93</text><rect x="76" y="496" width="216" height="10" rx="5" fill="#213047"/><rect x="76" y="496" width="0.0" height="10" rx="5" fill="#8b5cf6"/></g><g><rect x="338" y="398" width="252" height="142" rx="18" fill="#111d2e" stroke="#23334b"/><text x="356" y="430" class="small muted">Deep research started</text><text x="356" y="475" class="metric">38.7%</text><text x="543" y="473" text-anchor="end" class="small">36/93</text><rect x="356" y="496" width="216" height="10" rx="5" fill="#213047"/><rect x="356" y="496" width="83.6" height="10" rx="5" fill="#22c55e"/></g><g><rect x="618" y="398" width="252" height="142" rx="18" fill="#111d2e" stroke="#23334b"/><text x="636" y="430" class="small muted">Dossier materialized+</text><text x="636" y="475" class="metric">68.8%</text><text x="823" y="473" text-anchor="end" class="small">64/93</text><rect x="636" y="496" width="216" height="10" rx="5" fill="#213047"/><rect x="636" y="496" width="148.6" height="10" rx="5" fill="#38bdf8"/></g><g><rect x="898" y="398" width="252" height="142" rx="18" fill="#111d2e" stroke="#23334b"/><text x="916" y="430" class="small muted">Strict V2 complete</text><text x="916" y="475" class="metric">0.0%</text><text x="1103" y="473" text-anchor="end" class="small">0/93</text><rect x="916" y="496" width="216" height="10" rx="5" fill="#213047"/><rect x="916" y="496" width="0.0" height="10" rx="5" fill="#f59e0b"/></g>
+
+<text x="58" y="578" class="eyebrow">Recent research commits</text>
+<circle cx="76" cy="601" r="5" fill="#22c55e"/><text x="94" y="606" class="small">docs(protocols): add XTLS Vision research entry</text><text x="1084" y="606" text-anchor="end" class="tiny muted">a5c9c3d3</text><circle cx="76" cy="639" r="5" fill="#22c55e"/><text x="94" y="644" class="small">docs(protocols): add XTLS legacy research entry</text><text x="1084" y="644" text-anchor="end" class="tiny muted">a8b05c8f</text><circle cx="76" cy="677" r="5" fill="#22c55e"/><text x="94" y="682" class="small">docs(protocols): add REALITY research entry</text><text x="1084" y="682" text-anchor="end" class="tiny muted">0aaa8010</text>
+<text x="1142" y="734" text-anchor="end" class="tiny muted">Auto-generated every 5 minutes and after pushes</text>
+</svg>
