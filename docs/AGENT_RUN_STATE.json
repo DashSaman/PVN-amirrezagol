@@ -10,8 +10,8 @@
   "active_work_unit": {
     "id": "WIREGUARD-AWG-COMPLETE-REFERENCE-V2",
     "status": "IN_PROGRESS",
-    "source_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_7.md",
-    "exact_next_action": "Inspect pinned Nuxt/Nitro/h3 dependency versions and authoritative framework source/docs for Host/Forwarded/X-Forwarded-* trust semantics if determinable without execution. In parallel inventory WireGuard and standalone AmneziaWG Apple entitlements, app groups, Network Extension identifiers, and shipped Store/build revision mapping. Then reconcile entries 002/003 line-by-line against FULL_PROTOCOL_REFERENCE_CONTRACT.md; keep execution-only container/Apple/AWG interop receipts blocked until infrastructure exists."
+    "source_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_8.md",
+    "exact_next_action": "Inventory pinned WireGuard/AWG Apple Xcode configuration templates and target bundle/product identifiers, then seek authoritative release/App Store metadata that can narrow shipped-build provenance without guessing. Reconcile entries 002/003 line-by-line against FULL_PROTOCOL_REFERENCE_CONTRACT.md, explicitly marking source-complete versus execution-blocked gates. If source-only gaps remain in wg-easy, inspect concrete Nitro adapter/server entry points for where h3 request helpers are invoked. Keep entries PENDING until all strict gates genuinely pass."
   },
   "campaign_sources_of_truth": {
     "matrix": "docs/PROTOCOL_MATRIX.md",
@@ -43,7 +43,7 @@
   },
   "last_checkpoint": {
     "date": "2026-08-14",
-    "summary": "WireGuard/AmneziaWG v2 slice 7 adds a pinned wg-easy v15.3.0 state-changing API guard matrix and a separate request-integrity/reverse-proxy boundary audit. Permission/setup/authentication route classes are now explicit; application-declared CSRF/origin/trusted-proxy controls and exact Nitro/h3 forwarded-header semantics remain unresolved. Entries 002/003 remain PENDING; execution-only container, Apple-device and AWG generation interop receipts remain externally blocked.",
-    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_7.md"
+    "summary": "WireGuard/AmneziaWG v2 slice 8 pins the exact wg-easy v15.3.0 Nuxt/Nitro/h3 dependency set and h3 1.15.11 Host/X-Forwarded-* request semantics, and records the source-level Apple packet-tunnel/App Group entitlement boundary for WireGuard and standalone AmneziaWG. Effective built-image proxy behavior, Store provenance, Apple-device execution and AWG generation interop remain blocked; entries 002/003 remain PENDING.",
+    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_8.md"
   }
 }
