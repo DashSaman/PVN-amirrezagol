@@ -171,7 +171,7 @@ Do not recommend blind remote-script execution without source review.
 
 ## 17. Git discipline
 
-Use meaningful commit messages such as `docs(research): ...`, `docs(protocols): ...`, `docs(agents): ...`. Do not use meaningless commit messages.
+Use meaningful commit messages such as `docs(research): ...`, `docs/protocols): ...`, `docs(agents): ...`. Do not use meaningless commit messages.
 
 ## 18. Latest handoff pointer — MUST READ
 
@@ -202,3 +202,58 @@ Recommended next family: **Xray / modern proxy ecosystem**, because shared/clien
 Keep remaining WireGuard/AmneziaWG v1 gaps queued and return before claiming overall original-campaign completion.
 
 Do **not** begin mass `COMPLETE-REFERENCE-v2` work until the original campaign reaches its intended gates. After every meaningful work unit, create/update a newer AGENTS handoff and point this file to it.
+
+## 20. Mandatory continuous-execution bootstrap
+
+The owner has already authorized execution of the entire repository-documented research/reference backlog. Before continuing meaningful work, also read:
+
+1. `AGENT_EXECUTION_CONTRACT.md`
+2. `docs/AGENT_RUN_STATE.json`
+3. `docs/AGENT_CHECKPOINT_LOG.md`
+4. `research/REFERENCE_V2_COMPLETENESS.md`
+
+When a checkout/Python runtime is available, run:
+
+```bash
+python scripts/agent_state.py verify
+python scripts/agent_state.py build
+python scripts/agent_state.py next
+```
+
+Do not ask the owner to say “continue” between work units, protocols, families, or campaigns. The normal loop is:
+
+**work -> persist evidence -> checkpoint -> verify -> select next executable task -> continue**
+
+If the platform forcibly interrupts execution, that is an interruption, not completion. The next invocation must resume from repository state immediately instead of restarting from chat memory.
+
+## 21. Full backlog means all 93 entries and both research layers
+
+The original scope is all 93 numbered entries in `docs/PROTOCOL_MATRIX.md`, with the full gate set in `research/PROTOCOL_RESEARCH_TEMPLATE.md`.
+
+Completing one protocol or family is only a checkpoint. After the original campaign, continue the mandatory second layer tracked in `research/REFERENCE_V2_COMPLETENESS.md` and defined by `research/FULL_PROTOCOL_REFERENCE_CONTRACT.md`.
+
+The generated backlog in `docs/AGENT_BACKLOG.generated.json` is derived by `scripts/agent_state.py`; it exists to prevent forgotten sub-tasks. Repository contracts and evidence remain authoritative.
+
+## 22. Strict no-fake-completion gate
+
+No overall `DONE`, `COMPLETE`, or equivalent claim is allowed unless this passes:
+
+```bash
+python scripts/agent_state.py verify --require-complete
+```
+
+A strict pass requires, at minimum, all 93 v1 tracker entries to be `COMPLETE-RESEARCH-v1`, all 93 v2 tracker entries to be `COMPLETE-REFERENCE-v2`, the run state to be complete, no nonterminal active work unit, and genuine evidence for the detailed gates.
+
+`V1-HANDOFF-READY`, `IN-RESEARCH`, `EVIDENCE-GAPS`, `PENDING`, `SKELETON`, `RESERVED`, `BLOCKED_EXTERNAL`, or a completed family does not mean the whole campaign is complete.
+
+## 23. Stop and blocker rules
+
+Voluntary stopping is allowed only when:
+
+1. the entire owner-approved scope passes strict completion validation; or
+2. every remaining required item is genuinely externally blocked, all blockers are documented, and no independent executable work remains; or
+3. a platform/safety/capability restriction forcibly prevents continuation.
+
+Cases 2 and 3 are not completion. Before any interruption that still allows repository writes, update `docs/AGENT_RUN_STATE.json` and `docs/AGENT_CHECKPOINT_LOG.md` with the exact resume point.
+
+If one task is blocked, continue other independent required tasks. If the same approach fails twice, record it and change strategy instead of looping.
