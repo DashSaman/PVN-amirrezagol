@@ -126,3 +126,39 @@ After recording a checkpoint, the active agent must continue to the next executa
   3. close Windows/storage/dependency/Amnezia platform/reuse/issue gaps;
   4. synchronize entries 002/003 and family state;
   5. if handoff-ready, immediately select next unfinished original-v1 family without waiting for owner.
+
+---
+
+## 2026-08-14 — SoftEther family original-v1 closure
+
+- Work unit: `SOFTETHER-V1-CLOSURE`
+- State transition: `IN_PROGRESS -> PASS` at the **research handoff** level only.
+- New state: `V1-HANDOFF-READY / NOT IMPLEMENTED`; entries 013–015 remain below strict `COMPLETE-RESEARCH-v1`.
+- Work completed/verified:
+  - deep source/runtime evidence for native client, EtherIP L2 path and EtherIP/IPsec composite ownership — `SOURCE_CLIENT_ETHERIP_IPSEC_EVIDENCE.md`, commit `0f222d5dda112612d97490a4cf62b75ebd238897`;
+  - current release/security/issue review — `RELEASE_SECURITY_ISSUE_REVIEW.md`, commit `eec8f6695ee499eac00e30b34bb980acee153599`;
+  - client config/RPC/persistence/license model — `CLIENT_CONFIG_LICENSE_MODEL.md`, commit `e7c77a9aaccd61fb4bef0e05e597be5ad2774537`;
+  - shared family index synchronized — commit `c081b4ad46f060556ef6c47dd5db8f6ca37c4e23`;
+  - numbered v1 decisions present for 013/014/015 — commits `752b3f2445dbcad3ff7bb5fdb945868067804182`, `910528c88c63670d3b6fa8bad6cafbf375e00d60`, `6e785ad4a092bb32d5cb93cc0a1d991178365470`;
+  - dated status `docs/RESEARCH_CAMPAIGN_STATUS_2026-08-14_SOFTETHER_V1.md` — commit `f0a343361c09454647092f840cf2090ff340ba00`;
+  - handoff `AGENTS_HANDOFF_2026-08-14_SOFTETHER_V1.md` — commit `4b8acb98ea17dcd581587f17c0163197fab51f2c`;
+  - active run state advanced to Hysteria — commit `5166c983e0f6399b741945a75fe90241acb849d5`.
+- Checks/evidence:
+  - official pinned source for `Proto_EtherIP`, `Proto_IPsec`, `Client`, CMake/submodules and license reviewed: PASS for documented architecture/config/build claims;
+  - official current GitHub Releases/advisories/issues reviewed: PASS for documented release/security claims.
+- Critical blocker preserved:
+  - official `GHSA-q5g3-qhc6-pr3h` / `CVE-2026-39312` marks Developer Edition 5.2.5188 vulnerable to a high-severity pre-auth DoS and the reviewed advisory provides no patched-version field;
+  - therefore upstream `latest` is explicitly rejected as a generic production-selection rule.
+- Failed approach not to repeat unchanged:
+  - do not collapse SoftEther native protocol, EtherIP and EtherIP/IPsec into one capability merely because they share Cedar; their runtime/config ownership differs.
+- Residual gaps:
+  - fixed/safe release verification;
+  - exact credential-at-rest/import-export audit;
+  - exact dependency/NOTICE bundle;
+  - exhaustive UI/command/template closure and implementation/device certification.
+- Exact next action:
+  1. execute `HYSTERIA-V1-CLOSURE` for entries 042/043;
+  2. pin official Hysteria/Hysteria2 source/release/license and separate protocol semantics;
+  3. map architecture, config/storage, QUIC dependencies, platforms, tests/CI, security/issues/releases and client references;
+  4. write support/reuse decisions, synchronize numbered entries and checkpoint;
+  5. immediately continue the next unfinished original-v1 family; do not begin mass v2 yet.
