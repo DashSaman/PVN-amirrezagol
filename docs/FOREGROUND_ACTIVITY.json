@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-14T21:13:28Z",
-  "heartbeat_at_utc": "2026-08-14T21:50:30Z",
-  "task": "Continue COMPLETE-REFERENCE-v2 from authoritative main tracker, preserving proprietary vendor release/qualification boundaries and separately pinned open compatibility implementations.",
-  "note": "Entry 021 Ivanti Connect Secure reconciled against all exact 16 V2 gates. Current ICS 25.1.2.1 and ISAC 22.8R7 are pinned separately; the missing vendor qualification for their exact pair remains explicit. V2 advances to 21/93 and foreground continues at entry 022 Juniper Network Connect."
+  "heartbeat_at_utc": "2026-08-14T21:56:30Z",
+  "task": "Continue COMPLETE-REFERENCE-v2 from authoritative main tracker, using evidence-backed retirement/N/A for legacy proprietary protocol families and maintained open compatibility where applicable.",
+  "note": "Entry 022 Juniper Network Connect/oNCP reconciled against all exact 16 V2 gates as legacy compatibility. Proprietary NC clients are retired; current ICS 25.1.x NC-wire support is not fabricated. V2 advances to 22/93 and foreground continues at entry 023 F5 BIG-IP SSL VPN."
 }

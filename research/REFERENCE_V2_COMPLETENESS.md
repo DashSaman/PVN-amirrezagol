@@ -27,7 +27,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 019 | Fortinet FortiGate SSL VPN | COMPLETE-REFERENCE-v2 |
 | 020 | Pulse Secure | COMPLETE-REFERENCE-v2 |
 | 021 | Ivanti Connect Secure | COMPLETE-REFERENCE-v2 |
-| 022 | Juniper Network Connect | PENDING |
+| 022 | Juniper Network Connect | COMPLETE-REFERENCE-v2 |
 | 023 | F5 BIG-IP SSL VPN | PENDING |
 | 024 | Array Networks SSL VPN | PENDING |
 | 025 | Check Point VPN / SNX | PENDING |
