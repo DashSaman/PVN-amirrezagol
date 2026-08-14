@@ -137,13 +137,160 @@ OpenVPN/Android issue research identified recurring classes worth converting int
 These are now documented in `research/upstreams/openvpn-family/LESSONS_AND_TESTS.md`.
 
 ### Tracker truth
-`research/RESEARCH_COMPLETENESS.md` is authoritative. No entry is currently `COMPLETE-RESEARCH-v1`. High-priority families are `IN-RESEARCH`; others remain `SKELETON`, `RESERVED`, `EVIDENCE-GAPS`, or `PENDING`.
+`research/RESEARCH_COMPLETENESS.md` is authoritative when synchronized, but a future agent must also inspect actual tree/history because large connector writes can be rejected. No entry is currently `COMPLETE-RESEARCH-v1`. High-priority families are `IN-RESEARCH`; others remain `SKELETON`, `RESERVED`, `EVIDENCE-GAPS`, or `PENDING`.
 
 ### Connector limitation recorded
-Some legitimate detailed research-file writes are rejected by the GitHub connector safety layer. The no-loop rule applies: do not repeat the same blocked write unchanged. Preserve evidence through smaller safe files and keep gaps explicit in the tracker.
+Some legitimate detailed research-file writes are rejected by the GitHub connector safety layer. The no-loop rule applies: do not repeat the same blocked write unchanged. Preserve evidence through smaller safe files and keep gaps explicit.
+
+---
+
+## 2026-08-14 — WireGuard / AmneziaWG deep work unit
+
+### Repository state checked first
+
+Re-read `AGENTS.md`, `docs/PROJECT_STATE.md`, `research/RESEARCH_COMPLETENESS.md` and the actual `research/upstreams/` tree on `main`.
+
+Found that the previous project-state document and parts of the tracker lagged newer committed research. In particular, `research/upstreams/xray-family/` exists even though older tracker text still describes part of that shared dossier as blocked/partial. `docs/PROJECT_STATE.md` has now been synchronized and future agents are explicitly told to inspect Git history/tree as well as trackers.
+
+`AGENTS.md` was also updated with a mandatory continuous-handoff rule: meaningful research/decisions/blockers must be persisted so another chat can resume without relying on conversation memory.
+
+### Why WireGuard family was selected next
+
+`research/upstreams/wireguard-family/` was still essentially a README-only shared dossier while entries 002 WireGuard and 003 AmneziaWG are high-value candidates. It was selected as the next deep work unit.
+
+### Source provenance and pinned revisions
+
+Created `research/upstreams/wireguard-family/SOURCE_REVISIONS.md` and pinned:
+
+- `WireGuard/wireguard-go@ecfc5a8d54462e18e13c72173e2623d16d8e25a0`
+- `WireGuard/wireguard-windows@4e6726c23ae9c5cb58e0c9910f3b7515621d133d`
+- `WireGuard/wireguard-android@e7b3a3c118836e112620b1302a8ba1873ad4daac`
+- `WireGuard/wireguard-apple@2fec12a6e1f6e3460b6ee483aa00ad29cddadab1`
+- `amnezia-vpn/amneziawg-go@1b86b2ae0e493e7ea93f8c1a0f0cb6735b1551f1`
+
+The official WireGuard GitHub repositories explicitly state they are mirrors of canonical `git.zx2c4.com` repositories. The research archive records both provenance and immutable recursive-tree references rather than pretending GitHub is canonical.
+
+Reviewed repository-level licenses at these pins: WireGuard Go MIT, Windows MIT, Android Apache-2.0, Apple MIT, AmneziaWG Go MIT. Final reuse still requires dependency/path-level review.
+
+### Core architecture
+
+Created `research/upstreams/wireguard-family/CORE_ARCHITECTURE.md`.
+
+The pinned portable core source separates protocol/device state, connection/socket binding, virtual interface and IPC/control concerns. PVNetwork direction is therefore:
+
+`PVNetwork UI -> application/session layer -> stable Core Adapter -> platform-selected WireGuard implementation`
+
+Do not bind product UI to `wireguard-go`, and do not reimplement WireGuard protocol cryptography.
+
+The official source itself indicates that platform-native/kernel or fuller platform integrations can be preferable to the portable userspace implementation, reinforcing a platform-specific engine strategy behind one product adapter contract.
+
+### Android client research
+
+Created `research/upstreams/wireguard-family/ANDROID_CLIENT.md`.
+
+Verified source architecture includes separate `tunnel/` and `ui/` modules. The tunnel module exposes a backend abstraction with multiple backend paths; `Application.kt` chooses a backend at runtime rather than letting UI depend on a single engine implementation.
+
+Verified storage split:
+
+- application preferences use Android Preferences DataStore (`settings`);
+- tunnel/profile configurations are managed separately through a `ConfigStore` abstraction and `FileConfigStore`.
+
+Verified UI/settings evidence includes tunnel list flows, adaptive phone/tablet layouts, Settings activity and settings for restore-on-boot, export, quick tile, logs, theme and advanced/system-oriented options.
+
+PVNetwork requirement derived: keep ordinary preferences, canonical profile data, secrets, cache/import material and logs as distinct storage classes; Android TV support must be proven separately and not inferred from mobile layouts.
+
+### Apple client research
+
+Created `research/upstreams/wireguard-family/APPLE_CLIENT.md`.
+
+Verified source layers:
+
+- `Sources/WireGuardApp/`
+- `Sources/WireGuardNetworkExtension/`
+- `Sources/WireGuardKit/`
+- `Sources/Shared/`
+
+`PacketTunnelProvider` is a `NEPacketTunnelProvider` that owns a WireGuard adapter, maps errors, handles start/stop and exposes a narrow app-extension runtime-information path.
+
+`Sources/Shared/Keychain.swift` uses Apple Security/Keychain APIs with persistent references and platform-specific access behavior instead of treating raw configuration text as the normal long-lived cross-process storage model.
+
+PVNetwork direction: Apple support should follow an app + NetworkExtension + adapter/shared-model separation, with Keychain/protected storage and explicit entitlement/access-group design.
+
+### Windows source research and connector gap
+
+Windows source was inspected deeply at the pinned revision. Verified areas include `conf/`, `manager/`, `ui/`, `driver/`, `services/`, `ringlogger/`, `updater/`, `elevate/`, `l18n/` and official Windows docs.
+
+Verified architecture/details include:
+
+- a privileged/background manager service with per-user UI process and IPC;
+- tunnel/config/log/update/tray UI areas;
+- configuration parser/writer/migration separation;
+- normal persisted configurations protected using Windows DPAPI (`.conf.dpapi`) while plaintext `.conf` is an interchange/import form.
+
+Engineering conclusion: import/export text format must not automatically become PVNetwork's persistence format; Windows should use protected canonical storage and explicit export semantics.
+
+Two attempts to persist a dedicated Windows research file were rejected by the GitHub write-safety layer. Per anti-loop rules, the same write was not repeated. Evidence is preserved in `docs/PROJECT_STATE.md` and this log.
+
+### AmneziaWG compatibility delta
+
+Created `research/upstreams/wireguard-family/AMNEZIAWG_DELTA.md`.
+
+GitHub identifies `amneziawg-go` as fork-derived from WireGuard Go. Upstream documentation exposes an expanded and version-dependent configuration/compatibility surface beyond ordinary WireGuard. PVNetwork must therefore keep AmneziaWG as a separate versioned capability/schema rather than silently flattening it into WireGuard.
+
+The research file intentionally records architecture, versioning, parser and interoperability implications rather than turning the repository into an operational traffic-evasion tuning guide.
+
+### AmneziaWG platform repositories inspected
+
+Current platform repositories were identified and pinned:
+
+- `amnezia-vpn/amneziawg-windows@1326e9bbdc71be88ddcc20925e092c6f5b9513da`
+- `amnezia-vpn/amneziawg-apple@e5410a539f28b8ce5dd1d060c45e4fa555e9a210`
+- `amnezia-vpn/amneziawg-android@d6cd6647465a9a593aa9ccadbbd20c44bf600d5b`
+
+Findings:
+
+- Windows repository README describes an MIT-licensed embeddable tunnel library rather than a complete end-user GUI.
+- Apple repository is an active Swift fork derived from WireGuard Apple; repository metadata reports MIT.
+- Android repository is an active Kotlin project; repository metadata reports Apache-2.0.
+
+A separate platform-reference file was rejected by the connector write filter, so the verified evidence is preserved in this log and Project State.
+
+### Upstream failure lessons / tests
+
+Created `research/upstreams/wireguard-family/LESSONS_AND_TESTS.md` using official source plus WireGuard mailing-list evidence.
+
+Historical/current failure classes converted into PVNetwork regression requirements include:
+
+- Android OS VPN authorization and Always-On ownership conflicts;
+- reboot/restore-state reliability;
+- Quick Settings/UI/background state synchronization;
+- delayed network/DNS readiness at startup;
+- sleep/resume and network/address-family changes;
+- route-helper policy assumptions;
+- Apple NetworkExtension workarounds and Store review/release latency increasing regression risk.
+
+These reports span different OS/client versions; they are used as **failure classes**, not claims that every old upstream bug is still current.
+
+### Current WireGuard-family files committed in this work unit
+
+- `SOURCE_REVISIONS.md`
+- `CORE_ARCHITECTURE.md`
+- `ANDROID_CLIENT.md`
+- `APPLE_CLIENT.md`
+- `AMNEZIAWG_DELTA.md`
+- `LESSONS_AND_TESTS.md`
+
+A synchronized rewrite of the family README was also attempted but rejected by the connector. Do not retry the identical write.
+
+### Current conclusion
+
+WireGuard/AmneziaWG research is materially deeper but still **not COMPLETE-RESEARCH-v1**. Remaining completion fields include dependency/SBOM review, current release/fix mapping, complete Windows-dossier persistence, platform-specific AmneziaWG deltas, full assets/UI/accessibility inventory, Store/package review, protocol-entry links and real interoperability/performance evidence.
 
 ### Next exact action
-Continue from the tracker, finishing the highest-value incomplete shared/client dossier to the full 21-section template before calling it complete. Prioritize OpenVPN completion, WireGuard platform clients, Xray/client ecosystem persistence, and top cross-platform client UI/storage/issues research.
+
+1. Synchronize the completeness tracker if connector allows it.
+2. Update `AGENTS.md` with this exact work-unit handoff and next action.
+3. Continue remaining WireGuard/AmneziaWG completion gaps, then move to the next highest-value incomplete family based on actual tree/tracker state.
 
 ---
 
