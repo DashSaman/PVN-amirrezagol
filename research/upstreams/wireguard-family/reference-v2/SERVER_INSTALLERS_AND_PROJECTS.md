@@ -41,23 +41,33 @@ Source: <https://www.wireguard.com/install/>. Legacy package/module warnings on 
 
 ## wg-easy v15: control-plane privilege and exposure boundary
 
-Pinned research observation, 2026-08-14: the current upstream `wg-easy/wg-easy` example compose uses `ghcr.io/wg-easy/wg-easy:15`, publishes UDP 51820 and TCP 51821, mounts `/lib/modules` read-only, grants `NET_ADMIN` and `SYS_MODULE`, and enables IPv4/IPv6 forwarding sysctls. Therefore the web application is not a harmless presentation-only container: its deployment has network-administration privilege and access to the host kernel-module tree. PVNetwork must treat compromise of this panel/container as a high-impact control-plane event.
+Pinned research observation, 2026-08-14: the upstream `wg-easy/wg-easy` v15 example compose uses `ghcr.io/wg-easy/wg-easy:15`, publishes UDP 51820 and TCP 51821, mounts `/lib/modules` read-only, grants `NET_ADMIN` and `SYS_MODULE`, and enables IPv4/IPv6 forwarding sysctls. Therefore the web application is not a harmless presentation-only container: its deployment has network-administration privilege and access to the host kernel-module tree. PVNetwork must treat compromise of this panel/container as a high-impact control-plane event.
 
 The example also documents optional `HOST=0.0.0.0` and `INSECURE=false`; merely setting `INSECURE=false` is not evidence that TCP 51821 is safely exposed to an untrusted network. Recommended PVNetwork posture is to bind management to loopback/private management networking or place it behind an explicitly authenticated TLS reverse proxy, and never conflate the WireGuard UDP listener with the panel TCP listener.
 
-Source anchors:
-- <https://github.com/wg-easy/wg-easy/blob/master/docker-compose.yml>
-- upstream v15 image is version-selected (`:15`) rather than floating `latest` in the example, but production certification still needs an immutable image digest and rollback receipt.
+Source anchor: <https://github.com/wg-easy/wg-easy/blob/master/docker-compose.yml>. Production certification still needs an immutable image digest and rollback receipt.
 
-### Authentication/version caution
+### Authentication/session implementation — immutable v15.0.0 source pin
 
-Historical wg-easy v14 guidance around `PASSWORD_HASH` does not safely transfer to v15. Upstream discussion in 2025 explicitly notes `PASSWORD_HASH` as a v14 mechanism while v15 moved to a different initialization/authentication model. The development compose exposes `INIT_ENABLED`, `INIT_HOST`, `INIT_PORT`, `INIT_USERNAME` and `INIT_PASSWORD` for test initialization. PVNetwork therefore MUST version-scope authentication instructions and must not publish v14 password-hash recipes as v15 facts.
+This audit is pinned to upstream tag **`v15.0.0` = commit `f79b0fd025f5ee3b8359de042523d867cb0f5c3a`** rather than a moving `master` branch. The following source paths are therefore reproducible observations for the v15 generation:
 
-Research anchors:
-- <https://github.com/wg-easy/wg-easy/discussions/2110>
-- <https://github.com/wg-easy/wg-easy/blob/master/docker-compose.dev.yml>
+- `src/server/api/session.post.ts`: login validates `username`, `password`, optional `totpCode`, and a `remember` flag; it calls `Database.users.login(...)`, creates a `useWGSession(event, remember)` session, and stores only the authenticated `userId` in session data.
+- `src/server/database/repositories/user/service.ts`: users are stored in SQLite through Drizzle; creation hashes passwords through `hashPassword`; login verifies the stored password and, when `totpVerified`, requires a six-digit 30-second SHA-1 TOTP with validation window 1 before checking the account-enabled flag.
+- `src/server/utils/password.ts`: v15.0.0 uses the Node `argon2` package for `argon2.hash()` and `argon2.verify()`. The helper accepting pre-hashed material explicitly restricts PHC identifiers to `argon2i`, `argon2d`, or `argon2id`. This is materially different from v14 `PASSWORD_HASH`/bcrypt deployment recipes and is why v14 instructions MUST NOT be inherited into v15.
+- `src/server/utils/session.ts`: the session secret is read from database general configuration (`sessionPassword`); the cookie is named `wg-easy`; `secure` is disabled only when `WG_ENV.INSECURE` is true. A remembered login sets cookie `maxAge` to database `sessionTimeout`, while a non-remembered login leaves `maxAge` unset. The source contains a TODO for session expiration, so PVNetwork MUST NOT claim an independently enforced server-side idle/absolute expiry from this evidence.
+- `src/server/utils/session.ts` also permits HTTP Basic authentication as an alternate API authentication path. The source itself carries a TODO noting username enumeration timing risk. Basic-auth exposure therefore belongs in the management API threat model even when browser sessions are the normal UI path.
 
-This is still not a production authentication certification: exact v15 bootstrap persistence, password hashing at rest, session/cookie policy, CSRF behavior, reverse-proxy trust and account recovery remain gates before panel reuse.
+Pinned source anchors:
+- <https://github.com/wg-easy/wg-easy/blob/f79b0fd025f5ee3b8359de042523d867cb0f5c3a/src/server/api/session.post.ts>
+- <https://github.com/wg-easy/wg-easy/blob/f79b0fd025f5ee3b8359de042523d867cb0f5c3a/src/server/database/repositories/user/service.ts>
+- <https://github.com/wg-easy/wg-easy/blob/f79b0fd025f5ee3b8359de042523d867cb0f5c3a/src/server/utils/password.ts>
+- <https://github.com/wg-easy/wg-easy/blob/f79b0fd025f5ee3b8359de042523d867cb0f5c3a/src/server/utils/session.ts>
+
+This closes the earlier ambiguity about **password-at-rest algorithm and basic session construction for v15.0.0**, but it is not a production panel certification. Remaining gates include bootstrap/setup persistence and recovery, CSRF/origin behavior, reverse-proxy trust, session invalidation semantics across password/account changes, current-v15 patch-line delta review, immutable container digest/SBOM/provenance, and execution receipts.
+
+### Version and release provenance rule
+
+The current tag inventory observed on 2026-08-14 includes stable `v15.0.0`, `v15.1.0`, `v15.2.0`, `v15.2.1`, `v15.2.2`, and `v15.3.0`, while newer `v15.4.0-beta.*` tags are prereleases. Therefore `:15` is a moving major-version selector, not an immutable production pin. PVNetwork certification MUST record both the application release/commit and the exact deployed OCI image digest. A source tag alone does not prove which container bytes ran.
 
 ## Third-party AWG installer: useful but non-canonical
 
@@ -105,9 +115,9 @@ No row may be converted to PASS from documentation alone when the contract requi
 | WireGuard source build | official WireGuard | immutable commit/tag | source provenance + build receipt | acceptable when needed |
 | AWG PPA/COPR packages | Amnezia packaging path | package/repo version | repository/package trust chain | preferred subject to distro validation |
 | AWG source/DKMS build | official Amnezia repos | immutable commit/tag | source pin + build receipt | acceptable |
-| wg-easy | third-party panel | major version **plus immutable image digest** | registry provenance + config/secret audit | reference until authenticated/exposure audit passes |
+| wg-easy | third-party panel | release/commit **plus immutable image digest** | registry provenance + config/secret/auth audit | reference until authenticated/exposure audit passes |
 | third-party installer/panel | third party | immutable release/commit | installer + transitive downloads verified | research/reference until audited |
 
 ## Residual gates
 
-This file does **not** close the v2 contract. Still required include exact Apple import/export/deep-link/QR evidence, immutable installer/image receipts and rollback tests, wg-easy v15 authentication/session-source audit, generation-specific AWG execution receipts, and entry-specific 002/003 reconciliation against every applicable FULL_PROTOCOL_REFERENCE_CONTRACT gate.
+This file does **not** close the v2 contract. Still required include exact Apple import/export/deep-link/QR evidence, immutable installer/image receipts and rollback tests, remaining wg-easy v15 bootstrap/session-security/current-patch audit, generation-specific AWG execution receipts, and entry-specific 002/003 reconciliation against every applicable FULL_PROTOCOL_REFERENCE_CONTRACT gate.
