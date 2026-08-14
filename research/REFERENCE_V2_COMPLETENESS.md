@@ -40,7 +40,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 032 | WatchGuard L2TP VPN | COMPLETE-REFERENCE-v2 |
 | 033 | Aruba VIA | COMPLETE-REFERENCE-v2 |
 | 034 | Citrix Secure Access / Gateway VPN | COMPLETE-REFERENCE-v2 |
-| 035 | Barracuda TINA VPN | PENDING |
+| 035 | Barracuda TINA VPN | COMPLETE-REFERENCE-v2 |
 | 036 | Juniper Secure Connect | PENDING |
 | 037 | VLESS | PENDING |
 | 038 | VMess | PENDING |
