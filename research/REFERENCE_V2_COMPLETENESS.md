@@ -21,8 +21,8 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 013 | SoftEther VPN Protocol | COMPLETE-REFERENCE-v2 |
 | 014 | EtherIP | COMPLETE-REFERENCE-v2 |
 | 015 | EtherIP/IPsec | COMPLETE-REFERENCE-v2 |
-| 016 | Cisco AnyConnect | PENDING |
-| 017 | OpenConnect / ocserv-compatible | PENDING |
+| 016 | Cisco AnyConnect | COMPLETE-REFERENCE-v2 |
+| 017 | OpenConnect / ocserv-compatible | COMPLETE-REFERENCE-v2 |
 | 018 | Palo Alto GlobalProtect | PENDING |
 | 019 | Fortinet FortiGate SSL VPN | PENDING |
 | 020 | Pulse Secure | PENDING |
