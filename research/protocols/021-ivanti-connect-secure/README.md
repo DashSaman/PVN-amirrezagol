@@ -1,3 +1,9 @@
 # 021 — Ivanti Connect Secure
 
-PVNetwork research index entry. Status: research only; not implemented. See the master protocol matrix and AI handoff documentation for client, upstream, UI, storage, issue/forum, license and interoperability audit requirements.
+Status: `IN-RESEARCH`; not implemented by PVNetwork.
+
+Shared evidence lives in `research/upstreams/openconnect-family/SOURCE_PIN.md` and `VENDOR_COMPATIBILITY_MATRIX.md`.
+
+Current research treats this as an appliance/version compatibility target with Pulse/legacy Juniper behavior kept distinct where relevant.
+
+Remaining work: exact version/capability evidence, current issue/release mapping, frontend/platform research, dependency/license packaging review, and final interoperability evidence.
