@@ -10,6 +10,7 @@ Last synchronized: 2026-08-14
 - Phase: **research / requirements / architecture**
 - Production implementation: **not started**
 - Research scope: **93 numbered entries** in `docs/PROTOCOL_MATRIX.md`
+- Execution mode: **continuous until repository-defined gates pass or work is externally blocked**
 
 ## Recovery order
 
@@ -17,125 +18,160 @@ A new AI must read:
 
 1. `AI_START_HERE.md`
 2. `AGENTS.md`
-3. the newest `AGENTS_HANDOFF_*.md` pointed to by `AGENTS.md`
-4. this file
-5. `docs/RESEARCH_LOG.md`
-6. the newest `docs/RESEARCH_CAMPAIGN_STATUS_*.md` snapshot
-7. `research/RESEARCH_COMPLETENESS.md`
-8. relevant numbered/shared dossiers
-9. recent Git history and actual repository tree
+3. `AGENT_EXECUTION_CONTRACT.md`
+4. `docs/AGENT_RUN_STATE.json`
+5. the newest `AGENTS_HANDOFF_*.md` pointed to by `AGENTS.md`
+6. this file
+7. `docs/AGENT_CHECKPOINT_LOG.md`
+8. `docs/RESEARCH_LOG.md`
+9. the newest `docs/RESEARCH_CAMPAIGN_STATUS_*.md` snapshot
+10. `research/RESEARCH_COMPLETENESS.md`
+11. relevant numbered/shared dossiers
+12. recent Git history and actual repository tree
 
-The completeness tracker can lag newer commits because some large connector writes are rejected. Repository tree, dated status snapshots and newest AGENTS handoff must be checked before restarting work.
+Repository evidence wins over chat memory. Some trackers can lag newer commits because connector writes may be rejected.
 
 ## Priority order
 
 ### Priority 1 — original campaign
 
-Continue the existing source/client/core/license/architecture/issues/platform research toward `COMPLETE-RESEARCH-v1` across the original 93-entry campaign.
+Continue source/client/core/license/architecture/issues/platform research toward the original `COMPLETE-RESEARCH-v1` gates across all 93 entries.
 
 ### Priority 2 — exhaustive full reference
 
-After the original research gates are satisfied for the relevant entry/family, execute:
+After original v1 gates reach their intended state, execute:
 
 `research/FULL_PROTOCOL_REFERENCE_CONTRACT.md`
 
-This second layer requires server implementations/installers, server/client OS install matrices, complete server/client UI/menu maps, cryptography, data path/wire flow, ports/transports/handshake and deployment topologies.
+for the second `COMPLETE-REFERENCE-v2` layer: server implementations/installers, server/client OS install matrices, complete server/client UI/menu maps, cryptography, data path/wire flow, ports/transports/handshake and deployment topologies.
 
-Do not allow the second layer to make unfinished original research disappear.
+Do not let the second layer erase unfinished original research.
 
-## Current research state
+## Current active work unit — Xray / modern proxy
 
-Major shared research exists for:
+Machine-readable state:
 
-- OpenVPN;
-- WireGuard / AmneziaWG;
-- OpenConnect / Enterprise;
-- SoftEther;
-- Hysteria;
-- mesh/overlay;
-- Xray and modern-proxy client references;
-- several major GUI/client projects.
+`docs/AGENT_RUN_STATE.json`
 
-No production protocol support is claimed.
+Newest Xray status:
 
-## OpenConnect / Enterprise — family v1 handoff ready
+`docs/RESEARCH_CAMPAIGN_STATUS_2026-08-14_XRAY_V1_1.md`
 
-Newest detailed status:
+Newest Xray handoff:
 
-`docs/RESEARCH_CAMPAIGN_STATUS_2026-08-14_OPENCONNECT_V1_CLOSURE_2.md`
+`AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md`
 
-The shared family now has evidence for:
+Active state:
 
-- canonical source/release/API provenance;
-- vendor compatibility 016–024;
-- issue/MR/fix history and regression lessons;
-- dependency/LGPL integration architecture;
-- upstream test/CI inventory;
-- configuration/profile/session/secret separation;
-- public API lifetime/callback rules;
-- OpenConnect GUI frontend architecture and screen/storage mapping;
-- NetworkManager Linux frontend, D-Bus/service and libsecret ownership;
-- security/advisory history and release gates;
-- packaging/distribution concerns by platform;
-- asset/screenshot/reference policy;
-- performance/resource evidence framework;
-- research-stage support/reuse decisions.
+`XRAY-MODERN-PROXY-V1-CLOSURE / IN_PROGRESS`
 
-Shared index:
+### Xray evidence now committed
 
-`research/upstreams/openconnect-family/README.md`
+Under `research/upstreams/xray-family/`:
 
-State:
+- `SOURCE_ARCHITECTURE.md`
+- `DEPENDENCIES_TESTS_RELEASES.md`
+- `CONFIG_CAPABILITY_MODEL.md`
+- `CLIENT_ECOSYSTEM.md`
+- `ISSUE_RELEASE_LESSONS.md`
+- `LIBXRAY_WRAPPER.md`
+- existing `INDEX.md`
+
+### Xray source baseline
+
+- Xray-core current-main research pin: `7d214f8b094f75322fa3990f8aadad1c912f24f5`
+- pinned tree: `46ee908a9a67513d3c85bbf998be5d553a078109`
+- root license: MPL-2.0
+- latest stable release observed during research: `v26.3.27`
+- current main is newer than stable and includes fixes not represented by the stable tag.
+
+### libXray wrapper baseline
+
+- pin: `d0ab60ae4dd91cf119c878152d12103e6f84b78a`
+- wrapper root license: MIT
+- wraps/depends on Xray-core; wrapper license does not change Xray-core MPL or dependency obligations.
+- provisional classification: `STRONG-WRAPPER-CANDIDATE / LEGAL+PLATFORM+LIFECYCLE REVIEW REQUIRED`.
+
+### Xray architecture conclusions so far
+
+- Xray-core is a modular networking runtime, not one protocol.
+- Protocol, transport, security/flow and routing/DNS must remain separate product capabilities.
+- PVNetwork canonical profile storage must remain independent from raw/generated Xray runtime configuration.
+- Core-version-aware validation/migration is mandatory because current source contains active/deprecated/removed configuration semantics.
+- Exact per-build/per-platform SBOM is mandatory; root MPL is not the whole dependency/license answer.
+- Cross-platform wrapper availability does not remove Android VpnService, Apple NetworkExtension, Windows service/TUN or Linux route/DNS lifecycle responsibilities.
+
+### Current Xray numbered relationship
+
+At minimum active related entries include:
+
+- 037 VLESS
+- 038 VMess
+- 039 Trojan
+- 040 Shadowsocks
+- 074 REALITY
+- 075 XTLS
+- 076 XTLS Vision
+- 084 WebSocket
+- 086 HTTP/2-related transport classification
+- 088 gRPC
+- 089 mKCP
+- 091 XHTTP
+- 092 RAW
+
+These are a mix of protocol, security/flow and transport concepts. Do not advertise all as standalone VPN protocols.
+
+## OpenConnect / Enterprise
+
+Shared family state:
 
 `V1-HANDOFF-READY / NOT IMPLEMENTED`
 
-This means the family has a reasonable original-research handoff with explicit residual gaps; it does **not** mean any numbered vendor protocol is implemented or certified.
+Latest detailed status:
 
-### OpenConnect residual gaps kept explicit
+`docs/RESEARCH_CAMPAIGN_STATUS_2026-08-14_OPENCONNECT_V1_CLOSURE_2.md`
 
-- authoritative materialized full v9.21 source-archive manifest remains tool-blocked;
-- stronger machine-readable current OpenConnect GUI main/v1.6.2 source materialization;
-- current running-client screenshots beyond source/resource references;
-- exact dependency-advisory/SBOM review must be repeated for the build actually selected;
-- reproducible exact performance benchmarks remain incomplete;
-- vendor/server certification needs future implementation plus real lab versions;
-- entry 016 Cisco README remains a connector-write documentation blocker, but Cisco evidence exists in shared files.
+Latest family handoff:
 
-Do not loop on these blockers or erase them.
+`AGENTS_HANDOFF_2026-08-14_OPENCONNECT_V1_CLOSURE_2.md`
+
+Residual gaps remain explicit but no longer justify keeping OpenConnect as the only active family.
 
 ## WireGuard / AmneziaWG
 
-Deep committed evidence covers source pins, core architecture, Android, Apple, AmneziaWG compatibility/versioning and issue-derived regression requirements. Windows source-level research and some Amnezia platform evidence exist in logs/handoffs where standalone writes were connector-blocked.
+Materially researched but not `COMPLETE-RESEARCH-v1`. Deep evidence exists for source pins, core architecture, Android/Apple, AmneziaWG compatibility/versioning and issue-derived regressions. Residual v1 gaps must be revisited before overall original-campaign completion.
 
-This family is materially researched but not yet `COMPLETE-RESEARCH-v1`.
+## Current product architecture direction
 
-## Current architecture direction
-
-- Use stable product-owned Core Adapter contracts above selected upstream/native engines.
-- Keep UI/business state independent from private engine internals.
-- Do not reimplement mature protocol cryptography/security primitives.
-- Keep import/export, canonical profile model, protected persistence and runtime engine configuration separate.
-- Keep reusable secrets, non-secret remembered choices and temporary authenticated session material in separate storage classes.
-- Treat enterprise/vendor compatibility as capability/version evidence, not one Boolean.
-- Platform-specific services/extensions/drivers are expected behind one product-facing architecture.
+- product-owned stable Core Adapter contracts;
+- UI/business state independent from engine internals;
+- no custom cryptographic primitive implementation when mature engines exist;
+- separate import/export, canonical profile, protected persistence and runtime config;
+- separate reusable secrets, non-secret remembered choices and transient session values;
+- platform-native network lifecycle behind shared product contracts;
+- evidence/version/capability-based support status instead of Boolean marketing flags.
 
 ## No false completion
 
-There is still no production PVNetwork application, build/package, PVNetwork automated test suite, E2E proof, real-device certification or Store approval.
+There is still no production PVNetwork app, build/package, product test suite, E2E proof, real-device certification or Store approval.
 
-A family-level v1 handoff state is a research milestone only.
+No family research milestone means production protocol support.
 
-## Known connector gaps
+## Tooling-path note
 
-Some legitimate detailed networking-research writes are rejected by the connector. Apply anti-loop:
+A local checkout/Python execution attempt for `scripts/agent_state.py verify/build/next` failed because the current container could not resolve `github.com`. GitHub connector research/write access is working.
 
-- do not repeat the same rejected write unchanged;
-- preserve evidence in smaller accepted files, dated status snapshots and AGENTS handoffs;
-- keep blockers explicit.
+Do not retry the same clone path unchanged in this runtime. This is not a project blocker.
 
-## Next exact action
+## Exact next action
 
-1. Create the newest AGENTS handoff for the OpenConnect v1 closure and point `AGENTS.md` to it.
-2. Select the next highest-value unfinished **original `COMPLETE-RESEARCH-v1` family** from actual repository state; current likely candidates include Xray/modern-proxy ecosystem or remaining WireGuard-family closure work.
-3. Continue original research before mass `COMPLETE-REFERENCE-v2` expansion.
-4. For every meaningful work unit, update technical dossiers plus dated status/state and the newest AGENTS handoff.
+Continue Xray original-v1 closure:
+
+1. create per-entry capability/support/reuse decisions;
+2. map Xray commander/API/stats/control ownership;
+3. deepen libXray lifecycle/API/dependency/issue evidence;
+4. expand v2rayNG Android source/storage/VpnService/import/menu evidence in split files;
+5. add Xray security/dependency-advisory review;
+6. synchronize Xray `INDEX.md` and affected numbered entries;
+7. checkpoint and continue next unfinished original-v1 family without owner prompting;
+8. keep WireGuard/AmneziaWG residual v1 closure queued before any overall v1 completion claim.
