@@ -61,7 +61,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 055 | Tor SOCKS | COMPLETE-RESEARCH-v1 |
 | 056 | Tailscale | COMPLETE-RESEARCH-v1 |
 | 057 | ZeroTier | COMPLETE-RESEARCH-v1 |
-| 058 | NetBird | IN-RESEARCH |
+| 058 | NetBird | COMPLETE-RESEARCH-v1 |
 | 059 | Netmaker | PENDING |
 | 060 | Nebula | IN-RESEARCH |
 | 061 | Tinc | PENDING |
