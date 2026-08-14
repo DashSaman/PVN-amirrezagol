@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-14T21:13:28Z",
-  "heartbeat_at_utc": "2026-08-14T21:13:28Z",
-  "task": "Continue COMPLETE-REFERENCE-v2 from authoritative main tracker, starting at entry 002 WireGuard and proceeding through independent unfinished entries while capacity remains.",
-  "note": "Live authoritative state: V1 93/93, V2 1/93. Entry 001 OpenVPN is COMPLETE-REFERENCE-v2. Entry 002 WireGuard is the first unfinished V2 entry. Reconcile the exact 16 gates in FULL_PROTOCOL_REFERENCE_CONTRACT.md, reuse traceable existing evidence, fill only real gaps, then promote and continue."
+  "heartbeat_at_utc": "2026-08-14T21:16:04Z",
+  "task": "Continue COMPLETE-REFERENCE-v2 from authoritative main tracker, completing mature entries and proceeding through independent unfinished entries while capacity remains.",
+  "note": "Entries 002 WireGuard and 003 AmneziaWG reconciled against all exact 16 V2 gates using existing shared evidence; external runtime/device/Store/interoperability receipts preserved as later certification work, not hidden V2 gates. V2 advances to 3/93; foreground work continues immediately at entry 004 IKEv2/IPsec."
 }

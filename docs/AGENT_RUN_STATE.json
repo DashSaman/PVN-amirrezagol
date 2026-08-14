@@ -6,13 +6,13 @@
   "owner_scope": "All repository-documented PVNetwork research work: first complete all 93 COMPLETE-RESEARCH-v1 gates, then COMPLETE-REFERENCE-v2 for all applicable entries.",
   "total_matrix_entries": 93,
   "v1_complete_count": 93,
-  "v2_complete_count": 1,
+  "v2_complete_count": 3,
   "active_phase": "COMPLETE-REFERENCE-v2",
   "hard_phase_lock": {"enabled":false,"reason":"Authoritative V1 tracker is 93/93 COMPLETE-RESEARCH-v1; V2 is active.","unlock_condition":"satisfied: research/RESEARCH_COMPLETENESS.md contains 93 COMPLETE-RESEARCH-v1 entries"},
-  "priority_entries": [2,3,4,5,6,7,8,9,10,11,12,13],
-  "active_work_unit": {"id":"V2-ENTRY-002-WIREGUARD","status":"IN_PROGRESS","current_entry":2,"source_handoff":"AGENTS_HANDOFF_2026-08-14_OPENVPN_V2_COMPLETE.md","exact_next_action":"Continue COMPLETE-REFERENCE-v2 at entry 002 WireGuard. Apply all exact 16 second-layer gates, reuse existing WireGuard source/client/server/license evidence where traceable, use evidence-backed NOT-APPLICABLE for genuinely absent server-panel/UI concepts, fill only real gaps, then promote and continue entry 003 AmneziaWG."},
+  "priority_entries": [4,5,6,7,8,9,10,11,12,13],
+  "active_work_unit": {"id":"V2-ENTRY-004-IKEV2-IPSEC","status":"IN_PROGRESS","current_entry":4,"source_handoff":"AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_COMPLETE.md","exact_next_action":"Continue COMPLETE-REFERENCE-v2 at entry 004 IKEv2/IPsec. Apply all exact 16 second-layer gates, reuse existing IPsec/IKE source/spec/client/server/license evidence where traceable, use evidence-backed NOT-APPLICABLE where a canonical UI does not exist, fill only real gaps, then promote and continue entry 005 IKEv1/IPsec."},
   "campaign_sources_of_truth": {"matrix":"docs/PROTOCOL_MATRIX.md","v1_contract":"research/PROTOCOL_RESEARCH_TEMPLATE.md","v1_tracker":"research/RESEARCH_COMPLETENESS.md","v2_contract":"research/FULL_PROTOCOL_REFERENCE_CONTRACT.md","v2_tracker":"research/REFERENCE_V2_COMPLETENESS.md","startup":"AI_START_HERE.md","agent_rules":"AGENTS.md","continuous_execution_contract":"AGENT_EXECUTION_CONTRACT.md"},
   "resume_policy": {"ask_owner_to_continue":false,"restart_from_chat_memory":false,"resume_from_repository_checkpoint":true,"on_single_task_blocker":"record blocker and continue independent required V2 work","on_work_unit_pass":"update V2 tracker and continue next unfinished V2 entry until all applicable entries complete"},
   "completion_validation": {"command":"python scripts/agent_state.py verify --require-complete","allow_done_claim_without_validator_pass":false},
-  "last_checkpoint": {"date":"2026-08-14","summary":"Entry 001 OpenVPN satisfies all 16 COMPLETE-REFERENCE-v2 gates. Existing dossier evidence was reconciled against the written contract; runtime/device/Store/interoperability/performance receipts remain future implementation/certification work and are not hidden V2 research gates. V2 is now 1/93 and advances to entry 002 WireGuard.","last_known_repo_handoff":"AGENTS_HANDOFF_2026-08-14_OPENVPN_V2_COMPLETE.md"}
+  "last_checkpoint": {"date":"2026-08-14","summary":"Entries 002 WireGuard and 003 AmneziaWG satisfy all 16 COMPLETE-REFERENCE-v2 gates by reconciliation of the existing shared family dossier. Earlier promotion blockers were runtime/device/Store/interoperability certification receipts, which the current written V2 contract does not make hidden research gates. V2 is now 3/93 and advances to entry 004 IKEv2/IPsec.","last_known_repo_handoff":"AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_COMPLETE.md"}
 }
