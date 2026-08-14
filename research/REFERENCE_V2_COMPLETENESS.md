@@ -25,7 +25,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 017 | OpenConnect / ocserv-compatible | COMPLETE-REFERENCE-v2 |
 | 018 | Palo Alto GlobalProtect | COMPLETE-REFERENCE-v2 |
 | 019 | Fortinet FortiGate SSL VPN | COMPLETE-REFERENCE-v2 |
-| 020 | Pulse Secure | PENDING |
+| 020 | Pulse Secure | COMPLETE-REFERENCE-v2 |
 | 021 | Ivanti Connect Secure | PENDING |
 | 022 | Juniper Network Connect | PENDING |
 | 023 | F5 BIG-IP SSL VPN | PENDING |
