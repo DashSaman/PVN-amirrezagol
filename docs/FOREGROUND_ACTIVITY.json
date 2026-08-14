@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-14T16:12:00Z",
-  "heartbeat_at_utc": "2026-08-14T16:29:49Z",
-  "task": "Interactive repository work is active on COMPLETE-RESEARCH-v1 entry 041 Shadowsocks 2022 while entry 040 Shadowsocks promotion is already evidence-ready on main; continue subsequent unfinished V1 entries without regressing tracker state.",
-  "note": "Repository tracker is authoritative. Current official tracker remains 39/93 until entry 040 is promoted; this chat is researching independent 041 gaps in parallel and will re-fetch before every tracker/state write. Only evidence-backed tracker changes count as completion."
+  "heartbeat_at_utc": "2026-08-14T16:32:00Z",
+  "task": "Interactive repository work is active on COMPLETE-RESEARCH-v1 entry 042 Hysteria, with automatic continuation to 043 Hysteria2 and subsequent unfinished V1 entries.",
+  "note": "Repository tracker is authoritative. V1 is 41/93 COMPLETE-RESEARCH-v1; V2 remains hard-locked until 93/93. Only evidence-backed tracker changes count as completion."
 }
