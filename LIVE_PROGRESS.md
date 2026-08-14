@@ -1,38 +1,27 @@
 # PVNetwork — LIVE PROGRESS
 
-> **این صفحه برای این است که مالک پروژه با یک نگاه بفهمد کار واقعاً در حال حرکت است یا نه.**  
-> اعداد «پوشش تحقیق» با «تکمیل واقعی» عمداً جدا هستند تا درصد ساختگی یا گمراه‌کننده نمایش داده نشود.
+> This page is generated from repository evidence. **Coverage is not completion.**
+> `COMPLETE-*` percentages are strict gates; the other percentages only show how much of the 93-entry research scope has been opened/materialized.
 
-## 🔴 وضعیت فعلی
+## 🔴 Current execution status
 
 - **Run status:** `IN_PROGRESS`
 - **Active phase:** `COMPLETE-RESEARCH-v1`
 - **Active work unit:** `XRAY-MODERN-PROXY-V1-CLOSURE`
 - **Work-unit state:** `IN_PROGRESS`
-- **خانواده فعال:** Xray / modern proxy ecosystem
-- **آخرین handoff ثبت‌شده:** `AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md`
+- **Latest meaningful commit:** [`5ce35019e6`](https://github.com/DashSaman/PVN-amirrezagol/commit/5ce35019e6404fd2b7ff2f888d239cd55fba9687) — ci(progress): auto-refresh root progress dashboard
+- **Latest meaningful commit time:** `2026-08-14T05:02:13+03:30`
 
-### آخرین کار واقعی که دیده شده
+## 📊 93-entry progress
 
-**`docs(research): map libXray API lifecycle and platform ownership`**
-
-Commit: [`0a991e1548`](https://github.com/DashSaman/PVN-amirrezagol/commit/0a991e1548dfa322a247caa46a51bd6b0fdd39f2)  
-Time: `2026-08-14T01:31:18Z`
-
-> commitهای خود داشبورد با prefix `chore(progress):` در «آخرین کار واقعی» حساب نمی‌شوند.
-
----
-
-## 📊 پیشرفت ۹۳ ورودی — قابل راستی‌آزمایی
-
-| معیار | تعداد | درصد | نوار | معنی دقیق |
+| Metric | Count | Percent | Visual | Meaning |
 |---|---:|---:|---|---|
-| **تکمیل سخت‌گیرانه V1** | **0 / 93** | **0.0%** | `░░░░░░░░░░░░░░░░░░░░` | فقط `COMPLETE-RESEARCH-v1`؛ تمام gateها باید evidence داشته باشند |
-| **تحقیق عمیق شروع شده** | **36 / 93** | **38.7%** | `████████░░░░░░░░░░░░` | `IN-RESEARCH` + `EVIDENCE-GAPS` + complete |
-| **Dossier/Skeleton یا بهتر ساخته شده** | **64 / 93** | **68.8%** | `██████████████░░░░░░` | `SKELETON` یا مرحله بالاتر؛ `PENDING/RESERVED` حساب نشده |
-| **تکمیل سخت‌گیرانه V2** | **0 / 93** | **0.0%** | `░░░░░░░░░░░░░░░░░░░░` | فقط `COMPLETE-REFERENCE-v2` |
+| **Strict V1 complete** | 0/93 | **0.0%** | `░░░░░░░░░░░░░░░░░░░░` | All V1 completion gates passed with evidence |
+| **Deep research started** | 36/93 | **38.7%** | `████████░░░░░░░░░░░░` | `IN-RESEARCH` + `EVIDENCE-GAPS` + completed |
+| **Dossier materialized or deeper** | 64/93 | **68.8%** | `██████████████░░░░░░` | `SKELETON` or stronger; excludes pending/reserved |
+| **Strict V2 complete** | 0/93 | **0.0%** | `░░░░░░░░░░░░░░░░░░░░` | Full second-layer reference gate passed |
 
-### توزیع فعلی V1
+### V1 state distribution
 
 - `COMPLETE-RESEARCH-v1`: **0**
 - `IN-RESEARCH`: **23**
@@ -41,66 +30,45 @@ Time: `2026-08-14T01:31:18Z`
 - `RESERVED`: **1**
 - `PENDING`: **28**
 
-> **نکته:** 68.8% به معنی 68.8% تکمیل پروژه نیست. این فقط می‌گوید برای 64 ورودی حداقل dossier/skeleton یا تحقیق جدی ایجاد شده است. معیار نهایی تکمیل همان `COMPLETE-*` است.
-
----
-
-## 🚀 کارهای واقعی اخیر
-
-1. [`0a991e1548`](https://github.com/DashSaman/PVN-amirrezagol/commit/0a991e1548dfa322a247caa46a51bd6b0fdd39f2) — `map libXray API lifecycle and platform ownership`
-2. [`4019084691`](https://github.com/DashSaman/PVN-amirrezagol/commit/40190846916c89ad59d13194821a24fd8b32cdf2) — `map Xray runtime API and control ownership`
-3. [`5890dcfe82`](https://github.com/DashSaman/PVN-amirrezagol/commit/5890dcfe8266bec99ae53ad56d3eebab8e6554c1) — `record Xray per-entry support and reuse decisions`
-4. [`9cd861ce44`](https://github.com/DashSaman/PVN-amirrezagol/commit/9cd861ce44e659a912f1a40d8a9b737046fb927e) — `audit libXray cross-platform wrapper candidate`
-5. [`23e8f43c3a`](https://github.com/DashSaman/PVN-amirrezagol/commit/23e8f43c3a9b16900c83d7eaea33c6e04a6bb5da) — `capture Xray and client issue regression lessons`
-6. [`4c08b98287`](https://github.com/DashSaman/PVN-amirrezagol/commit/4c08b98287a95b3e8a42b7c9138a7575129564b1) — `map major Xray client ecosystem and reuse roles`
-7. [`ad5135feed`](https://github.com/DashSaman/PVN-amirrezagol/commit/ad5135feed8c9cf5aeab3eb2e24ee84451850443) — `map Xray config and capability axes`
-8. [`1083c4e9eb`](https://github.com/DashSaman/PVN-amirrezagol/commit/1083c4e9ebec66b8b2734da2ba7af00bd041f3b2) — `map Xray dependencies tests and release surface`
-9. [`e200ad6c01`](https://github.com/DashSaman/PVN-amirrezagol/commit/e200ad6c01c190ff267ea7ef3182fecda60e11bc) — `map Xray core source architecture`
-
----
-
 ## 🎯 Exact next action
 
-ادامه `XRAY-MODERN-PROXY-V1-CLOSURE` از handoff فعلی:
+Continue Xray original-v1 closure from AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md: deep-audit libXray API/lifecycle/build/dependencies/issues, create Xray per-entry capability/support-reuse decisions, expand v2rayNG source/storage/VpnService/import evidence, add security/dependency-advisory and commander/API/stats control maps, synchronize Xray INDEX and numbered entries, checkpoint, then continue the next unfinished original v1 family without waiting for owner. Keep WireGuard/AmneziaWG residual v1 work queued before any overall v1 completion claim.
 
-- deep-audit بیشتر libXray API/lifecycle/build/dependency/issues؛
-- تکمیل capability/support-reuse برای entryهای Xray؛
-- گسترش evidence مربوط به v2rayNG source/storage/VpnService/import؛
-- security/dependency-advisory review؛
-- commander/API/stats/runtime-control mapping؛
-- sync کردن Xray INDEX و entryهای شماره‌دار؛
-- checkpoint؛
-- سپس بدون انتظار برای کاربر رفتن سراغ خانواده ناقص بعدی در V1؛
-- WireGuard/AmneziaWG residual V1 قبل از هر ادعای تکمیل کلی باید دوباره بسته شود.
+## 🧾 Latest checkpoint
 
----
+- **Date:** `2026-08-14`
+- **Handoff:** `AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md`
+- **Summary:** OpenConnect shared-family v1 research is handoff-ready; Xray/modern-proxy is active. Xray source architecture, config/capability model, dependencies/tests/releases, client ecosystem, issue lessons and libXray wrapper evidence were committed. Local clone-based agent_state verification was attempted but the local runtime could not resolve github.com; GitHub connector remains available, so this is a tooling-path failure and work continues through connector-backed repository evidence.
 
-## 👀 چطور بفهمم واقعاً دارد کار می‌کند؟
+## 🕒 Recent meaningful commits
 
-اگر صفحه را refresh کردی، این موارد را نگاه کن:
+- `2026-08-14T05:02:13+03:30` — [`5ce35019e6`](https://github.com/DashSaman/PVN-amirrezagol/commit/5ce35019e6404fd2b7ff2f888d239cd55fba9687) — ci(progress): auto-refresh root progress dashboard
+- `2026-08-14T05:01:18+03:30` — [`0a991e1548`](https://github.com/DashSaman/PVN-amirrezagol/commit/0a991e1548dfa322a247caa46a51bd6b0fdd39f2) — docs(research): map libXray API lifecycle and platform ownership
+- `2026-08-14T05:00:16+03:30` — [`4019084691`](https://github.com/DashSaman/PVN-amirrezagol/commit/40190846916c89ad59d13194821a24fd8b32cdf2) — docs(research): map Xray runtime API and control ownership
+- `2026-08-14T04:59:29+03:30` — [`5890dcfe82`](https://github.com/DashSaman/PVN-amirrezagol/commit/5890dcfe8266bec99ae53ad56d3eebab8e6554c1) — docs(research): record Xray per-entry support and reuse decisions
+- `2026-08-14T04:58:51+03:30` — [`980b10cfd8`](https://github.com/DashSaman/PVN-amirrezagol/commit/980b10cfd8aecbc5d20b3eb9141c7891a82c16f4) — docs(agents): advance handoff pointer to Xray v1 work unit 1
+- `2026-08-14T04:58:19+03:30` — [`9f2b7c5134`](https://github.com/DashSaman/PVN-amirrezagol/commit/9f2b7c51347a7f94dd745ad27630ba63ab6f8888) — docs(state): set Xray as active v1 family
+- `2026-08-14T04:57:59+03:30` — [`9750b8eb9a`](https://github.com/DashSaman/PVN-amirrezagol/commit/9750b8eb9ade2ff4a36f553190dc049527a3f2ff) — docs(checkpoint): record Xray v1 work unit 1
+- `2026-08-14T04:56:19+03:30` — [`f2357e6cd9`](https://github.com/DashSaman/PVN-amirrezagol/commit/f2357e6cd94f6358e9c032c7cf57558a62d7c5c2) — docs(agent-state): checkpoint Xray v1 work unit 1
+- `2026-08-14T04:55:24+03:30` — [`d5f0c9c2e5`](https://github.com/DashSaman/PVN-amirrezagol/commit/d5f0c9c2e5ea71ff00d301878970b02b45ae04f2) — docs(agents): hand off Xray v1 work unit 1
+- `2026-08-14T04:55:03+03:30` — [`e411cf66d9`](https://github.com/DashSaman/PVN-amirrezagol/commit/e411cf66d9a083d104a0f264064cfb7db69a0135) — docs(state): record Xray v1 work unit 1
 
-1. **آخرین کار واقعی** و SHA آن عوض شده باشد؛
-2. لیست **کارهای واقعی اخیر** commit جدید داشته باشد؛
-3. `Active work unit` یا `Exact next action` جلو رفته باشد؛
-4. تعداد `IN-RESEARCH` / `EVIDENCE-GAPS` تغییر کند و در نهایت `COMPLETE-RESEARCH-v1` بالا برود؛
-5. پس از بسته شدن V1، عدد `COMPLETE-REFERENCE-v2` شروع به افزایش کند.
+## ✅ How to tell whether work is actually moving
 
-اگر فقط commitی با نام `chore(progress): ...` اضافه شود، آن **تحقیق واقعی محسوب نمی‌شود** و داشبورد آن را از latest meaningful work حذف می‌کند.
+Work is moving when at least one of these changes over time:
 
----
+1. the **Latest meaningful commit** changes;
+2. new commits appear in **Recent meaningful commits**;
+3. the **Active work unit / Exact next action** advances;
+4. `IN-RESEARCH` / `EVIDENCE-GAPS` entries advance and eventually become `COMPLETE-RESEARCH-v1`;
+5. after V1 is complete, `COMPLETE-REFERENCE-v2` starts increasing.
 
-## 📂 لینک‌های سریع
+If only this dashboard's own `chore(progress):` commit changes, that does **not** count as research progress; those self-update commits are deliberately excluded above.
 
-- [Xray research folder](research/upstreams/xray-family/)
-- [Current agent run state](docs/AGENT_RUN_STATE.json)
-- [Agent checkpoint log](docs/AGENT_CHECKPOINT_LOG.md)
-- [93-entry V1 tracker](research/RESEARCH_COMPLETENESS.md)
-- [93-entry V2 tracker](research/REFERENCE_V2_COMPLETENESS.md)
-- [Current Xray handoff](AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md)
-- [Continuous execution contract](AGENT_EXECUTION_CONTRACT.md)
+## Source-of-truth files
 
----
-
-## 🤖 Auto-update
-
-`scripts/update_live_progress.py` این صفحه را از state/tracker/Git history تولید می‌کند. GitHub Actions نیز برای refresh خودکار داشبورد تنظیم می‌شود؛ بنابراین نیازی نیست این درصدها دستی و از روی حدس تغییر کنند.
+- [`docs/AGENT_RUN_STATE.json`](docs/AGENT_RUN_STATE.json)
+- [`docs/AGENT_CHECKPOINT_LOG.md`](docs/AGENT_CHECKPOINT_LOG.md)
+- [`research/RESEARCH_COMPLETENESS.md`](research/RESEARCH_COMPLETENESS.md)
+- [`research/REFERENCE_V2_COMPLETENESS.md`](research/REFERENCE_V2_COMPLETENESS.md)
+- [`AGENTS.md`](AGENTS.md)
