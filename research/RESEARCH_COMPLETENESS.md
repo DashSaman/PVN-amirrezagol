@@ -59,7 +59,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 053 | HTTPS / HTTP CONNECT | COMPLETE-RESEARCH-v1 |
 | 054 | SSH Tunnel | COMPLETE-RESEARCH-v1 |
 | 055 | Tor SOCKS | COMPLETE-RESEARCH-v1 |
-| 056 | Tailscale | IN-RESEARCH |
+| 056 | Tailscale | COMPLETE-RESEARCH-v1 |
 | 057 | ZeroTier | IN-RESEARCH |
 | 058 | NetBird | IN-RESEARCH |
 | 059 | Netmaker | PENDING |
