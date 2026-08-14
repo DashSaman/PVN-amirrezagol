@@ -58,7 +58,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 052 | HTTP Proxy | COMPLETE-RESEARCH-v1 |
 | 053 | HTTPS / HTTP CONNECT | COMPLETE-RESEARCH-v1 |
 | 054 | SSH Tunnel | COMPLETE-RESEARCH-v1 |
-| 055 | Tor SOCKS | RESERVED |
+| 055 | Tor SOCKS | COMPLETE-RESEARCH-v1 |
 | 056 | Tailscale | IN-RESEARCH |
 | 057 | ZeroTier | IN-RESEARCH |
 | 058 | NetBird | IN-RESEARCH |
