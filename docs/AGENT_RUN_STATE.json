@@ -5,13 +5,13 @@
   "run_status": "IN_PROGRESS",
   "owner_scope": "All repository-documented PVNetwork research work: first complete all 93 COMPLETE-RESEARCH-v1 gates, then COMPLETE-REFERENCE-v2 for all applicable entries.",
   "total_matrix_entries": 93,
-  "v1_complete_count": 81,
+  "v1_complete_count": 82,
   "active_phase": "COMPLETE-RESEARCH-v1",
-  "hard_phase_lock": {"enabled":true,"reason":"V1 tracker is 81/93; V2 remains locked.","unlock_condition":"research/RESEARCH_COMPLETENESS.md contains 93 COMPLETE-RESEARCH-v1 entries"},
-  "priority_entries": [82,83,84,85,86,87,88,89,90,91,92,93],
-  "active_work_unit": {"id":"V1-ENTRY-082-UDP","status":"IN_PROGRESS","current_entry":82,"source_handoff":"research/protocols/081-entry/V1_GATE_RECONCILIATION.md","exact_next_action":"Audit and close all 20 V1 research gates for entry 082 — UDP using RFC 768 updated by RFC 9868, RFC 8085 usage guidance, pinned Linux/Go/Xray transport implementation evidence and current maintenance history; treat UDP as a foundational datagram transport rather than a VPN protocol and promote only if every gate is evidence-backed or correctly N/A-bounded."},
+  "hard_phase_lock": {"enabled":true,"reason":"V1 tracker is 82/93; V2 remains locked.","unlock_condition":"research/RESEARCH_COMPLETENESS.md contains 93 COMPLETE-RESEARCH-v1 entries"},
+  "priority_entries": [83,84,85,86,87,88,89,90,91,92,93],
+  "active_work_unit": {"id":"V1-ENTRY-083-QUIC","status":"IN_PROGRESS","current_entry":83,"source_handoff":"research/protocols/082-entry/V1_GATE_RECONCILIATION.md","exact_next_action":"Audit and close all 20 V1 research gates for entry 083 — QUIC using RFC 9000/9001/9002 and QUIC v2 RFC 9369 plus the exact QUIC implementation dependency selected by the pinned Xray core; preserve QUIC as a secure UDP-based transport rather than a VPN protocol and promote only if every gate is evidence-backed or correctly N/A-bounded."},
   "campaign_sources_of_truth": {"matrix":"docs/PROTOCOL_MATRIX.md","v1_contract":"research/PROTOCOL_RESEARCH_TEMPLATE.md","v1_tracker":"research/RESEARCH_COMPLETENESS.md","v2_contract":"research/FULL_PROTOCOL_REFERENCE_CONTRACT.md","v2_tracker":"research/REFERENCE_V2_COMPLETENESS.md","startup":"AI_START_HERE.md","agent_rules":"AGENTS.md","continuous_execution_contract":"AGENT_EXECUTION_CONTRACT.md"},
   "resume_policy": {"ask_owner_to_continue":false,"restart_from_chat_memory":false,"resume_from_repository_checkpoint":true,"on_single_task_blocker":"record blocker and continue independent V1 work","on_work_unit_pass":"update tracker and continue next unfinished V1 entry until 93/93"},
   "completion_validation": {"command":"python scripts/agent_state.py verify --require-complete","allow_done_claim_without_validator_pass":false},
-  "last_checkpoint": {"date":"2026-08-14","summary":"Entry 081 TCP now satisfies all 20 COMPLETE-RESEARCH-v1 gates using RFC 9293 plus pinned Linux/Go/Xray transport evidence and current 2026 Linux TCP maintenance. V1 is 81/93. Entry 082 UDP is the first unfinished entry; V2 remains hard-locked.","last_known_repo_handoff":"research/protocols/081-entry/V1_GATE_RECONCILIATION.md"}
+  "last_checkpoint": {"date":"2026-08-14","summary":"Entry 082 UDP now satisfies all 20 COMPLETE-RESEARCH-v1 gates using RFC 768, its 2026 RFC 9868 update, RFC 8085 guidance, pinned Linux/Go/Xray transport evidence and current 2026 Linux UDP maintenance. V1 is 82/93. Entry 083 QUIC is the first unfinished entry; V2 remains hard-locked.","last_known_repo_handoff":"research/protocols/082-entry/V1_GATE_RECONCILIATION.md"}
 }
