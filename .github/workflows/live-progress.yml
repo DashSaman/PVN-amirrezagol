@@ -6,6 +6,9 @@ on:
     branches: [main]
     paths-ignore:
       - 'LIVE_PROGRESS.md'
+      - 'LIVE_PROGRESS_EN.md'
+      - 'assets/live-progress-fa.svg'
+      - 'assets/live-progress-en.svg'
   schedule:
     - cron: '*/5 * * * *'
 
@@ -23,24 +26,23 @@ jobs:
       - name: Checkout full recent history
         uses: actions/checkout@v4
         with:
-          fetch-depth: 100
+          fetch-depth: 120
 
-      - name: Generate evidence-based dashboard
+      - name: Generate bilingual graphical dashboard
         run: python scripts/update_live_progress.py
 
       - name: Commit dashboard only when state changed
         run: |
-          if git diff --quiet -- LIVE_PROGRESS.md; then
-            echo "PASS: LIVE_PROGRESS.md already matches repository state"
+          FILES=(LIVE_PROGRESS.md LIVE_PROGRESS_EN.md assets/live-progress-fa.svg assets/live-progress-en.svg)
+          if git diff --quiet -- "${FILES[@]}" && [ -f LIVE_PROGRESS_EN.md ] && [ -f assets/live-progress-fa.svg ] && [ -f assets/live-progress-en.svg ]; then
+            echo "PASS: bilingual dashboard already matches repository state"
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add LIVE_PROGRESS.md
-          git commit -m "chore(progress): refresh live dashboard"
+          git add "${FILES[@]}"
+          git commit -m "chore(progress): refresh bilingual live dashboard"
 
-          # Main may move while research agents are committing. Rebase once;
-          # if another push wins the race, the next push/scheduled run retries.
           git pull --rebase origin main
           git push origin HEAD:main
