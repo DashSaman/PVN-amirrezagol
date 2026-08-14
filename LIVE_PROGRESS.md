@@ -1,50 +1,16 @@
-# PVNetwork — وضعیت زنده پروژه
+# PVNetwork — داشبورد زنده
 
-<p align="center"><strong>🇮🇷 فارسی</strong> &nbsp;•&nbsp; <a href="LIVE_PROGRESS_EN.md">🇬🇧 English</a></p>
+## **[🚀 باز کردن داشبورد تمام‌صفحه](https://html-preview.github.io/?url=https://github.com/DashSaman/PVN-amirrezagol/blob/main/site/index.html)**
 
-<p align="center"><img src="assets/live-progress-fa.svg" width="100%" alt="PVNetwork Live Progress"></p>
+نسخه اصلی داشبورد دیگر Markdown/SVG نیست. صفحه جدید یک وب‌اپ responsive و تمام‌صفحه است و این موارد را زنده نشان می‌دهد:
 
-> **نکته:** «پوشش تحقیق» با «تکمیل سخت‌گیرانه» فرق دارد. فقط `COMPLETE-*` به معنی عبور از همه gateهای الزامی است.
+- کار فعال فعلی و اقدام بعدی
+- آخرین commit واقعی و Heartbeat
+- درصد پیشرفت V1/V2 و پوشش تحقیق
+- شمارش معکوس تا Watchdog بعدی
+- شمارش معکوس تا اجرای ساعتی ChatGPT
+- تعداد اجرای خودکار و وقفه‌های ثبت‌شده
+- وضعیت درخواست Resume دستی
+- تغییر زبان فارسی / English
 
-## 🔴 در این لحظه چه کاری در صف فعال است؟
-
-- **فوکوس فعال:** `تکمیل پژوهش V1 اکوسیستم Xray / Modern Proxy`
-- **Work unit:** `XRAY-MODERN-PROXY-V1-CLOSURE`
-- **فاز:** `COMPLETE-RESEARCH-v1`
-- **وضعیت:** `IN_PROGRESS`
-
-### آخرین کار واقعی مشاهده‌شده
-
-- [`a5c9c3d3e4`](https://github.com/DashSaman/PVN-amirrezagol/commit/a5c9c3d3e4d519368b3ebf3cbb719098d05c5515) — **docs(protocols): add XTLS Vision research entry**
-- زمان commit: `2026-08-14T05:07:28+03:30`
-- Heartbeat: **فعالیت بسیار اخیر** — حدود **0 دقیقه** قبل
-
-### اقدام بعدی ثبت‌شده در state
-
-> Continue Xray original-v1 closure from AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md: deep-audit libXray API/lifecycle/build/dependencies/issues, create Xray per-entry capability/support-reuse decisions, expand v2rayNG source/storage/VpnService/import evidence, add security/dependency-advisory and commander/API/stats control maps, synchronize Xray INDEX and numbered entries, checkpoint, then continue the next unfinished original v1 family without waiting for owner. Keep WireGuard/AmneziaWG residual v1 work queued before any overall v1 completion claim.
-
-## 📊 درصدهای قابل اتکا
-
-| شاخص | مقدار | درصد |
-|---|---:|---:|
-| تکمیل سخت‌گیرانه V1 | 0/93 | **0.0%** |
-| تحقیق عمیق شروع‌شده | 36/93 | **38.7%** |
-| dossier/skeleton یا بهتر | 64/93 | **68.8%** |
-| تکمیل سخت‌گیرانه V2 | 0/93 | **0.0%** |
-
-## 🕒 آخرین commitهای تحقیقاتی
-
-- `2026-08-14T05:07:28+03:30` — [`a5c9c3d3e4`](https://github.com/DashSaman/PVN-amirrezagol/commit/a5c9c3d3e4d519368b3ebf3cbb719098d05c5515) — docs(protocols): add XTLS Vision research entry
-- `2026-08-14T05:07:17+03:30` — [`a8b05c8ff8`](https://github.com/DashSaman/PVN-amirrezagol/commit/a8b05c8ff8618680b290b3e91a6cabaa21ab04db) — docs(protocols): add XTLS legacy research entry
-- `2026-08-14T05:07:08+03:30` — [`0aaa801012`](https://github.com/DashSaman/PVN-amirrezagol/commit/0aaa80101215e7a33dbd03f5e5004a754a727b20) — docs(protocols): add REALITY research entry
-- `2026-08-14T05:06:50+03:30` — [`77981fa64a`](https://github.com/DashSaman/PVN-amirrezagol/commit/77981fa64af076c841528e5607e9d9d3f98ccf32) — docs(protocols): link Shadowsocks entry to Xray research evidence
-- `2026-08-14T05:06:39+03:30` — [`eaaea80cd0`](https://github.com/DashSaman/PVN-amirrezagol/commit/eaaea80cd0e2082f3b4bcf9a74ea01798b882638) — docs(protocols): link Trojan entry to Xray research evidence
-- `2026-08-14T05:06:27+03:30` — [`2326c7baa1`](https://github.com/DashSaman/PVN-amirrezagol/commit/2326c7baa1b9b8278949d0da2c7e7b8b178102b9) — docs(protocols): link VMess entry to Xray research evidence
-- `2026-08-14T05:06:14+03:30` — [`cb7d8fd30b`](https://github.com/DashSaman/PVN-amirrezagol/commit/cb7d8fd30b4467934065dd6490946c64405d758e) — docs(protocols): link VLESS entry to Xray research evidence
-- `2026-08-14T05:05:40+03:30` — [`8c1acb20fa`](https://github.com/DashSaman/PVN-amirrezagol/commit/8c1acb20fa822795c6f0ca27d575a469f7f5c7ba) — docs(research): add Xray security advisory and release safety review
-
-## ✅ از کجا بفهمم واقعاً دارد کار می‌کند؟
-
-با Refresh صفحه این سه مورد را نگاه کن: **آخرین commit تحقیقاتی، زمان Heartbeat، و Work unit فعال**. Commitهای صرفاً مربوط به خود داشبورد از این لیست حذف می‌شوند تا پیشرفت مصنوعی نشان داده نشود.
-
-منابع: [`AGENT_RUN_STATE`](docs/AGENT_RUN_STATE.json) · [`V1 tracker`](research/RESEARCH_COMPLETENESS.md) · [`V2 tracker`](research/REFERENCE_V2_COMPLETENESS.md) · [`Checkpoint log`](docs/AGENT_CHECKPOINT_LOG.md)
+[مشاهده سورس داشبورد](site/index.html) · [Automation log](docs/AUTOMATION_RUN_LOG.md) · [Agent state](docs/AGENT_RUN_STATE.json)
