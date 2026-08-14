@@ -19,15 +19,15 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 013 | SoftEther VPN Protocol | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled in `research/protocols/013-softether/V1_GATE_RECONCILIATION.md` |
 | 014 | EtherIP | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with infrastructure/N-A treatment in `research/protocols/014-etherip/V1_GATE_RECONCILIATION.md` |
 | 015 | EtherIP/IPsec | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled as an EtherIP + typed-IPsec composition in `research/protocols/015-etherip-ipsec/V1_GATE_RECONCILIATION.md` |
-| 016 | Cisco AnyConnect | IN-RESEARCH — shared OpenConnect dossier created |
-| 017 | OpenConnect / ocserv-compatible | IN-RESEARCH — shared OpenConnect dossier created |
-| 018 | Palo Alto GlobalProtect | IN-RESEARCH — shared OpenConnect evidence started |
-| 019 | Fortinet FortiGate SSL VPN | IN-RESEARCH — OpenConnect/open-source reference research started |
-| 020 | Pulse Secure | IN-RESEARCH — shared OpenConnect evidence started |
-| 021 | Ivanti Connect Secure | IN-RESEARCH — shared OpenConnect evidence started |
-| 022 | Juniper Network Connect | IN-RESEARCH — shared OpenConnect evidence started |
-| 023 | F5 BIG-IP SSL VPN | IN-RESEARCH — shared OpenConnect evidence started |
-| 024 | Array Networks SSL VPN | IN-RESEARCH — shared OpenConnect evidence started |
+| 016 | Cisco AnyConnect | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled in shared OpenConnect family audit `V1_GATE_RECONCILIATION_016_024.md`; proprietary vendor certification remains separate |
+| 017 | OpenConnect / ocserv-compatible | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled against OpenConnect v9.21 exact source pin and shared family evidence |
+| 018 | Palo Alto GlobalProtect | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled; SSO/HIP/server-version certification uncertainties retained |
+| 019 | Fortinet FortiGate SSL VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with partial/experimental upstream capability boundaries retained |
+| 020 | Pulse Secure | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with auth/posture limitations explicit |
+| 021 | Ivanti Connect Secure | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with appliance/version/auth/posture matrix retained for certification |
+| 022 | Juniper Network Connect | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with legacy/browser/TNCC/IPv6 limitations explicit |
+| 023 | F5 BIG-IP SSL VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with experimental auth/DTLS limitations explicit |
+| 024 | Array Networks SSL VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with limited/experimental support boundary explicit |
 | 025 | Check Point VPN | IN-RESEARCH — snx-rs reference/license evidence collected |
 | 026 | SonicWall NetExtender / SSL VPN | SKELETON |
 | 027 | SonicWall Global VPN / IPsec | SKELETON |
