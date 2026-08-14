@@ -6,7 +6,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 
 | # | Entry | Current reference state |
 |---:|---|---|
-| 001 | OpenVPN | PENDING |
+| 001 | OpenVPN | COMPLETE-REFERENCE-v2 |
 | 002 | WireGuard | PENDING |
 | 003 | AmneziaWG | PENDING |
 | 004 | IKEv2/IPsec | PENDING |
