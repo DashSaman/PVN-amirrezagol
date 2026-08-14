@@ -5,19 +5,19 @@
   "run_status": "IN_PROGRESS",
   "owner_scope": "All repository-documented PVNetwork research work: first complete all 93 COMPLETE-RESEARCH-v1 gates, then COMPLETE-REFERENCE-v2 for all applicable entries.",
   "total_matrix_entries": 93,
-  "v1_complete_count": 60,
+  "v1_complete_count": 61,
   "active_phase": "COMPLETE-RESEARCH-v1",
-  "hard_phase_lock": {"enabled":true,"reason":"V1 tracker is 60/93; V2 remains locked.","unlock_condition":"research/RESEARCH_COMPLETENESS.md contains 93 COMPLETE-RESEARCH-v1 entries"},
-  "priority_entries": [61,62,63,64,65,66,67,68,69,70,71,72],
+  "hard_phase_lock": {"enabled":true,"reason":"V1 tracker is 61/93; V2 remains locked.","unlock_condition":"research/RESEARCH_COMPLETENESS.md contains 93 COMPLETE-RESEARCH-v1 entries"},
+  "priority_entries": [62,63,64,65,66,67,68,69,70,71,72,73],
   "active_work_unit": {
-    "id": "V1-ENTRY-061-TINC",
+    "id": "V1-ENTRY-062-INNERNET",
     "status": "IN_PROGRESS",
-    "current_entry": 61,
-    "source_handoff": "research/protocols/060-entry/V1_GATE_RECONCILIATION.md",
-    "exact_next_action": "Reconcile entry 061 Tinc against all 20 V1 gates using current canonical tinc source/releases/documentation. Pin v1.1/1.0 generation status, license, build/platform/config/key/mesh/routing/firewall/service/UI/test/security evidence, then continue entry 062 innernet automatically."
+    "current_entry": 62,
+    "source_handoff": "research/protocols/061-entry/V1_GATE_RECONCILIATION.md",
+    "exact_next_action": "Reconcile entry 062 innernet against all 20 V1 gates using current canonical source/release/license/client/server/admin architecture. Keep WireGuard data plane, innernet-server coordination, CIDR/peer invitation state and management CLI separate; then continue entry 063 GRE automatically."
   },
   "campaign_sources_of_truth": {"matrix":"docs/PROTOCOL_MATRIX.md","v1_contract":"research/PROTOCOL_RESEARCH_TEMPLATE.md","v1_tracker":"research/RESEARCH_COMPLETENESS.md","v2_contract":"research/FULL_PROTOCOL_REFERENCE_CONTRACT.md","v2_tracker":"research/REFERENCE_V2_COMPLETENESS.md","startup":"AI_START_HERE.md","agent_rules":"AGENTS.md","continuous_execution_contract":"AGENT_EXECUTION_CONTRACT.md"},
   "resume_policy": {"ask_owner_to_continue":false,"restart_from_chat_memory":false,"resume_from_repository_checkpoint":true,"on_single_task_blocker":"record blocker and continue independent V1 work","on_work_unit_pass":"update tracker and continue next unfinished V1 entry until 93/93"},
   "completion_validation": {"command":"python scripts/agent_state.py verify --require-complete","allow_done_claim_without_validator_pass":false},
-  "last_checkpoint": {"date":"2026-08-14","summary":"Entry 060 Nebula satisfies all 20 V1 research gates with current v1.11.0 source, MIT core, Noise/certificate/lighthouse/firewall architecture and mobile wrapper license uncertainty explicit. V1 is 60/93; active work advances to Tinc.","last_known_repo_handoff":"research/protocols/060-entry/V1_GATE_RECONCILIATION.md"}
+  "last_checkpoint": {"date":"2026-08-14","summary":"Entry 061 Tinc satisfies all 20 V1 research gates with current stable 1.0.37 vs prerelease 1.1 boundaries, GPLv2+ licensing, mesh/routing modes and daemon/process integration constraints explicit. V1 is 61/93; active work advances to innernet.","last_known_repo_handoff":"research/protocols/061-entry/V1_GATE_RECONCILIATION.md"}
 }
