@@ -4,12 +4,20 @@ Research date baseline: 2026-08-14. Reverify before implementation or release.
 
 ## OpenVPN 3
 - Repository: `OpenVPN/openvpn3`
-- Reviewed branch: `master`
-- Pinned SHA: `1fd271caefc9a71406afdc2ff2460999dcfdb234`
-- Complete recursive tree reference: `https://api.github.com/repos/OpenVPN/openvpn3/git/trees/1fd271caefc9a71406afdc2ff2460999dcfdb234?recursive=1`
-- Root contents reference: `https://api.github.com/repos/OpenVPN/openvpn3/contents?ref=1fd271caefc9a71406afdc2ff2460999dcfdb234`
+- Reviewed source-analysis branch: `master`
+- Detailed v1 source-analysis SHA: `1fd271caefc9a71406afdc2ff2460999dcfdb234`
+- Current reviewed release tag: `release/3.11.7`
+- Current reviewed release commit: `18edfae7e7fd8051c93bd4746ec69be91eb02dbb`
+- Release commit date: `2026-07-07T15:47:41Z`
+- Canonical tags API: `https://api.github.com/repos/OpenVPN/openvpn3/tags?per_page=10`
+- Canonical release commit API: `https://api.github.com/repos/OpenVPN/openvpn3/commits/18edfae7e7fd8051c93bd4746ec69be91eb02dbb`
+- Upstream commit verification at review: GitHub reports the release commit signature as valid/verified.
+- Complete recursive tree reference for the detailed v1 analysis pin: `https://api.github.com/repos/OpenVPN/openvpn3/git/trees/1fd271caefc9a71406afdc2ff2460999dcfdb234?recursive=1`
+- Root contents reference for the detailed v1 analysis pin: `https://api.github.com/repos/OpenVPN/openvpn3/contents?ref=1fd271caefc9a71406afdc2ff2460999dcfdb234`
 - Language mix at review: overwhelmingly C++, plus C, CMake and small supporting languages.
 - License file: `LICENSE.md`; dual choice stated as AGPL-3.0-only or MPL-2.0, with the project’s documented OpenSSL permission for the AGPL path.
+
+The release pin above is the current freshness reference. The detailed architecture/source notes were produced from the immutable source-analysis SHA listed above. Before implementation, choose the exact source to ship and repeat the dependency/license/security/SBOM review against that exact revision rather than assuming the old analysis pin and current release are byte-identical.
 
 ## OpenVPN GUI for Windows
 - Repository: `OpenVPN/openvpn-gui`
@@ -17,6 +25,7 @@ Research date baseline: 2026-08-14. Reverify before implementation or release.
 - Pinned SHA: `7295bdc8739a007d099aa590be678c756d02def4`
 - Complete recursive tree reference: `https://api.github.com/repos/OpenVPN/openvpn-gui/git/trees/7295bdc8739a007d099aa590be678c756d02def4?recursive=1`
 - Root contents reference: `https://api.github.com/repos/OpenVPN/openvpn-gui/contents?ref=7295bdc8739a007d099aa590be678c756d02def4`
+- Current upstream change history reference: `https://github.com/OpenVPN/openvpn-gui/blob/master/CHANGES.rst`
 - Main language: C; small C++/CMake/Make/M4/Shell components.
 - Important currently reviewed files: `tray.c`, `registry.c`, `options.*`, `openvpn.*`, `openvpn_config.*`, localization/resources and build/change files.
 - `tray.c` headers state GPL v2 or later. Exact repository-wide licensing must remain tied to upstream notices/COPYING when reuse is considered.
@@ -37,6 +46,7 @@ Research date baseline: 2026-08-14. Reverify before implementation or release.
 - Pinned SHA: `46db6d5dd490379f3da6acc1253ed8d182614f96`
 - Complete recursive tree reference: `https://api.github.com/repos/Tunnelblick/Tunnelblick/git/trees/46db6d5dd490379f3da6acc1253ed8d182614f96?recursive=1`
 - Root contents reference: `https://api.github.com/repos/Tunnelblick/Tunnelblick/contents?ref=46db6d5dd490379f3da6acc1253ed8d182614f96`
+- Current release/security history reference: `https://github.com/Tunnelblick/Tunnelblick/releases`
 - Main language: Objective-C, with substantial Shell and supporting C/HTML/AppleScript.
 - Important top-level areas observed include `tunnelblick/`, `third_party/`, `vendor/`, OpenVPN-related bundled/reference material, tools/scripts, build docs and release notes.
 - License classification currently treated as GPL-family/open-source reference; exact notices and third-party subdirectory licenses must be audited path by path before copying anything.
@@ -51,7 +61,7 @@ Research date baseline: 2026-08-14. Reverify before implementation or release.
 - Reuse classification: **REFERENCE-ONLY / DO-NOT-COPY for a commercial PVNetwork build unless separately licensed**. The pinned license states non-commercial use only and says source/binary products cannot be resold or distributed, and modified source cannot be distributed.
 
 ## OpenVPN Connect
-OpenVPN Connect is used here as the official product/behavior reference. Do not assume the complete application source/UI is available merely because OpenVPN 3 is public. Public official documentation is the primary source for its current profile/import/settings/UI behavior; OpenVPN 3 is analyzed separately as the reusable core candidate.
+OpenVPN Connect is used here as the official product/behavior reference. Do not assume the complete application source/UI is available merely because OpenVPN 3 is public. Public official documentation at `https://openvpn.net/connect-docs/` is the primary source for its current profile/import/settings/UI behavior; OpenVPN 3 is analyzed separately as the reusable core candidate.
 
 ## Source-tree preservation rule
 The recursive-tree URLs above are the authoritative complete file-list references for the pinned revisions. Do not copy every file into PVNetwork simply to preserve a snapshot. If a future engineering/legal decision approves vendoring a component, preserve license/copyright notices and create a deliberate pinned vendor import with modification records.
