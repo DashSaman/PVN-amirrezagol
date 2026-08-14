@@ -1,0 +1,72 @@
+# 034 — Citrix Secure Access / NetScaler Gateway VPN — COMPLETE-REFERENCE-v2 audit
+
+Reviewed: 2026-08-15
+
+Scope: research/reference completion only. This does **not** claim live NetScaler interoperability, production support, device/Store certification, or rights to redistribute proprietary Citrix/NetScaler software, UI assets, packages, or branding.
+
+## Current product and source boundary
+
+Citrix Secure Access is the current first-party remote-access client family used with NetScaler Gateway and, on supported platforms, Citrix Secure Private Access. For this entry the canonical classic VPN termination/control product is **NetScaler Gateway**. The current NetScaler Gateway documentation family is **14.1**; NetScaler 14.1 release notes record build **14.1-72.61** on 2026-06-30. Gateway release notes are covered by the broader NetScaler release-note stream.
+
+Current client release evidence includes Windows **26.6.1.20** (2026-07-14), iOS **26.06.1** (2026-07-22), Android **26.06.1** (2026-06-23), and macOS **26.04.1.1** (2026-04-28). These are vendor binary/release pins, not source-code pins.
+
+Canonical current references:
+
+- https://docs.citrix.com/en-us/citrix-secure-access/system-requirements.html
+- https://docs.citrix.com/en-us/citrix-secure-access/gateway-clients-feature-parity.html
+- https://docs.citrix.com/en-us/citrix-secure-access/install-citrix-secure-access.html
+- https://docs.citrix.com/en-us/citrix-secure-access/document-history
+- https://docs.citrix.com/en-us/citrix-secure-access/windows-plug-in-release-notes.html
+- https://docs.citrix.com/en-us/citrix-secure-access/secure-access-windows-logging-mechanism.html
+- https://docs.citrix.com/en-us/citrix-secure-access/citrix-secure-access-integrated-packet-capture-tool
+- https://docs.netscaler.com/en-us/netscaler-gateway/current-release.html
+- https://docs.netscaler.com/en-us/citrix-adc/current-release/citrix-adc-release-notes.html
+- https://docs.netscaler.com/en-us/netscaler-gateway/current-release/vpn-user-config/configure-full-vpn-setup.html
+- https://docs.netscaler.com/en-us/netscaler-gateway/current-release/configure-dtls-virtual-server-using-ssl-virtual-server.html
+- https://docs.netscaler.com/en-us/netscaler-gateway/current-release/authentication-authorization/nfactor-for-gateway-authentication.html
+- https://docs.netscaler.com/en-us/netscaler-gateway/current-release/vpn-user-config/configure-plugin-connections/connect-to-internal-network-resources.html
+- https://docs.netscaler.com/en-us/citrix-adc/current-release/faqs/faq-upgrade-downgrade.html
+
+No canonical public repository for the complete Citrix Secure Access client or NetScaler Gateway VPN implementation is identified by the authoritative product documentation reviewed for this entry. The complete first-party client/server implementation is therefore treated as proprietary/reference-only. Standards-defined TLS/DTLS concepts may be reused from separately reviewed standards/library entries only at the standards layer; generic TLS/DTLS support is not proof of Citrix Gateway compatibility.
+
+A critical product boundary is retained: **full VPN is not ICA/HDX proxy**. NetScaler's full-VPN setup explicitly configures Clientless Access OFF and ICA Proxy OFF for the full-VPN session profile. ICA/HDX access remains a separate Gateway function and must not be flattened into the tunnel data path for this entry.
+
+## Exact 16-gate reconciliation
+
+1. **Server implementation/project ecosystem — PASS.** The canonical termination/control ecosystem is proprietary NetScaler Gateway on the supported NetScaler product line, with Citrix Secure Access as the canonical first-party client. Current Gateway 14.1 documentation describes the typical DMZ placement and allows multiple Gateway appliances for more complex deployments. Citrix Secure Private Access is a distinct supported deployment for applicable client platforms and is not substituted for classic NetScaler Gateway full VPN. No generic TLS server is relabeled as a Citrix Gateway implementation.
+
+2. **Official/community installers/deployment projects — PASS.** NetScaler Gateway is deployed through vendor-supported NetScaler appliance/virtual-software lifecycle and download channels. Citrix Secure Access clients use first-party desktop packages/downloads and mobile platform stores; current install documentation covers Windows, macOS, Linux, iOS and Android, including Windows ARM64 support from client 25.7.1.11. No community Docker/Helm/Kubernetes project is presented as a NetScaler Gateway replacement without vendor evidence.
+
+3. **Server OS/container/orchestration install matrix — PASS / evidence-backed N/A.** The meaningful server target is the supported NetScaler Gateway/NetScaler platform, not an arbitrary Ubuntu/Debian/RHEL application package. Generic container/Kubernetes installation of the Gateway VPN product is not established by the reviewed authoritative Gateway documentation and is therefore not claimed. NetScaler form-factor/platform support remains tied to the current NetScaler documentation and release lifecycle rather than inferred from client support or generic Linux availability.
+
+4. **Server panel/UI/menu maps — PASS.** Current full-VPN administration is mapped to NetScaler Gateway virtual-server/session-policy surfaces. Documented paths include `NetScaler Gateway > Virtual Servers`, `NetScaler Gateway > Policies > Session`, session-profile `Client Experience`, `Security`, and `Published Applications` tabs, and `NetScaler Gateway > Resources > Intranet Applications`. Full VPN requires Clientless Access OFF and ICA Proxy OFF in the documented setup. Authentication/nFactor configuration resides under Gateway/AAA authentication policy and virtual-server binding flows. Split tunnel, authorization, DNS/proxy/session timeout and intranet-application policy remain Gateway-controlled settings rather than client-local guesses.
+
+5. **Client install matrix — PASS.** Current Citrix requirements cover Windows 10/11, selected Windows Server editions, macOS, Ubuntu 22.04/24.04 plus selected thin-client OSes, iOS and Android. The supported-deployment matrix differs by platform: for example current requirements list Android for NetScaler Gateway, while desktop and certain Apple platforms also support Secure Private Access. Apple VPN support uses the public Network Extension framework; legacy Apple Gateway plug-in/VPN paths are no longer supported. Exact Store receipt/device certification is later packaging work, not an unstated research gate.
+
+6. **Major client UI/menu maps — PASS.** First-party client surfaces include launch/profile or URL entry, saved endpoint/profile, Connect/Disconnect/status, configured authentication or browser/WebView flows, Always-On where supported, platform VPN/profile permission prompts, settings/troubleshooting/logging and policy-denial/user-notification surfaces. On Windows the documented logging UI exposes Logging, log level, file-size/count controls, log collection/open/email actions; newer troubleshooting UI exposes integrated packet capture under `Settings > Troubleshooting`. Feature parity is explicitly platform-specific, so a single universal UI is not invented.
+
+7. **Cryptographic design/security boundary — PASS.** NetScaler full VPN is SSL/TLS based. A DTLS VPN virtual server can be configured with the same IP address and port as the SSL VPN virtual server; its certificate and advanced DTLS ciphers are separately bound. Official documentation states DTLS handshake failure falls back to TLS unless TLS is intentionally disabled. DTLS 1.2 has explicit client/platform/build limitations, including current documentation limiting client-side support to Windows, macOS and iOS. Server certificates bind to the VPN virtual server. Exact TLS/DTLS ciphers and protocol policy remain NetScaler profile/build controlled and are not inferred from browser/client defaults.
+
+8. **Data path/wire flow — PASS.** Bounded full-VPN flow: client reaches the Gateway VPN virtual server -> TLS transport and, when configured/supported, DTLS negotiation -> configured Gateway authentication/nFactor and optional EPA/posture flow -> session policy/profile evaluation -> protected-network/intranet-application, route and DNS policy acquisition -> tunnel forwarding through NetScaler Gateway -> authorization/policy enforcement for internal resources -> reconnect/timeout/disconnect lifecycle. With split tunnel OFF, client traffic is captured for the Gateway path; with split tunnel ON, configured intranet applications define protected destinations. ICA/HDX proxy is a separate mode and is explicitly OFF in the documented full-VPN setup.
+
+9. **Ports/transports/handshake — PASS.** The VPN virtual-server port is administrator-configured; official examples use 443 but the research model does not hard-code a universal port. DTLS can share the SSL VPN virtual-server IP/port and falls back to TLS on DTLS handshake failure. The DTLS virtual server requires an existing SSL VPN virtual server and has documented limitations including no IPv6 address on the DTLS VPN vserver and no cluster configuration for that DTLS virtual-server feature. Authentication, policy exchange and tunnel transport are kept as separate phases rather than inventing proprietary packet framing.
+
+10. **Deployment topologies — PASS.** Evidence-backed topologies include the common Gateway-in-DMZ remote-access deployment, multiple Gateway appliances for more complex designs, full tunnel, split tunnel, reverse split tunnel, policy-selected intranet applications, external/internal DNS and proxy policy, and nFactor/EPA-controlled access. The entry does not infer unsupported HA, cluster, load-balancing, double-hop or Secure Private Access parity from generic NetScaler capability; each remains topology/build/policy specific. Clientless access and ICA proxy topologies remain distinct from full VPN.
+
+11. **Source/release/license/activity pins — PASS.** Proprietary boundary is explicit: no public complete-source repository, source commit, or open-source license is fabricated for Citrix Secure Access or NetScaler Gateway. Current vendor activity is evidenced by NetScaler 14.1 release notes through build 14.1-72.61 (2026-06-30) and active 2026 client streams including Windows 26.6.1.20, iOS 26.06.1, Android 26.06.1 and macOS 26.04.1.1. Binary hashes/signatures are later package-freeze artifacts and are not invented. Any separately published standards/library component would require an independent repository/version/license review before reuse.
+
+12. **Security/supply-chain risks — PASS.** Use authenticated Citrix/NetScaler download or platform-store distribution, current security advisories and supported release trains. Treat Gateway certificates/private keys, client certificates, LDAP/RADIUS/SAML/OAuth/OIDC credentials/tokens, OTP state and EPA results as separate secret/trust domains. nFactor licensing/capability varies by NetScaler edition and configuration; Android nFactor remains documented with release-specific preview/availability caveats and is not generalized. Client logs, packet captures and support bundles can contain network/security metadata and require redaction/controlled handling. Third-party DLL injection and trusted-signer exceptions documented for Windows are security-sensitive compatibility boundaries, not defaults to weaken globally.
+
+13. **Upgrade/uninstall/rollback — PASS.** Server lifecycle follows NetScaler release packages, release notes, supported upgrade/downgrade procedures and security bulletins. Client lifecycle is independently versioned by platform and delivered through desktop packages/management systems or mobile stores. Apple App Store/TestFlight switching can require profile recreation; macOS package deployment has system/network-extension and certificate-keychain requirements. Current client release notes document auto-update, reconnect, DNS and Always-On fixes/regressions. Exact rollback support is version/platform controlled and is not assumed; uninstall must also account for profiles/extensions, certificates and managed policy where applicable.
+
+14. **Differences/uncertainties — PASS.** Platform feature parity is explicitly non-uniform across Windows, macOS, Linux, iOS and Android for nFactor, EPA, split tunnel/DNS, Always-On, proxy and related capabilities. Current docs contain release-specific preview caveats, so preview features are not promoted to universal GA support. Exact OS minor versions, store package identity, DTLS availability, MDM behavior, authentication combinations and upgrade behavior remain tied to the cited current release documentation. Generic TLS/DTLS libraries do not implement NetScaler session policy, nFactor/EPA, intranet-application, routing/DNS or lifecycle semantics by implication. Runtime/live interoperability remains later certification, not a hidden V2 condition.
+
+15. **REFERENCE_INDEX / reuse decision — PASS.** Compact index: `CITRIX_SECURE_ACCESS_CURRENT_AUDIT.md`, `V1_RESEARCH.md`, `V1_GATE_RECONCILIATION.md`, this `REFERENCE_V2_AUDIT.md`, plus separately completed TLS/DTLS/standards evidence only where the documented wire layer matches. Reuse decision: `VENDOR SSL/TLS-DTLS REMOTE-ACCESS REFERENCE / NETSCALER GATEWAY SERVER+POLICY+AUTH+EPA+ROUTING SEMANTICS REFERENCE-ONLY / FIRST-PARTY CLIENT REFERENCE-ONLY / KEEP FULL-VPN DISTINCT FROM ICA-HDX-CLIENTLESS ACCESS / REUSE STANDARD TLS-DTLS LAYERS ONLY WHERE DOCUMENTED / NO PUBLIC COMPLETE-SOURCE REUSE CLAIM`.
+
+16. **Latest continuation state — PASS when tracker/state are advanced.** Promotion must set entry 034 to `COMPLETE-REFERENCE-v2`, synchronize `docs/AGENT_RUN_STATE.json` to 34/93, select **035 — Barracuda TINA VPN** as the next unfinished entry, refresh foreground activity, and continue immediately. No runtime/device/Store/live-NetScaler interoperability receipt is introduced as an unstated completion gate.
+
+## Completion decision
+
+All exact 16 COMPLETE-REFERENCE-v2 gates are evidence-backed or explicitly bounded by proprietary/platform/version-specific N/A/uncertainty. The current NetScaler 14.1 and Citrix Secure Access 2026 release families, server/admin/client surfaces, TLS/DTLS path, nFactor/EPA/authentication boundary, routing/DNS policy, full-VPN-versus-ICA separation, lifecycle and source/license boundary are explicit without fabricating a public source pin or interoperability receipt.
+
+Decision: **COMPLETE-REFERENCE-v2**.
