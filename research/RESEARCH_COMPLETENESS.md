@@ -76,7 +76,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 070 | VXLAN over IPsec | COMPLETE-RESEARCH-v1 |
 | 071 | DMVPN | COMPLETE-RESEARCH-v1 |
 | 072 | Cisco FlexVPN | COMPLETE-RESEARCH-v1 |
-| 073 | GETVPN | PENDING |
+| 073 | GETVPN | COMPLETE-RESEARCH-v1 |
 | 074 | REALITY | EVIDENCE-GAPS |
 | 075 | XTLS | EVIDENCE-GAPS |
 | 076 | XTLS Vision | EVIDENCE-GAPS |
