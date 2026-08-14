@@ -6,12 +6,12 @@
   "owner_scope": "All repository-documented PVNetwork research work: 93-entry COMPLETE-RESEARCH-v1 campaign, all currently documented fine-grained gaps, then COMPLETE-REFERENCE-v2 for all applicable entries. Completion of one protocol/family is never overall completion.",
   "total_matrix_entries": 93,
   "active_phase": "COMPLETE-REFERENCE-v2",
-  "priority_entries": [2, 3],
+  "priority_entries": [4, 5, 6, 7],
   "active_work_unit": {
-    "id": "WIREGUARD-AWG-COMPLETE-REFERENCE-V2",
+    "id": "IKE-IPSEC-COMPLETE-REFERENCE-V2",
     "status": "IN_PROGRESS",
-    "source_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_8.md",
-    "exact_next_action": "Inventory pinned WireGuard/AWG Apple Xcode configuration templates and target bundle/product identifiers, then seek authoritative release/App Store metadata that can narrow shipped-build provenance without guessing. Reconcile entries 002/003 line-by-line against FULL_PROTOCOL_REFERENCE_CONTRACT.md, explicitly marking source-complete versus execution-blocked gates. If source-only gaps remain in wg-easy, inspect concrete Nitro adapter/server entry points for where h3 request helpers are invoked. Keep entries PENDING until all strict gates genuinely pass."
+    "source_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_9.md",
+    "exact_next_action": "Begin IKE/IPsec COMPLETE-REFERENCE-v2 for entries 004-007 from existing strongSwan/native evidence. Keep IKEv2, IKEv1, ESP and AH distinct; inventory canonical and major server/client implementations, installer/deployment projects, OS/client matrices, management/client UIs, cryptography, wire flow, ports/handshake and topologies. Preserve any connector/source gaps and continue independently executable work without owner prompting."
   },
   "campaign_sources_of_truth": {
     "matrix": "docs/PROTOCOL_MATRIX.md",
@@ -34,8 +34,24 @@
   },
   "checkpoint_policy": {
     "after_every_meaningful_work_unit": true,
-    "files": ["docs/AGENT_RUN_STATE.json","docs/AGENT_CHECKPOINT_LOG.md","relevant research dossier(s)","research/RESEARCH_COMPLETENESS.md or a dated status snapshot","research/REFERENCE_V2_COMPLETENESS.md when v2 is active","docs/PROJECT_STATE.md or a dated status snapshot","latest AGENTS_HANDOFF_*.md"],
-    "record": ["work unit/task","evidence and files","commit SHA(s)","tests/checks and PASS/FAIL","failed approaches not to repeat","blockers","exact next action"]
+    "files": [
+      "docs/AGENT_RUN_STATE.json",
+      "docs/AGENT_CHECKPOINT_LOG.md",
+      "relevant research dossier(s)",
+      "research/RESEARCH_COMPLETENESS.md or a dated status snapshot",
+      "research/REFERENCE_V2_COMPLETENESS.md when v2 is active",
+      "docs/PROJECT_STATE.md or a dated status snapshot",
+      "latest AGENTS_HANDOFF_*.md"
+    ],
+    "record": [
+      "work unit/task",
+      "evidence and files",
+      "commit SHA(s)",
+      "tests/checks and PASS/FAIL",
+      "failed approaches not to repeat",
+      "blockers",
+      "exact next action"
+    ]
   },
   "completion_validation": {
     "command": "python scripts/agent_state.py verify --require-complete",
@@ -43,7 +59,7 @@
   },
   "last_checkpoint": {
     "date": "2026-08-14",
-    "summary": "WireGuard/AmneziaWG v2 slice 8 pins the exact wg-easy v15.3.0 Nuxt/Nitro/h3 dependency set and h3 1.15.11 Host/X-Forwarded-* request semantics, and records the source-level Apple packet-tunnel/App Group entitlement boundary for WireGuard and standalone AmneziaWG. Effective built-image proxy behavior, Store provenance, Apple-device execution and AWG generation interop remain blocked; entries 002/003 remain PENDING.",
-    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_8.md"
+    "summary": "WireGuard/AmneziaWG v2 source/reference research has been reconciled line-by-line against all 16 FULL_PROTOCOL_REFERENCE_CONTRACT categories. Apple target/build identity and Store provenance separation plus wg-easy Nitro/h3 request-boundary evidence are now durable. Entries 002/003 remain strict-tracker PENDING only because representative runtime/install/Store/signing/interoperability receipts require external environments. The active work unit advances to IKE/IPsec v2 entries 004-007.",
+    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_9.md"
   }
 }
