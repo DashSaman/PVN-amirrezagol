@@ -5,19 +5,19 @@
   "run_status": "IN_PROGRESS",
   "owner_scope": "All repository-documented PVNetwork research work: first complete all 93 COMPLETE-RESEARCH-v1 gates, then COMPLETE-REFERENCE-v2 for all applicable entries.",
   "total_matrix_entries": 93,
-  "v1_complete_count": 53,
+  "v1_complete_count": 54,
   "active_phase": "COMPLETE-RESEARCH-v1",
-  "hard_phase_lock": {"enabled":true,"reason":"V1 tracker is 53/93; V2 remains locked.","unlock_condition":"research/RESEARCH_COMPLETENESS.md contains 93 COMPLETE-RESEARCH-v1 entries"},
-  "priority_entries": [54,55,56,57,58,59,60,61,62,63,64],
+  "hard_phase_lock": {"enabled":true,"reason":"V1 tracker is 54/93; V2 remains locked.","unlock_condition":"research/RESEARCH_COMPLETENESS.md contains 93 COMPLETE-RESEARCH-v1 entries"},
+  "priority_entries": [55,56,57,58,59,60,61,62,63,64,65],
   "active_work_unit": {
-    "id": "V1-ENTRY-054-SSH-TUNNEL",
+    "id": "V1-ENTRY-055-TOR-SOCKS",
     "status": "IN_PROGRESS",
-    "current_entry": 54,
-    "source_handoff": "research/upstreams/http-proxy-family/V1_SHARED_EVIDENCE.md",
-    "exact_next_action": "Reconcile entry 054 SSH Tunnel against all 20 V1 gates using current OpenSSH protocol/source/client/server/platform evidence. Separate local, remote and dynamic forwarding; keep SOCKS dynamic forwarding as a composition rather than redefining SOCKS; map key/agent/host-key trust, persistence, GUI references and Store/platform boundaries, then continue 055 Tor SOCKS automatically."
+    "current_entry": 55,
+    "source_handoff": "research/protocols/054-entry/V1_GATE_RECONCILIATION.md",
+    "exact_next_action": "Reconcile entry 055 Tor SOCKS against all 20 V1 gates using current Tor Project protocol/SOCKS documentation and maintained Tor/Arti source. Keep Tor network semantics, SOCKS listener, DNS isolation and ordinary SOCKS5 behavior separate; pin source/release/license/tree, client/server/control/UI/security/test evidence, then continue entry 056 Tailscale automatically."
   },
   "campaign_sources_of_truth": {"matrix":"docs/PROTOCOL_MATRIX.md","v1_contract":"research/PROTOCOL_RESEARCH_TEMPLATE.md","v1_tracker":"research/RESEARCH_COMPLETENESS.md","v2_contract":"research/FULL_PROTOCOL_REFERENCE_CONTRACT.md","v2_tracker":"research/REFERENCE_V2_COMPLETENESS.md","startup":"AI_START_HERE.md","agent_rules":"AGENTS.md","continuous_execution_contract":"AGENT_EXECUTION_CONTRACT.md"},
   "resume_policy": {"ask_owner_to_continue":false,"restart_from_chat_memory":false,"resume_from_repository_checkpoint":true,"on_single_task_blocker":"record blocker and continue independent V1 work","on_work_unit_pass":"update tracker and continue next unfinished V1 entry until 93/93"},
   "completion_validation": {"command":"python scripts/agent_state.py verify --require-complete","allow_done_claim_without_validator_pass":false},
-  "last_checkpoint": {"date":"2026-08-14","summary":"Entries 052 HTTP Proxy and 053 HTTPS Proxy / HTTP CONNECT satisfy all 20 V1 research gates using RFC9110/9112 plus current curl/Squid/3proxy evidence with forward-proxy, TLS-to-proxy and CONNECT tunnel semantics kept distinct. V1 is 53/93; active work advances to SSH Tunnel.","last_known_repo_handoff":"research/upstreams/http-proxy-family/V1_SHARED_EVIDENCE.md"}
+  "last_checkpoint": {"date":"2026-08-14","summary":"Entry 054 SSH Tunnel satisfies all 20 V1 research gates using current OpenSSH and libssh2 source/license/forwarding evidence, with local/remote/dynamic forwarding and host-key/credential ownership kept distinct. V1 is 54/93; active work advances to Tor SOCKS.","last_known_repo_handoff":"research/protocols/054-entry/V1_GATE_RECONCILIATION.md"}
 }
