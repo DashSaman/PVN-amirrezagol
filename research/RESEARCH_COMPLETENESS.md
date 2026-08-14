@@ -12,7 +12,7 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 006 | IPsec ESP | EVIDENCE-GAPS — shared strongSwan/native evidence started |
 | 007 | IPsec AH | EVIDENCE-GAPS — shared strongSwan/native evidence started |
 | 008 | L2TP/IPsec | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled as a layered IPsec + L2TPv2 + PPP composition in `research/protocols/008-l2tp-ipsec/V1_GATE_RECONCILIATION.md` |
-| 009 | L2TPv3 | SKELETON |
+| 009 | L2TPv3 | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with infrastructure peer/N-A consumer treatment in `research/protocols/009-l2tpv3/V1_GATE_RECONCILIATION.md` |
 | 010 | L2TPv3/IPsec | SKELETON |
 | 011 | SSTP / MS-SSTP | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled; Linux client source corrected to canonical GitLab tag 1.0.20 in `research/protocols/011-sstp/V1_GATE_RECONCILIATION.md` |
 | 012 | PPTP | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with obsolete-security/legacy-only policy and pinned Poptop 1.5.0 evidence in `research/protocols/012-pptp/V1_GATE_RECONCILIATION.md` |
