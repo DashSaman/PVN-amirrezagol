@@ -10,22 +10,23 @@ Scope: shared evidence for entries **002 WireGuard** and **003 AmneziaWG**. The 
 - State: `IN-RESEARCH / NOT COMPLETE-REFERENCE-v2 / NOT IMPLEMENTED`
 - Source provenance and exact component pins remain in `../SOURCE_REVISIONS.md`.
 - V1 architecture/client/dependency findings remain in the parent `wireguard-family/` dossier and are reused rather than duplicated.
+- Every mandatory v2 filename now exists, but **file presence is not completion**. Residual evidence and entry-specific reconciliation remain before tracker promotion.
 
 ## Mandatory v2 files
 
 | Required file | State | Notes |
 |---|---|---|
-| `SERVER_IMPLEMENTATIONS.md` | started | peer/server implementations, kernel/userspace distinction, AWG variants |
-| `SERVER_INSTALLERS_AND_PROJECTS.md` | pending | community deployment projects require separate supply-chain review |
-| `SERVER_INSTALL_MATRIX.md` | pending | OS/package/container matrix |
-| `SERVER_UI_AND_MENUS.md` | pending | protocol itself has no server UI; management products must be classified separately |
-| `CLIENT_INSTALL_MATRIX.md` | pending | official WireGuard and AWG clients by OS/package |
-| `CLIENT_UI_AND_MENUS.md` | pending | detailed menus/settings/import/export/diagnostics |
-| `CRYPTOGRAPHY.md` | started | authoritative WireGuard primitives plus AWG non-equivalence rule |
-| `DATA_PATH_AND_WIRE_FLOW.md` | pending | peer routing, kernel/userspace path, roaming, keepalive |
-| `PORTS_TRANSPORTS_AND_HANDSHAKE.md` | started | UDP, Noise_IK, AllowedIPs/endpoint behavior, AWG packet deltas |
-| `DEPLOYMENT_TOPOLOGIES.md` | pending | road-warrior, site-to-site/peer mesh, hub routing, NAT scenarios |
-| `REFERENCE_INDEX.md` | started | this file |
+| `SERVER_IMPLEMENTATIONS.md` | evidence started | peer/server implementations, kernel/userspace distinction, AWG variants |
+| `SERVER_INSTALLERS_AND_PROJECTS.md` | evidence started | deployment/control projects separated from engines; supply-chain review remains |
+| `SERVER_INSTALL_MATRIX.md` | evidence started | OS/package/container/backend distinctions; tested receipts remain |
+| `SERVER_UI_AND_MENUS.md` | evidence started | no canonical WireGuard server UI; management-plane boundary and pinned wg-easy source anchors |
+| `CLIENT_INSTALL_MATRIX.md` | evidence started | official/current client/package matrix; exact platform receipts remain |
+| `CLIENT_UI_AND_MENUS.md` | evidence started | pinned Android/Windows/Amnezia source-level UI anchors; Apple/import/export detail remains |
+| `CRYPTOGRAPHY.md` | evidence started | authoritative WireGuard primitives plus AWG non-equivalence rule |
+| `DATA_PATH_AND_WIRE_FLOW.md` | evidence started | peer routing, kernel/userspace path, roaming, keepalive |
+| `PORTS_TRANSPORTS_AND_HANDSHAKE.md` | evidence started | UDP, Noise_IK, AllowedIPs/endpoint behavior, AWG packet deltas |
+| `DEPLOYMENT_TOPOLOGIES.md` | evidence started | remote access, site-to-site, roaming, mesh, kernel/userspace, AWG and provisioning layers |
+| `REFERENCE_INDEX.md` | synchronized | this file; completion remains forbidden until contract gates pass |
 
 ## Primary evidence pins
 
@@ -57,6 +58,7 @@ Authoritative/current project evidence:
 
 - https://github.com/amnezia-vpn/amneziawg-go
 - https://github.com/amnezia-vpn/amneziawg-linux-kernel-module
+- cross-platform Amnezia product reference: https://github.com/amnezia-vpn/amnezia-client
 
 ## Separation rules
 
@@ -65,13 +67,25 @@ Authoritative/current project evidence:
 3. AmneziaWG changes must be described from pinned generation/source. Do not generalize one AWG generation to another.
 4. Do not claim AWG replaces WireGuard cryptography unless source/spec evidence explicitly demonstrates a primitive change. Current reviewed project documentation exposes header protection, content padding, timing ranges, junk/signature packets, header/type changes and transport-message shaping on top of WireGuard-derived code.
 5. License conclusions stay component-specific. The parent dossier records MIT/Apache-2.0/GPL-2.0 distinctions across userspace clients and the Linux AWG kernel module.
+6. Third-party server panels are management planes, not WireGuard protocol UI. Their auth, persistence, privileges and supply chain require independent review.
 
 ## Known current regression/evidence items to preserve
 
 - AWG3.1 `RandomTrailers` / `HandshakeCookie` behavior required a current userspace fix in the pinned research snapshot.
 - Current open AWG Go issue evidence includes S4/streaming-obfuscation interoperability failures and a package-global protocol-state race report. These are research/test inputs, not proof that every platform is affected.
 - Current AWG Linux issue history includes AWG2/AWG3 compatibility/source and S3/S4 interoperability questions; platform/generation compatibility must therefore be a test dimension.
+- A 2026 Amnezia issue records a standalone iOS `.conf` document-import path without a registered custom URL scheme at the time of the report; this is a platform import/deep-link test input, not a permanent limitation claim.
+
+## Residual gates before any `COMPLETE-REFERENCE-v2` promotion
+
+- exact versioned install/update/uninstall/rollback receipts on representative server and client targets;
+- pinned management-plane license/dependency/container/auth/default-exposure review;
+- Apple client UI/import/export lifecycle mapping at pinned source level;
+- exact QR/file/deep-link behavior by major client/platform;
+- generation-specific AWG interoperability receipts;
+- issue/advisory/test reconciliation against selected pins;
+- entry-specific 002/003 contract checklist showing every required category has traceable evidence.
 
 ## Exact next action
 
-Complete server/peer implementation inventory and install matrices, then client install/UI matrices. After that document detailed data path and deployment topologies, reconcile entry-specific conclusions for 002/003, and only promote either tracker row when every `FULL_PROTOCOL_REFERENCE_CONTRACT.md` gate has evidence.
+Deepen server installer/panel supply-chain and authentication evidence, then Apple/import-export client evidence and AWG generation interoperability. Reconcile entries 002/003 against `FULL_PROTOCOL_REFERENCE_CONTRACT.md`; keep both tracker rows `PENDING` until every applicable gate is evidenced. Then checkpoint and continue the next required v2 family without owner prompting.
