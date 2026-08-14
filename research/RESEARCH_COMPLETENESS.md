@@ -5,8 +5,8 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | # | Entry | Current research state |
 |---:|---|---|
 | 001 | OpenVPN | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with current OpenVPN3 3.11.7 release pin in `research/protocols/001-openvpn/V1_GATE_RECONCILIATION.md` |
-| 002 | WireGuard | IN-RESEARCH — shared WireGuard family dossier started |
-| 003 | AmneziaWG | IN-RESEARCH — core and shared family research started |
+| 002 | WireGuard | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled in `research/protocols/002-wireguard/V1_GATE_RECONCILIATION.md` |
+| 003 | AmneziaWG | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with versioned AWG/platform uncertainties retained in `research/protocols/003-amneziawg/V1_GATE_RECONCILIATION.md` |
 | 004 | IKEv2/IPsec | EVIDENCE-GAPS — strongSwan/native research started; detailed dossier write blocked |
 | 005 | IKEv1/IPsec | EVIDENCE-GAPS — strongSwan/native research started; detailed dossier write blocked |
 | 006 | IPsec ESP | EVIDENCE-GAPS — shared strongSwan/native evidence started |
