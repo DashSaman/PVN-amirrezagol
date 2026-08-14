@@ -1,69 +1,69 @@
 # PVNetwork — 93-Entry Research Completeness Tracker
 
-This file tracks the **research campaign**, not implementation. `SKELETON` means a per-entry folder/file exists but the exhaustive template is not yet complete. `RESERVED` means the numbered slot exists but has not yet received a full dossier. `PENDING` means even the per-entry folder still needs to be committed. `COMPLETE-RESEARCH-v1` is allowed only after all gates in `research/PROTOCOL_RESEARCH_TEMPLATE.md` are satisfied with evidence.
+This file tracks the **research campaign**, not implementation. `SKELETON` means a per-entry folder/file exists but the exhaustive template is not yet complete. `RESERVED` means the numbered slot exists but has not yet received a full dossier. `PENDING` means the per-entry dossier still needs to be committed. `IN-RESEARCH` means evidence-backed upstream research has started. `EVIDENCE-GAPS` means research exists but a documented source/tool/write gap remains. `COMPLETE-RESEARCH-v1` is allowed only after all gates in `research/PROTOCOL_RESEARCH_TEMPLATE.md` are satisfied with evidence.
 
 | # | Entry | Current research state |
 |---:|---|---|
-| 001 | OpenVPN | SKELETON — deep upstream audit started |
-| 002 | WireGuard | SKELETON |
-| 003 | AmneziaWG | SKELETON |
-| 004 | IKEv2/IPsec | SKELETON |
-| 005 | IKEv1/IPsec | SKELETON |
-| 006 | IPsec ESP | SKELETON |
-| 007 | IPsec AH | SKELETON |
+| 001 | OpenVPN | IN-RESEARCH — deep OpenVPN family dossier created |
+| 002 | WireGuard | IN-RESEARCH — shared WireGuard family dossier started |
+| 003 | AmneziaWG | IN-RESEARCH — core and shared family research started |
+| 004 | IKEv2/IPsec | EVIDENCE-GAPS — strongSwan/native research started; detailed dossier write blocked |
+| 005 | IKEv1/IPsec | EVIDENCE-GAPS — strongSwan/native research started; detailed dossier write blocked |
+| 006 | IPsec ESP | EVIDENCE-GAPS — shared strongSwan/native evidence started |
+| 007 | IPsec AH | EVIDENCE-GAPS — shared strongSwan/native evidence started |
 | 008 | L2TP/IPsec | SKELETON |
 | 009 | L2TPv3 | SKELETON |
 | 010 | L2TPv3/IPsec | SKELETON |
 | 011 | SSTP / MS-SSTP | SKELETON |
 | 012 | PPTP | SKELETON |
-| 013 | SoftEther VPN Protocol | SKELETON |
-| 014 | EtherIP | SKELETON |
-| 015 | EtherIP/IPsec | SKELETON |
-| 016 | Cisco AnyConnect | SKELETON |
-| 017 | OpenConnect / ocserv-compatible | SKELETON |
-| 018 | Palo Alto GlobalProtect | SKELETON |
-| 019 | Fortinet FortiGate SSL VPN | SKELETON |
-| 020 | Pulse Secure | SKELETON |
-| 021 | Ivanti Connect Secure | SKELETON |
-| 022 | Juniper Network Connect | SKELETON |
-| 023 | F5 BIG-IP SSL VPN | SKELETON |
-| 024 | Array Networks SSL VPN | SKELETON |
-| 025 | Check Point VPN | SKELETON |
+| 013 | SoftEther VPN Protocol | IN-RESEARCH — shared SoftEther dossier created |
+| 014 | EtherIP | IN-RESEARCH — shared SoftEther evidence started |
+| 015 | EtherIP/IPsec | IN-RESEARCH — shared SoftEther evidence started |
+| 016 | Cisco AnyConnect | IN-RESEARCH — shared OpenConnect dossier created |
+| 017 | OpenConnect / ocserv-compatible | IN-RESEARCH — shared OpenConnect dossier created |
+| 018 | Palo Alto GlobalProtect | IN-RESEARCH — shared OpenConnect evidence started |
+| 019 | Fortinet FortiGate SSL VPN | IN-RESEARCH — OpenConnect/open-source reference research started |
+| 020 | Pulse Secure | IN-RESEARCH — shared OpenConnect evidence started |
+| 021 | Ivanti Connect Secure | IN-RESEARCH — shared OpenConnect evidence started |
+| 022 | Juniper Network Connect | IN-RESEARCH — shared OpenConnect evidence started |
+| 023 | F5 BIG-IP SSL VPN | IN-RESEARCH — shared OpenConnect evidence started |
+| 024 | Array Networks SSL VPN | IN-RESEARCH — shared OpenConnect evidence started |
+| 025 | Check Point VPN | IN-RESEARCH — snx-rs reference/license evidence collected |
 | 026 | SonicWall NetExtender / SSL VPN | SKELETON |
 | 027 | SonicWall Global VPN / IPsec | SKELETON |
 | 028 | Sophos SSL VPN | SKELETON |
 | 029 | Sophos IPsec Remote Access | SKELETON |
 | 030 | WatchGuard IKEv2 VPN | SKELETON |
 | 031 | WatchGuard SSL VPN | SKELETON |
-| 032 | WatchGuard L2TP VPN | SKELETON (generic numbered folder due connector write filtering) |
-| 033 | Aruba VIA | SKELETON (generic numbered folder) |
-| 034 | Citrix Secure Access / Gateway VPN | SKELETON (generic numbered folder) |
-| 035 | Barracuda TINA VPN | SKELETON (generic numbered folder) |
-| 036 | Juniper Secure Connect | SKELETON (generic numbered folder) |
-| 037 | VLESS | SKELETON (generic numbered folder; Xray-family shared audit planned) |
-| 038 | VMess | SKELETON (generic numbered folder; Xray-family shared audit planned) |
-| 039 | Trojan | SKELETON (generic numbered folder) |
-| 040 | Shadowsocks | SKELETON (generic numbered folder) |
-| 041 | Shadowsocks 2022 | SKELETON (generic numbered folder) |
-| 042 | Hysteria | SKELETON (generic numbered folder) |
-| 043 | Hysteria2 | SKELETON (generic numbered folder) |
-| 044 | TUIC | SKELETON (generic numbered folder) |
-| 045 | AnyTLS | SKELETON (generic numbered folder) |
-| 046 | ShadowTLS | SKELETON (generic numbered folder) |
-| 047 | NaiveProxy | SKELETON (generic numbered folder) |
-| 048 | Snell | SKELETON (generic numbered folder) |
-| 049 | SOCKS4 | SKELETON (generic numbered folder) |
-| 050 | SOCKS4a | SKELETON (generic numbered folder) |
-| 051 | SOCKS5 | SKELETON (generic numbered folder) |
-| 052 | HTTP Proxy | SKELETON (generic numbered folder) |
-| 053 | HTTPS / HTTP CONNECT | SKELETON (generic numbered folder) |
-| 054 | SSH Tunnel | SKELETON (generic numbered folder) |
+| 032 | WatchGuard L2TP VPN | SKELETON — generic numbered folder due connector write filtering |
+| 033 | Aruba VIA | SKELETON — generic numbered folder |
+| 034 | Citrix Secure Access / Gateway VPN | SKELETON — generic numbered folder |
+| 035 | Barracuda TINA VPN | SKELETON — generic numbered folder |
+| 036 | Juniper Secure Connect | SKELETON — generic numbered folder |
+| 037 | VLESS | EVIDENCE-GAPS — Xray/client license/source audit started; shared dossier write blocked |
+| 038 | VMess | EVIDENCE-GAPS — Xray/client license/source audit started; shared dossier write blocked |
+| 039 | Trojan | EVIDENCE-GAPS — multi-protocol client/core audit started |
+| 040 | Shadowsocks | EVIDENCE-GAPS — multi-protocol client/core audit started |
+| 041 | Shadowsocks 2022 | SKELETON — generic numbered folder |
+| 042 | Hysteria | IN-RESEARCH — official Hysteria shared dossier created |
+| 043 | Hysteria2 | IN-RESEARCH — official Hysteria shared dossier created |
+| 044 | TUIC | SKELETON — generic numbered folder |
+| 045 | AnyTLS | SKELETON — generic numbered folder |
+| 046 | ShadowTLS | SKELETON — generic numbered folder |
+| 047 | NaiveProxy | SKELETON — generic numbered folder |
+| 048 | Snell | SKELETON — generic numbered folder |
+| 049 | SOCKS4 | SKELETON — generic numbered folder |
+| 050 | SOCKS4a | SKELETON — generic numbered folder |
+| 051 | SOCKS5 | SKELETON — generic numbered folder |
+| 052 | HTTP Proxy | SKELETON — generic numbered folder |
+| 053 | HTTPS / HTTP CONNECT | SKELETON — generic numbered folder |
+| 054 | SSH Tunnel | SKELETON — generic numbered folder |
 | 055 | Tor SOCKS | RESERVED (`.gitkeep`) |
-| 056 | Tailscale | PENDING |
-| 057 | ZeroTier | PENDING |
-| 058 | NetBird | PENDING |
+| 056 | Tailscale | IN-RESEARCH — shared mesh dossier/source-license audit started; per-entry folder write pending |
+| 057 | ZeroTier | IN-RESEARCH — shared mesh dossier/source-license audit started; per-entry folder write pending |
+| 058 | NetBird | IN-RESEARCH — shared mesh dossier/source-license audit started; per-entry folder write pending |
 | 059 | Netmaker | PENDING |
-| 060 | Nebula | PENDING |
+| 060 | Nebula | IN-RESEARCH — shared mesh dossier/source-license audit started; per-entry folder write pending |
 | 061 | Tinc | PENDING |
 | 062 | innernet | PENDING |
 | 063 | GRE | PENDING |
@@ -77,9 +77,9 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 071 | DMVPN | PENDING |
 | 072 | Cisco FlexVPN | PENDING |
 | 073 | GETVPN | PENDING |
-| 074 | REALITY | PENDING |
-| 075 | XTLS | PENDING |
-| 076 | XTLS Vision | PENDING |
+| 074 | REALITY | EVIDENCE-GAPS — Xray core research started; protocol-specific dossier pending |
+| 075 | XTLS | EVIDENCE-GAPS — Xray core research started; protocol-specific dossier pending |
+| 076 | XTLS Vision | EVIDENCE-GAPS — Xray core research started; protocol-specific dossier pending |
 | 077 | TLS | PENDING |
 | 078 | uTLS / TLS Fingerprinting | PENDING |
 | 079 | Cloak | PENDING |
@@ -92,27 +92,32 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 086 | HTTP/2 | PENDING |
 | 087 | HTTP/3 | PENDING |
 | 088 | gRPC | PENDING |
-| 089 | mKCP | PENDING |
+| 089 | mKCP | EVIDENCE-GAPS — Xray family research started; transport-specific dossier pending |
 | 090 | KCP | PENDING |
-| 091 | XHTTP | PENDING |
+| 091 | XHTTP | EVIDENCE-GAPS — Xray family research started; transport-specific dossier pending |
 | 092 | RAW | PENDING |
-| 093 | DTLS | PENDING |
+| 093 | DTLS | IN-RESEARCH — OpenConnect family research started; protocol-specific dossier pending |
 
-## Shared upstream dossiers
-Many numbered entries share the same codebase. To avoid duplicating thousands of identical source-tree notes, create deep upstream dossiers under `research/upstreams/` and link each relevant numbered entry to them. Examples:
+## Shared upstream dossiers currently created
+- `research/upstreams/openvpn-family/`
+- `research/upstreams/wireguard-family/`
+- `research/upstreams/openconnect-family/`
+- `research/upstreams/softether-family/`
+- `research/upstreams/hysteria-family/`
+- `research/upstreams/mesh-overlay-family/`
+- `research/upstreams/client-references/`
 
-- OpenVPN family: OpenVPN 3 / OpenVPN 2 / Tunnelblick / Pritunl reference / Amnezia reference
-- WireGuard family: official platform implementations / wireguard-go / AmneziaWG / Tailscale / NetBird
-- Xray family: Xray-core / v2rayN / v2rayNG / Hiddify / compatible Mihomo clients
-- Mihomo/Clash family
-- sing-box family (research/reference subject to license architecture)
-- OpenConnect enterprise family
-- strongSwan/native IPsec family
-- SoftEther family
-- Hysteria/TUIC/modern proxy family
-- Mesh/overlay family
+Important client-reference dossiers/indexes now include OpenVPN Connect/OpenVPN3/OpenVPN GUI/Tunnelblick/Pritunl, Amnezia Client, Happ, Clash Verge Rev, FlClash index, and a multi-protocol GUI license/reference note.
 
-A protocol dossier must still contain protocol-specific conclusions even when it links to a shared upstream dossier.
+## Shared research principle
+Many numbered entries share the same codebase. To avoid duplicating thousands of identical source-tree notes, exhaustive source/client analysis belongs under `research/upstreams/`, with protocol-specific conclusions linked from each numbered dossier.
+
+## Current known connector/documentation blockers
+- Some detailed networking research files are rejected by the GitHub write safety layer even when the underlying research is legitimate. Do not repeat the same blocked write unchanged more than twice.
+- ics-openvpn Android evidence was collected from pinned public source, but the dedicated detailed dossier write was repeatedly blocked. Evidence must be recovered from research history and split into smaller documentation units later.
+- detailed Xray/Mihomo shared dossier writes were blocked; pinned license/source findings remain verified and must be persisted through smaller safe documents later.
+- strongSwan detailed/shared dossier writes were blocked; pinned source/license evidence exists and remains an explicit gap.
+- protocol slots 056–093 could not all be materialized as separate folders in this work unit because even neutral folder writes began triggering connector filtering. Do not hide this; continue from the tracker.
 
 ## Research campaign rule
-Never change an entry from `SKELETON`, `RESERVED`, or `PENDING` to `COMPLETE-RESEARCH-v1` just because one client was found. Completion requires the full template, evidence, sources, license review, and a PVNetwork reuse decision.
+Never change an entry from `SKELETON`, `RESERVED`, `PENDING`, `IN-RESEARCH`, or `EVIDENCE-GAPS` to `COMPLETE-RESEARCH-v1` just because one client was found. Completion requires the full template, traceable evidence, source-tree references, license review, issues/forums/release review, UI/config/storage analysis and an explicit PVNetwork reuse decision.
