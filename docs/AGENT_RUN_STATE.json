@@ -10,8 +10,8 @@
   "active_work_unit": {
     "id": "WIREGUARD-AWG-COMPLETE-REFERENCE-V2",
     "status": "IN_PROGRESS",
-    "source_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_4.md",
-    "exact_next_action": "Audit wg-easy v15 setup/bootstrap and middleware security boundaries plus current stable patch-line delta; then source-pin Apple export/share behavior. If execution infrastructure remains unavailable, keep install/update/rollback and AWG generation interop rows explicitly blocked and continue source/dependency/advisory reconciliation. Reconcile entries 002/003 line-by-line against FULL_PROTOCOL_REFERENCE_CONTRACT before any tracker promotion."
+    "source_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_5.md",
+    "exact_next_action": "Audit wg-easy v15.3.0 current-stable route/auth/setup API controls including CSRF/origin/reverse-proxy/session invalidation; then inventory Apple entitlements/app groups and shipped-version mapping. Keep immutable OCI digest/install/update/rollback, real-device Apple receipts, and AWG generation interoperability explicitly blocked until execution infrastructure exists. Reconcile entries 002/003 line-by-line against FULL_PROTOCOL_REFERENCE_CONTRACT before any tracker promotion."
   },
   "campaign_sources_of_truth": {
     "matrix": "docs/PROTOCOL_MATRIX.md",
@@ -43,7 +43,7 @@
   },
   "last_checkpoint": {
     "date": "2026-08-14",
-    "summary": "WireGuard/AmneziaWG v2 source evidence now pins wg-easy v15.0.0 authentication/session/password behavior, exact official WireGuard Apple file/archive/QR import source paths, and a current verified standalone AmneziaWG Apple commit with file/QR import paths. Execution-only server/interop/device receipts remain externally blocked; entries 002/003 remain PENDING.",
-    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_4.md"
+    "summary": "WireGuard/AmneziaWG v2 now reconciles wg-easy current stable v15.3.0 versus the older v15.0.0 source audit, preserving version-sensitive auth/setup/AWG boundaries, and source-pins all-tunnels ZIP export-to-service for official WireGuard Apple and standalone AmneziaWG Apple. Execution-only server/interop/device receipts remain externally blocked; entries 002/003 remain PENDING.",
+    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_5.md"
   }
 }
