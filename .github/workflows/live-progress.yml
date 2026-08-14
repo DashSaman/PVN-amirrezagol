@@ -4,11 +4,13 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths-ignore:
-      - 'LIVE_PROGRESS.md'
-      - 'LIVE_PROGRESS_EN.md'
-      - 'assets/live-progress-fa.svg'
-      - 'assets/live-progress-en.svg'
+    paths:
+      - 'docs/AGENT_RUN_STATE.json'
+      - 'research/RESEARCH_COMPLETENESS.md'
+      - 'research/REFERENCE_V2_COMPLETENESS.md'
+      - 'AGENTS_HANDOFF_*.md'
+      - 'scripts/update_live_progress.py'
+      - '.github/workflows/live-progress.yml'
   schedule:
     - cron: '*/5 * * * *'
 
@@ -17,7 +19,7 @@ permissions:
 
 concurrency:
   group: live-progress-main
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   refresh:
