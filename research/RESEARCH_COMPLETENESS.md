@@ -71,7 +71,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 065 | IP-in-IP / IPIP | COMPLETE-RESEARCH-v1 |
 | 066 | IPIP over IPsec | COMPLETE-RESEARCH-v1 |
 | 067 | VTI/IPsec | COMPLETE-RESEARCH-v1 |
-| 068 | XFRM/IPsec | PENDING |
+| 068 | XFRM/IPsec | COMPLETE-RESEARCH-v1 |
 | 069 | VXLAN | PENDING |
 | 070 | VXLAN over IPsec | PENDING |
 | 071 | DMVPN | COMPLETE-RESEARCH-v1 |
