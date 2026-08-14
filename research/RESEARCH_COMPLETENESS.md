@@ -86,7 +86,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 080 | TLS Fragmentation | COMPLETE-RESEARCH-v1 |
 | 081 | TCP | COMPLETE-RESEARCH-v1 |
 | 082 | UDP | COMPLETE-RESEARCH-v1 |
-| 083 | QUIC | PENDING |
+| 083 | QUIC | COMPLETE-RESEARCH-v1 |
 | 084 | WebSocket | PENDING |
 | 085 | HTTP/1.1 | PENDING |
 | 086 | HTTP/2 | PENDING |
