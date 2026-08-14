@@ -13,12 +13,12 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 005 | IKEv1/IPsec | COMPLETE-REFERENCE-v2 |
 | 006 | IPsec ESP | COMPLETE-REFERENCE-v2 |
 | 007 | IPsec AH | COMPLETE-REFERENCE-v2 |
-| 008 | L2TP/IPsec | PENDING |
-| 009 | L2TPv3 | PENDING |
-| 010 | L2TPv3/IPsec | PENDING |
-| 011 | SSTP / MS-SSTP | PENDING |
-| 012 | PPTP | PENDING |
-| 013 | SoftEther VPN Protocol | PENDING |
+| 008 | L2TP/IPsec | COMPLETE-REFERENCE-v2 |
+| 009 | L2TPv3 | COMPLETE-REFERENCE-v2 |
+| 010 | L2TPv3/IPsec | COMPLETE-REFERENCE-v2 |
+| 011 | SSTP / MS-SSTP | COMPLETE-REFERENCE-v2 |
+| 012 | PPTP | COMPLETE-REFERENCE-v2 |
+| 013 | SoftEther VPN Protocol | COMPLETE-REFERENCE-v2 |
 | 014 | EtherIP | PENDING |
 | 015 | EtherIP/IPsec | PENDING |
 | 016 | Cisco AnyConnect | PENDING |
