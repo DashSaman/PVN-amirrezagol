@@ -30,7 +30,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 022 | Juniper Network Connect | COMPLETE-REFERENCE-v2 |
 | 023 | F5 BIG-IP SSL VPN | COMPLETE-REFERENCE-v2 |
 | 024 | Array Networks SSL VPN | COMPLETE-REFERENCE-v2 |
-| 025 | Check Point VPN / SNX | PENDING |
+| 025 | Check Point VPN / SNX | COMPLETE-REFERENCE-v2 |
 | 026 | SonicWall NetExtender / SSL VPN | PENDING |
 | 027 | SonicWall Global VPN / IPsec | PENDING |
 | 028 | Sophos SSL VPN | PENDING |
