@@ -10,8 +10,8 @@
   "active_work_unit": {
     "id": "WIREGUARD-AWG-COMPLETE-REFERENCE-V2",
     "status": "IN_PROGRESS",
-    "source_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_2.md",
-    "exact_next_action": "All mandatory WireGuard/AWG v2 filenames now exist but are not strict-complete. Deepen server installer/panel supply-chain, authentication, privilege and exposure evidence; then pin Apple client UI/import/export lifecycle evidence and exact QR/file/deep-link behavior. Add generation-specific AWG interoperability/test evidence, reconcile entries 002/003 against every FULL_PROTOCOL_REFERENCE_CONTRACT gate, and keep tracker rows PENDING until every applicable gate is evidence-backed. Then checkpoint and continue the next required v2 family without owner prompting."
+    "source_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_3.md",
+    "exact_next_action": "Deep-audit wg-easy v15 authentication/session/persistence source and immutable release/container provenance, then pin exact official WireGuard Apple and standalone AmneziaWG Apple import/export source functions. Execute AWG generation interop/upgrade receipts when infrastructure is available; otherwise record the execution blocker and continue source/advisory reconciliation. Reconcile entries 002/003 line-by-line against FULL_PROTOCOL_REFERENCE_CONTRACT and keep both PENDING until every applicable gate is evidence-backed."
   },
   "campaign_sources_of_truth": {
     "matrix": "docs/PROTOCOL_MATRIX.md",
@@ -43,7 +43,7 @@
   },
   "last_checkpoint": {
     "date": "2026-08-14",
-    "summary": "WireGuard/AmneziaWG v2 now has all mandatory reference filenames present. This slice added pinned source-level client UI/menu evidence for official WireGuard Android/Windows and Amnezia cross-platform UI, explicit server-management UI/control-plane boundaries with wg-easy source anchors, and deployment topology/failure-domain/observability mapping. REFERENCE_INDEX was synchronized. Presence is not completion: entries 002/003 remain PENDING pending supply-chain/auth/install receipts, Apple/import-export detail, AWG interop receipts and entry-specific full-contract reconciliation.",
-    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_2.md"
+    "summary": "WireGuard/AmneziaWG v2 server-management evidence now includes wg-easy v15 privilege/exposure and version-scoped authentication cautions; AWG 1.x/1.5/2.0 interoperability has an explicit execution matrix with open issue #191 preserved as an unresolved migration boundary. Apple research now separates official WireGuard, standalone AmneziaWG and main Amnezia import/deep-link capabilities and does not claim the proposed standalone amneziawg:// scheme. Entries 002/003 remain PENDING.",
+    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_WIREGUARD_AWG_V2_3.md"
   }
 }
