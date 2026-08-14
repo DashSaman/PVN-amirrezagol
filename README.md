@@ -2,13 +2,21 @@
 
 > **AI agents and new chats: read `AI_START_HERE.md` first.**
 
-## 🔴 Live project progress / وضعیت زنده پروژه
+## 🔴 Live Research Control Center
 
-**[🇮🇷 داشبورد فارسی](LIVE_PROGRESS.md)** · **[🇬🇧 English dashboard](LIVE_PROGRESS_EN.md)**
+### **[🚀 OPEN FULL-SCREEN LIVE DASHBOARD](https://html-preview.github.io/?url=https://github.com/DashSaman/PVN-amirrezagol/blob/main/site/index.html)**
 
-The live dashboard shows the active work unit, latest observed real research action and heartbeat, evidence-based percentages, recent research commits, and the exact next action.
+A responsive live control center with:
+- Persian / English instant language switching
+- current active work unit and exact next action
+- latest real research commit + heartbeat
+- strict V1/V2 and research-coverage progress
+- 5-minute watchdog countdown
+- hourly ChatGPT continuation countdown
+- automatic-run and interruption counters from durable repository logs
+- manual resume request control
 
-The page intentionally separates **research coverage** from strict `COMPLETE-*` completion so progress cannot be overstated.
+> The old Markdown/SVG dashboard is now only a fallback. The full-screen HTML dashboard is the primary view.
 
 Current phase: **Research / requirements / architecture**.
 
