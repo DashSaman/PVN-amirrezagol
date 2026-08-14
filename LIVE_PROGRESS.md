@@ -9,8 +9,8 @@
 - **Active phase:** `COMPLETE-RESEARCH-v1`
 - **Active work unit:** `XRAY-MODERN-PROXY-V1-CLOSURE`
 - **Work-unit state:** `IN_PROGRESS`
-- **Latest meaningful commit:** [`5ce35019e6`](https://github.com/DashSaman/PVN-amirrezagol/commit/5ce35019e6404fd2b7ff2f888d239cd55fba9687) — ci(progress): auto-refresh root progress dashboard
-- **Latest meaningful commit time:** `2026-08-14T05:02:13+03:30`
+- **Latest meaningful commit:** [`762462143c`](https://github.com/DashSaman/PVN-amirrezagol/commit/762462143c8b0aa1875a28b20ff76cd6c4179623) — docs(progress): surface live dashboard from README
+- **Latest meaningful commit time:** `2026-08-14T05:02:29+03:30`
 
 ## 📊 93-entry progress
 
@@ -42,6 +42,7 @@ Continue Xray original-v1 closure from AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md: d
 
 ## 🕒 Recent meaningful commits
 
+- `2026-08-14T05:02:29+03:30` — [`762462143c`](https://github.com/DashSaman/PVN-amirrezagol/commit/762462143c8b0aa1875a28b20ff76cd6c4179623) — docs(progress): surface live dashboard from README
 - `2026-08-14T05:02:13+03:30` — [`5ce35019e6`](https://github.com/DashSaman/PVN-amirrezagol/commit/5ce35019e6404fd2b7ff2f888d239cd55fba9687) — ci(progress): auto-refresh root progress dashboard
 - `2026-08-14T05:01:18+03:30` — [`0a991e1548`](https://github.com/DashSaman/PVN-amirrezagol/commit/0a991e1548dfa322a247caa46a51bd6b0fdd39f2) — docs(research): map libXray API lifecycle and platform ownership
 - `2026-08-14T05:00:16+03:30` — [`4019084691`](https://github.com/DashSaman/PVN-amirrezagol/commit/40190846916c89ad59d13194821a24fd8b32cdf2) — docs(research): map Xray runtime API and control ownership
@@ -51,7 +52,6 @@ Continue Xray original-v1 closure from AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md: d
 - `2026-08-14T04:57:59+03:30` — [`9750b8eb9a`](https://github.com/DashSaman/PVN-amirrezagol/commit/9750b8eb9ade2ff4a36f553190dc049527a3f2ff) — docs(checkpoint): record Xray v1 work unit 1
 - `2026-08-14T04:56:19+03:30` — [`f2357e6cd9`](https://github.com/DashSaman/PVN-amirrezagol/commit/f2357e6cd94f6358e9c032c7cf57558a62d7c5c2) — docs(agent-state): checkpoint Xray v1 work unit 1
 - `2026-08-14T04:55:24+03:30` — [`d5f0c9c2e5`](https://github.com/DashSaman/PVN-amirrezagol/commit/d5f0c9c2e5ea71ff00d301878970b02b45ae04f2) — docs(agents): hand off Xray v1 work unit 1
-- `2026-08-14T04:55:03+03:30` — [`e411cf66d9`](https://github.com/DashSaman/PVN-amirrezagol/commit/e411cf66d9a083d104a0f264064cfb7db69a0135) — docs(state): record Xray v1 work unit 1
 
 ## ✅ How to tell whether work is actually moving
 
