@@ -35,7 +35,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 027 | SonicWall Global VPN / IPsec | COMPLETE-REFERENCE-v2 |
 | 028 | Sophos SSL VPN | COMPLETE-REFERENCE-v2 |
 | 029 | Sophos IPsec Remote Access | COMPLETE-REFERENCE-v2 |
-| 030 | WatchGuard IKEv2 VPN | PENDING |
+| 030 | WatchGuard IKEv2 VPN | COMPLETE-REFERENCE-v2 |
 | 031 | WatchGuard SSL VPN | PENDING |
 | 032 | WatchGuard L2TP VPN | PENDING |
 | 033 | Aruba VIA | PENDING |
