@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-14T16:12:00Z",
-  "heartbeat_at_utc": "2026-08-14T16:24:10Z",
-  "task": "Interactive repository work is active on COMPLETE-RESEARCH-v1 entry 039 Trojan, then subsequent unfinished V1 entries in tracker order as evidence permits.",
-  "note": "Repository tracker is authoritative. Entry 038 VMess was promoted concurrently to COMPLETE-RESEARCH-v1; foreground work advanced without moving state backward. Only tracker/evidence changes count as research completion."
+  "heartbeat_at_utc": "2026-08-14T16:29:49Z",
+  "task": "Interactive repository work is active on COMPLETE-RESEARCH-v1 entry 041 Shadowsocks 2022 while entry 040 Shadowsocks promotion is already evidence-ready on main; continue subsequent unfinished V1 entries without regressing tracker state.",
+  "note": "Repository tracker is authoritative. Current official tracker remains 39/93 until entry 040 is promoted; this chat is researching independent 041 gaps in parallel and will re-fetch before every tracker/state write. Only evidence-backed tracker changes count as completion."
 }
