@@ -68,7 +68,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 062 | innernet | COMPLETE-RESEARCH-v1 |
 | 063 | GRE | COMPLETE-RESEARCH-v1 |
 | 064 | GRE over IPsec | COMPLETE-RESEARCH-v1 |
-| 065 | IP-in-IP / IPIP | PENDING |
+| 065 | IP-in-IP / IPIP | COMPLETE-RESEARCH-v1 |
 | 066 | IPIP over IPsec | PENDING |
 | 067 | VTI/IPsec | PENDING |
 | 068 | XFRM/IPsec | PENDING |
