@@ -63,7 +63,19 @@ Pinned source anchors:
 - <https://github.com/wg-easy/wg-easy/blob/f79b0fd025f5ee3b8359de042523d867cb0f5c3a/src/server/utils/password.ts>
 - <https://github.com/wg-easy/wg-easy/blob/f79b0fd025f5ee3b8359de042523d867cb0f5c3a/src/server/utils/session.ts>
 
-This closes the earlier ambiguity about **password-at-rest algorithm and basic session construction for v15.0.0**, but it is not a production panel certification. Remaining gates include bootstrap/setup persistence and recovery, CSRF/origin behavior, reverse-proxy trust, session invalidation semantics across password/account changes, current-v15 patch-line delta review, immutable container digest/SBOM/provenance, and execution receipts.
+This closes the earlier ambiguity about **password-at-rest algorithm and basic session construction for v15.0.0**, but it is not a production panel certification.
+
+### Bootstrap/setup boundary — current v15 source audit
+
+A separate 2026-08-14 audit of current v15 source at commit `3d9eab1565a1a68a58745651e07573dac0b4f295` establishes an important setup boundary. `src/server/middleware/setup.ts` consults database-backed setup state (`Database.general.getSetupStep()`) and redirects ordinary browser routes into the required `/setup/<step>` until setup is done. However, the middleware deliberately returns early for **all `/api/` routes** and `/_i18n/`; therefore the setup redirect middleware itself is **not** an API authorization boundary. Each setup/API endpoint must be judged by its own handler/auth controls rather than assuming this middleware protects it.
+
+The current unattended-setup documentation further states that `INIT_*` bootstrap variables are used only on the first container start and setup is disabled afterward. Group 1 (`INIT_USERNAME`, `INIT_PASSWORD`, `INIT_HOST`, `INIT_PORT`) can skip the interactive setup. Upstream explicitly warns that initial username/password complexity is not checked and recommends removing these environment variables after setup to avoid password exposure. PVNetwork therefore treats bootstrap environment variables as transient secrets, not durable configuration: production deployment evidence must show they are removed from compose/environment/CI secret expansion after initialization and are not retained in diagnostic exports.
+
+Evidence anchors:
+- <https://github.com/wg-easy/wg-easy/blob/3d9eab1565a1a68a58745651e07573dac0b4f295/src/server/middleware/setup.ts>
+- <https://github.com/wg-easy/wg-easy/blob/3d9eab1565a1a68a58745651e07573dac0b4f295/docs/content/advanced/config/unattended-setup.md>
+
+This closes the **routing/setup-state and unattended bootstrap-secret semantics** research gap, but does not prove that every setup API endpoint is safe pre-initialization. A route-by-route setup API audit and execution receipt remain required before production certification. CSRF/origin/reverse-proxy trust and session invalidation semantics also remain open.
 
 ### Version and release provenance rule
 
@@ -120,4 +132,4 @@ No row may be converted to PASS from documentation alone when the contract requi
 
 ## Residual gates
 
-This file does **not** close the v2 contract. Still required include exact Apple import/export/deep-link/QR evidence, immutable installer/image receipts and rollback tests, remaining wg-easy v15 bootstrap/session-security/current-patch audit, generation-specific AWG execution receipts, and entry-specific 002/003 reconciliation against every applicable FULL_PROTOCOL_REFERENCE_CONTRACT gate.
+This file does **not** close the v2 contract. Still required include exact Apple export/share/deep-link/QR evidence, immutable installer/image receipts and rollback tests, route-by-route wg-easy setup API plus CSRF/origin/reverse-proxy/session-invalidation/current-patch audit, generation-specific AWG execution receipts, and entry-specific 002/003 reconciliation against every applicable FULL_PROTOCOL_REFERENCE_CONTRACT gate.
