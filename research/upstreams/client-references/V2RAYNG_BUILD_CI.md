@@ -50,11 +50,17 @@ At the pinned v2rayNG commit, the AndroidLibXrayLite submodule points to:
 
 `b21389865ed69ba01e81c1521965c27832a33cf9`
 
-and `hev-socks5-tunnel` points to a separate pinned submodule revision in the v2rayNG tree.
+The current AndroidLibXrayLite tag list maps that exact commit to:
+
+**`v26.7.31`**
+
+So the current v2rayNG workflow's “determine submodule tag -> download matching release AAR” step resolves to the `v26.7.31` wrapper release for this pinned app commit.
+
+`hev-socks5-tunnel` points to a separate pinned submodule revision in the v2rayNG tree and still needs its own exact license/build dossier.
 
 ## AndroidLibXrayLite license
 
-At pin `b21389865ed69ba01e81c1521965c27832a33cf9`, root `LICENSE` is **LGPL-3.0**.
+At pin/tag `b21389865ed69ba01e81c1521965c27832a33cf9` / `v26.7.31`, root `LICENSE` is **LGPL-3.0**.
 
 This is a crucial component-level distinction:
 
@@ -79,15 +85,29 @@ Current wrapper `go.mod` uses Go 1.26 and directly depends on:
 
 The embedded Xray-core pseudo-version timestamp is **2026-07-28**, later than the published Xray advisory patch threshold `>= v26.7.11` recorded in the Xray family dossier.
 
-This is encouraging evidence that the current v2rayNG native wrapper does not appear to be pinned to the vulnerable v26.3.27-era core. However:
+The wrapper tag itself is also **v26.7.31**, clearly newer than the advisory's patch threshold.
 
-- a timestamp/newer commit is not enough for final security sign-off;
-- exact commit/advisory mapping and dependency scan remain required;
-- PVNetwork must perform its own pinned build/SBOM rather than inheriting v2rayNG's release chain.
+This is stronger evidence that the current pinned v2rayNG native wrapper is not using the known vulnerable v26.3.27-era Xray line. However:
+
+- wrapper tag numbering is not a substitute for exact embedded Xray commit verification;
+- exact Xray commit/advisory mapping and dependency scan remain required;
+- PVNetwork must perform its own pinned build/SBOM rather than inherit v2rayNG's release chain.
 
 ## Supply-chain architecture lesson
 
 The current workflow **does not build AndroidLibXrayLite from source inside the v2rayNG job**. It reads the submodule's current tag and downloads a prebuilt AAR from that repository's GitHub release.
+
+For the pinned app commit, the reviewed source relationship is now:
+
+`v2rayNG e8a82d...`
+
+`-> AndroidLibXrayLite submodule b213898...`
+
+`-> AndroidLibXrayLite tag v26.7.31`
+
+`-> downloaded libv2ray.aar from that release`
+
+`-> embedded Xray-core pseudo-version dated 2026-07-28`
 
 This creates a supply-chain boundary between:
 
@@ -211,7 +231,6 @@ For actual PVNetwork integration, independently evaluate libXray/Xray-core or an
 
 ## Remaining gaps
 
-- map AndroidLibXrayLite release tag corresponding exactly to submodule `b213898...`;
 - review AndroidLibXrayLite CI/release workflow and provenance checks;
 - review hev-socks5-tunnel pinned license/source/build flags;
 - exact app test source and whether any external CI runs it;
