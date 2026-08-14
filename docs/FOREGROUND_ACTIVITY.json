@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-14T16:12:00Z",
-  "heartbeat_at_utc": "2026-08-14T16:55:00Z",
-  "task": "Interactive repository work is active on COMPLETE-RESEARCH-v1 entry 047 NaiveProxy, then subsequent unfinished V1 entries in tracker order as evidence permits.",
-  "note": "Repository tracker is authoritative. V1 is 46/93 COMPLETE-RESEARCH-v1; V2 remains hard-locked until 93/93. Only evidence-backed tracker changes count as completion."
+  "heartbeat_at_utc": "2026-08-14T17:08:00Z",
+  "task": "Interactive repository work is active on COMPLETE-RESEARCH-v1 entries 049 SOCKS4, 050 SOCKS4a and 051 SOCKS5 in deterministic order, then subsequent unfinished V1 entries as evidence permits.",
+  "note": "Repository tracker is authoritative. V1 is 48/93 COMPLETE-RESEARCH-v1; V2 remains hard-locked until 93/93. SOCKS versions will keep addressing, authentication and UDP capabilities separate; only evidence-backed tracker changes count as completion."
 }
