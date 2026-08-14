@@ -1,0 +1,42 @@
+name: Agent State Validation
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'AGENTS.md'
+      - 'AGENT_EXECUTION_CONTRACT.md'
+      - 'docs/AGENT_RUN_STATE.json'
+      - 'docs/AGENT_CHECKPOINT_LOG.md'
+      - 'docs/PROTOCOL_MATRIX.md'
+      - 'research/RESEARCH_COMPLETENESS.md'
+      - 'research/REFERENCE_V2_COMPLETENESS.md'
+      - 'research/PROTOCOL_RESEARCH_TEMPLATE.md'
+      - 'research/FULL_PROTOCOL_REFERENCE_CONTRACT.md'
+      - 'scripts/agent_state.py'
+  schedule:
+    - cron: '*/5 * * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-agent-state:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate trackers and state structure
+        run: python scripts/agent_state.py verify
+
+      - name: Build deterministic full backlog
+        run: python scripts/agent_state.py build
+
+      - name: Show exact next work item
+        run: python scripts/agent_state.py next
+
+      - name: Explain watchdog boundary
+        run: |
+          echo 'PASS: repository state is resumable and the next work item is derivable.'
+          echo 'NOTE: this workflow validates/checks state; it cannot relaunch an external ChatGPT process by itself.'
