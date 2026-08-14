@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "status": "ACTIVE",
+  "actor": "interactive-chat",
+  "started_at_utc": "2026-08-14T14:56:30Z",
+  "heartbeat_at_utc": "2026-08-14T14:56:30Z",
+  "task": "Clean up legacy dashboard paths and make dashboard distinguish scheduled automation from foreground/manual ChatGPT repository work.",
+  "note": "This file tracks interactive/foreground repository work only. Scheduled automation is tracked separately in docs/AUTOMATION_RUN_LOG.md."
+}
