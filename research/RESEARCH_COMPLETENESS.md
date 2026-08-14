@@ -49,7 +49,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 043 | Hysteria2 | COMPLETE-RESEARCH-v1 |
 | 044 | TUIC | COMPLETE-RESEARCH-v1 |
 | 045 | AnyTLS | COMPLETE-RESEARCH-v1 |
-| 046 | ShadowTLS | SKELETON |
+| 046 | ShadowTLS | COMPLETE-RESEARCH-v1 |
 | 047 | NaiveProxy | SKELETON |
 | 048 | Snell | SKELETON |
 | 049 | SOCKS4 | SKELETON |
