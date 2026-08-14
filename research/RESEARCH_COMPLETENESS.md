@@ -40,7 +40,7 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 034 | Citrix Secure Access / Gateway VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current Citrix Secure Access/NetScaler Gateway TLS-DTLS, nFactor/EPA, routing/DNS, five-platform client, 2026 release and proprietary-source boundaries in `research/protocols/034-citrix-secure-access/V1_GATE_RECONCILIATION.md` |
 | 035 | Barracuda TINA VPN | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current Barracuda TINA proprietary transport/auth/profile/failover, modern-crypto and official-client boundaries in `research/protocols/035-barracuda-tina/V1_GATE_RECONCILIATION.md` |
 | 036 | Juniper Secure Connect | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled with current SRX/vSRX, IKE/IPsec, EAP/certificate, protected-network, client-platform, licensing and proprietary-source boundaries in `research/protocols/036-juniper-secure-connect/V1_GATE_RECONCILIATION.md` |
-| 037 | VLESS | EVIDENCE-GAPS — Xray/client license/source audit started; shared dossier write blocked |
+| 037 | VLESS | COMPLETE-RESEARCH-v1 — all 20 original gates reconciled against pinned Xray-core/libXray and major-client architecture/license/config/storage/UI/security/test evidence in `research/protocols/037-entry/V1_GATE_RECONCILIATION.md`; exact runtime combinations remain later certification gates |
 | 038 | VMess | EVIDENCE-GAPS — Xray/client license/source audit started; shared dossier write blocked |
 | 039 | Trojan | EVIDENCE-GAPS — multi-protocol client/core audit started |
 | 040 | Shadowsocks | EVIDENCE-GAPS — multi-protocol client/core audit started |
