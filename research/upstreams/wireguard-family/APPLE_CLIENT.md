@@ -6,103 +6,85 @@ Research state: `IN-RESEARCH`.
 
 ## Source architecture
 
-The pinned tree separates Apple integration into clear layers:
-
-- `Sources/WireGuardApp/` — application UI/product layer.
-- `Sources/WireGuardNetworkExtension/` — NetworkExtension packet-tunnel provider.
-- `Sources/WireGuardKit/` — WireGuard adapter/library-facing layer.
-- `Sources/Shared/` — shared models, keychain, logging and utilities.
-- localized resources and app assets under the app tree.
-- Xcode project/build configuration, `Package.swift` and `MOBILECONFIG.md` at repository level.
-
-This is strong evidence that PVNetwork Apple support should be designed around an **app + NetworkExtension + adapter/shared model** architecture rather than treating Apple as a desktop/mobile wrapper around a generic process.
+The pinned tree separates Apple integration into `Sources/WireGuardApp/` (UI/product), `Sources/WireGuardNetworkExtension/` (packet-tunnel provider), `Sources/WireGuardKit/` (adapter/library) and `Sources/Shared/` (models, keychain, logging/utilities). This supports an app + NetworkExtension + adapter/shared-model architecture rather than a generic subprocess wrapper.
 
 ## NetworkExtension boundary
 
-`PacketTunnelProvider.swift` subclasses `NEPacketTunnelProvider` and owns a `WireGuardAdapter`. It loads the saved tunnel-provider configuration, asks the adapter to start/stop the session, maps adapter failures to product-visible error categories, configures extension logging, and supports a narrow app-to-extension message path for runtime information.
-
-PVNetwork should mirror the separation principle:
+`PacketTunnelProvider.swift` subclasses `NEPacketTunnelProvider` and owns a `WireGuardAdapter`. The product boundary is:
 
 `App UI/state -> Apple tunnel manager -> NetworkExtension -> protocol adapter/core`
 
-The product UI must not directly own packet-tunnel internals.
+The UI must not directly own packet-tunnel internals.
 
 ## Protected profile/secret storage
 
-`Sources/Shared/Keychain.swift` stores configuration material using Apple's Security/Keychain APIs and returns persistent references rather than treating raw text as the long-lived cross-process identifier. The code also distinguishes iOS and macOS access behavior and allows the app and extension to access the required protected item.
-
-PVNetwork requirement:
-
-- imported configuration text is an interchange format, not the long-term persistence design;
-- secrets/profile material needed by an extension should use Apple-supported protected storage and explicit access-group/entitlement architecture;
-- deletion/migration must clean up stale references;
-- diagnostic/export features must not accidentally expose keychain contents.
+`Sources/Shared/Keychain.swift` uses Apple Security/Keychain APIs and persistent references. Imported text is therefore an interchange format, not a suitable long-term persistence model. Deletion/migration must clean stale references and diagnostics must not expose protected material.
 
 ## Configuration/model evidence
 
-The shared tree includes:
+The shared tree includes `TunnelConfiguration+WgQuickConfig.swift`, `NETunnelProviderProtocol+Extension.swift`, and tunnel-management models including `TunnelsManager.swift`. Canonical parsing should remain separate from Apple persistence and extension representation.
 
-- `TunnelConfiguration+WgQuickConfig.swift` — text configuration conversion.
-- `NETunnelProviderProtocol+Extension.swift` — NetworkExtension model conversion/storage bridge.
-- app tunnel-management models under `Sources/WireGuardApp/Tunnel/`, including `TunnelsManager.swift`, state/error types and activation/on-demand support.
+## Import/export and launch-path evidence
 
-PVNetwork should keep canonical profile parsing separate from the Apple persistence object model, then generate the extension-facing representation at the adapter boundary.
+### Official WireGuard Apple
 
-## UI and product areas visible in the tree
+The pinned official Apple source remains the canonical implementation reference. The repository is an MIT-licensed GitHub mirror; its README identifies the zx2c4 repository as official. The application supports wg-quick text conversion through the shared model and has platform document/app UI code. External deployment documentation consistently exposes the user-facing macOS flow as **Import tunnel(s) from file...**, while iOS deployments commonly pass a `.conf` file to the app or scan a configuration QR.
 
-The pinned source contains app tunnel-management code, localized strings, resources, document icons and platform-specific application code. A full screen-by-screen UI catalog is still required before this dossier can be marked complete.
+Important evidence boundary: QR generation is generally a provisioning-side concern; seeing a QR provisioning workflow does not imply the Apple app exports QR codes. PVNetwork must separately certify import and export directions.
 
-The app resources are **reference evidence only**. Do not copy WireGuard logos/icons/document artwork into PVNetwork.
+### Standalone AmneziaWG Apple fork
+
+`amnezia-vpn/amneziawg-apple` is a fork/reference for AWG on Apple platforms. A current 2026 feature request against the Amnezia project documents the standalone iOS AWG app's existing import paths as:
+
+- receive/open `.conf`, then use the share sheet into AmneziaWG;
+- scan a QR code from inside AmneziaWG.
+
+The same request proposes a new `amneziawg://` URL scheme precisely because the standalone app does **not** currently provide the requested one-tap scheme import. Therefore PVNetwork must not claim deep-link import support for standalone AmneziaWG Apple today. The proposal references the existing file-import route `mainVC.importFromDisposableFile(url:)`, which is useful source-level evidence for disposable-file ingestion but not evidence of a registered custom scheme.
+
+Evidence anchor: <https://github.com/amnezia-vpn/amnezia-client/issues/2498> (opened 2026; feature request, not implemented capability).
+
+### Deep-link decision
+
+Current classification:
+
+| Apple surface | File import | QR import | Custom URL/deep-link import | Export |
+|---|---|---|---|---|
+| official WireGuard Apple | supported/reference-backed | user workflow exists on iOS; source-level exact path still to pin | **not claimed** | exact file/share export path still to pin |
+| standalone AmneziaWG Apple | `.conf` via open/share path documented | documented existing path | **NOT CURRENTLY CLAIMED; feature requested** | exact export path still to pin |
+| main Amnezia client | separate codebase; do not inherit standalone behavior | separate audit | `vpn://` behavior is referenced by Amnezia issue but requires its own source audit | separate audit |
+
+This distinction prevents a common research error: capability in the main Amnezia client must not be silently attributed to the standalone AmneziaWG Apple fork.
+
+## Current-source freshness warning
+
+The GitHub WireGuard Apple mirror's visible commit history tops out at the pinned 2023 app version bump, while open pull requests in 2026 include fixes such as transient keychain tunnel-loss behavior and IPv6 endpoint preference. This means the pinned source is valuable architecture evidence but is **not proof that every open 2026 regression is resolved in a shipped build**. PVNetwork release certification must check the actual App Store/build revision and unresolved upstream patches at release time.
+
+Source anchors:
+- <https://github.com/WireGuard/wireguard-apple>
+- <https://github.com/WireGuard/wireguard-apple/pulls>
 
 ## Logging/error model
 
-The source has shared logging plus NetworkExtension-specific error notification. The packet-tunnel provider converts low-level failures into a smaller set of user/product failure categories while preserving detailed logs.
-
-PVNetwork should adopt the same principle:
-
-- stable product error taxonomy;
-- detailed internal error context;
-- extension/app correlation identifier where useful;
-- support export with secret redaction.
+The source has shared logging plus NetworkExtension-specific error notification. PVNetwork should keep a stable product error taxonomy while retaining detailed internal context and secret-redacted support export.
 
 ## Platform-specific lesson
 
-The reviewed code includes a macOS-specific workaround for an Apple platform issue in extension shutdown. This is an important engineering lesson: PVNetwork's shared UI/core abstraction must still allow platform-specific lifecycle workarounds, and those workarounds need regression tests and version gating rather than being hidden in generic code.
+The reviewed code contains macOS-specific lifecycle handling. Shared UI/core abstractions must still allow platform-version-gated workarounds with regression tests.
 
 ## License/reuse
 
-Repository metadata and source headers report MIT for the reviewed source. This is promising for reuse, but final shipping decisions require:
-
-- dependency review;
-- entitlement and NetworkExtension architecture review;
-- Apple App Store/Mac distribution review at release time;
-- attribution/trademark review;
-- testing on current iOS/iPadOS/macOS versions.
-
-Current classification: `REUSE-CANDIDATE / ARCHITECTURE-REFERENCE`.
+Reviewed WireGuard Apple source is MIT. Reuse still requires dependency, entitlement, distribution, attribution/trademark and current-device testing. Current classification: `REUSE-CANDIDATE / ARCHITECTURE-REFERENCE`.
 
 ## PVNetwork regression requirements derived from this source
 
-Future Apple tests should cover:
-
-- app/extension state synchronization;
-- protected configuration reference creation/update/deletion;
-- extension launch both from app-driven and OS-driven flows;
-- corrupted/missing saved configuration;
-- adapter error mapping to stable product categories;
-- extension stop/restart and OS lifecycle changes;
-- on-demand configuration changes;
-- log correlation without secret leakage;
-- app upgrade/migration while saved tunnels exist;
-- Persian RTL in the app while addresses, keys, hashes and paths remain readable LTR tokens.
+Future Apple tests must cover app/extension state synchronization, protected configuration create/update/delete, app-driven and OS-driven extension launch, corrupted/missing saved configuration, adapter error mapping, extension stop/restart, on-demand changes, log redaction, upgrade/migration with saved tunnels, Persian RTL with technical LTR tokens, `.conf` open/share import, QR import, duplicate-name behavior, malformed QR/file rejection, and explicit negative tests proving unsupported deep-link schemes do not get advertised as supported.
 
 ## Remaining gaps
 
-- full iOS/macOS screen/menu map;
-- exact tunnel-manager persistence lifecycle;
+- exact source file/function for official WireGuard iOS QR scan and file/archive import;
+- exact official WireGuard export/share behavior and archive semantics;
 - full entitlement/app-group inventory;
-- current issue/mailing-list/release regression review;
-- complete test target/CI inventory;
-- dependency/SBOM audit;
-- current Store policy/entitlement feasibility review;
-- performance/battery/network-transition testing on real devices.
+- current shipped Store revision versus mirror revision;
+- complete test target/CI inventory and dependency/SBOM audit;
+- AmneziaWG Apple release pin and source-level QR/file path pin;
+- real-device import/export receipts and malformed-input tests.
