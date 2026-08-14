@@ -2,126 +2,218 @@
 
 Related matrix entries: **016 Cisco AnyConnect-compatible**, **017 OpenConnect/ocserv-compatible**, **018 GlobalProtect**, **019 Fortinet FortiGate SSL VPN**, **020 Pulse Secure**, **021 Ivanti Connect Secure**, **022 Juniper Network Connect**, **023 F5 BIG-IP**, and **024 Array Networks**.
 
-Research state: `IN-RESEARCH`; no PVNetwork implementation claim.
+Research state: **`V1-HANDOFF-READY / NOT IMPLEMENTED`** at the shared-family level. This is a research handoff state, not PVNetwork protocol support or production certification.
 
 ## Current shared evidence
 
-- `SOURCE_PIN.md` — canonical GitLab source, stable v9.21 research baseline, current public API version evidence and license/source provenance.
+### Core / source / compatibility
+
+- `SOURCE_PIN.md` — canonical GitLab source, stable v9.21 baseline, public API version and license/source provenance.
 - `VENDOR_COMPATIBILITY_MATRIX.md` — separate capability/limitation conclusions for entries 016–024.
+- `ISSUE_MR_FIX_MATRIX.md` — representative/current vendor issue/MR/fix state mapped to future PVNetwork release tests.
 - `LESSONS_AND_TESTS.md` — release/MR failure classes converted into PVNetwork regression requirements.
-- `ISSUE_MR_FIX_MATRIX.md` — current/high-impact vendor issue/MR/fix state mapped to PVNetwork release tests.
-- `DEPENDENCIES_AND_LGPL.md` — required/optional dependencies, network-helper boundary, SBOM requirements and LGPL integration models.
-- `TEST_AND_CI_INVENTORY.md` — upstream CI/test coverage and the additional PVNetwork adapter/platform/interoperability test pyramid.
-- `CONFIG_STORAGE_AND_PLATFORM.md` — core config format, authentication/session separation, profile/secret/trust storage classes and platform persistence direction.
-- `FRONTEND_OPENCONNECT_GUI.md` — Qt/C++ standalone GUI reference, SSO/frontend gaps, credential/profile UX lessons, GPL application license and Windows/macOS packaging lessons.
-- `FRONTEND_NETWORKMANAGER.md` — GNOME/NetworkManager Linux integration reference, pinned complete source tree, GTK3/GTK4 editor, auth-dialog, WebKit/libsecret dependencies, service/plugin separation, Persian translation evidence and path-level licensing.
+- `API_LIFETIME_AND_CALLBACKS.md` — public-API ownership/lifetime/callback rules for a future adapter.
+
+### Dependencies / packaging / quality
+
+- `DEPENDENCIES_AND_LGPL.md` — required/optional dependencies, helper boundary, SBOM requirements and LGPL integration models.
+- `TEST_AND_CI_INVENTORY.md` — upstream CI/test coverage and the PVNetwork adapter/platform/interoperability test pyramid.
+- `SECURITY_AND_ADVISORIES.md` — current and historical security-relevant upstream fixes/CVEs plus PVNetwork regression implications.
+- `PACKAGING_AND_DISTRIBUTION.md` — core/GUI/NetworkManager packaging boundaries and platform-specific distribution concerns.
+- `PERFORMANCE_AND_RESOURCE_EVIDENCE.md` — resource/performance evidence rules, current regression lessons and reproducible benchmark fields.
+
+### Configuration / storage / frontends
+
+- `CONFIG_STORAGE_AND_PLATFORM.md` — profile/session/secret/runtime separation and platform persistence direction.
+- `FRONTEND_OPENCONNECT_GUI.md` — standalone Qt/C++ GUI reference, SSO/frontend gaps, credential/profile UX lessons, GPL app license and Windows/macOS packaging lessons.
+- `OPENCONNECT_GUI_SCREEN_STORAGE_MAP.md` — source/file-to-screen/profile/storage map and current-vs-historical source caveat.
+- `FRONTEND_NETWORKMANAGER.md` — GNOME/NetworkManager Linux integration reference, GTK/auth/browser/libsecret/service separation, Persian translation evidence and path-level licensing.
+- `NETWORKMANAGER_DBUS_SECRETS.md` — D-Bus/service identity, plugin lifecycle, data-vs-secret ownership and libsecret/auth-dialog boundaries.
+
+### Visual/reuse/final decision
+
+- `ASSETS_AND_SCREENSHOT_CATALOG.md` — source-backed asset/resource inventory, screenshot policy and reuse-rights caution.
+- `SUPPORT_REUSE_DECISIONS.md` — final research-stage reuse/certification priority for entries 016–024 and the shared Enterprise Adapter decision.
 
 ## Canonical source provenance
 
-The old GitHub OpenConnect repository is archived and a mirror. Current release/source authority is the canonical OpenConnect GitLab project. Stable research baseline: **v9.21**. Current public API research shows API version **5.10**. License: LGPL-2.1.
+The old GitHub OpenConnect repository is archived and a mirror. Current release/source authority is the canonical OpenConnect GitLab project. Stable research baseline: **v9.21**. Public API research shows API version **5.10**. Core/library license: **LGPL-2.1**.
 
-For front ends, canonical source must also be separated from convenience mirrors:
+Frontends have separate source/licensing:
 
-- OpenConnect GUI: canonical GitLab project, with the old GitHub repository archived.
-- NetworkManager-openconnect: canonical GNOME GitLab project; the GNOME GitHub repository explicitly identifies itself as a read-only mirror and is pinned separately for source inspection.
+- OpenConnect GUI: canonical GitLab project; application license GPL-2.0-or-later. Current stable v1.6.2 is the reviewed product release; current main remains active.
+- NetworkManager-openconnect: canonical GNOME GitLab project; GNOME GitHub mirror pinned for source inspection. The project has path-level licensing and GNOME/NetworkManager-specific architecture.
 
-## Architecture direction
+Do not infer frontend license from `libopenconnect` or vice versa.
 
-OpenConnect is primarily a reusable C library/core plus CLI, not a finished PVNetwork product UI. Evaluate it through its public API behind a PVNetwork Enterprise/Core Adapter.
+## Architecture direction established
 
-Keep these concerns outside private library internals:
+Evaluate `libopenconnect` behind a product-owned **Enterprise/Core Adapter** using its public API.
+
+Keep outside private library internals:
 
 - product authentication/challenge UI;
 - browser/SSO handoff;
-- protected credential/certificate storage;
-- platform-specific service/extension lifecycle;
-- product diagnostics and redaction;
-- vendor/version compatibility certification.
+- protected credential/certificate/key storage;
+- platform-specific network service/extension lifecycle;
+- canonical PVNetwork profile storage;
+- diagnostics/redaction/support bundles;
+- vendor/version/capability certification.
 
-The two front-end references reinforce this separation:
+The two frontend references reinforce this separation:
 
-- the standalone Qt GUI shows an application-style desktop UX and also demonstrates that a core feature such as SSO still requires explicit frontend callback/UI support;
-- NetworkManager-openconnect separates service/plugin, connection editor and authentication dialog, and combines libopenconnect with NetworkManager, libsecret and WebKit on Linux.
+- OpenConnect GUI demonstrates standalone application UX and the fact that library SSO still needs explicit frontend handling.
+- NetworkManager-openconnect separates connection/service ownership, authentication UI, browser integration and protected desktop secrets.
 
-PVNetwork should use one product-facing Enterprise Adapter contract while allowing platform-appropriate frontend, secret-store and browser integration.
+## Storage / secret model established
 
-## Storage/config direction now established
+OpenConnect CLI config is an engine representation, not the PVNetwork database format.
 
-OpenConnect's CLI config format is an engine option file, not the PVNetwork profile format. The evidence supports four separate data classes:
+Keep distinct:
 
-1. canonical PVNetwork profile/settings;
+1. canonical non-secret PVNetwork profile/settings;
 2. protected reusable credentials and trust decisions;
-3. short-lived authenticated session material such as cookies/SSO results;
-4. runtime OpenConnect configuration plus platform networking state.
+3. certificates/private-key references and protected key material;
+4. remembered non-secret auth choices/realm/group state;
+5. short-lived authenticated session material such as cookies/SSO results;
+6. runtime OpenConnect configuration and platform network state;
+7. sanitized diagnostics/support exports.
 
-Authentication and tunnel establishment can be separate phases, so the Enterprise Adapter must be able to move short-lived authenticated session state between an auth/browser context and a privileged connection context without turning it into durable plaintext profile data.
+`NETWORKMANAGER_DBUS_SECRETS.md` confirms this is not merely theoretical: the GNOME integration explicitly separates profile data, service/runtime secrets, user-context authentication and libsecret-backed remembered passwords.
 
-## Dependency / LGPL direction now established
+## D-Bus / service ownership evidence established
 
-Official OpenConnect build documentation identifies a small mandatory core dependency set plus optional TPM/PKCS#11/proxy/token features. Traditional packages also rely on a separately versioned `vpnc-script`-compatible network configuration helper unless the product supplies an equivalent platform-native networking layer.
+Pinned NetworkManager-openconnect source identifies the service family as `org.freedesktop.NetworkManager.openconnect`, with a NetworkManager VPN plugin lifecycle around connect/need-secrets/disconnect and a separate auth-dialog/user-context path.
 
-`libopenconnect` remains `REUSE-CANDIDATE / LGPL-DISTRIBUTION-REVIEW-REQUIRED`. The preferred engineering shape to take into legal/platform review is the public API through a replaceable shared-library boundary where technically and Store-feasible. Static linking is not approved without a deliberate LGPL compliance/relinking plan.
+PVNetwork should preserve the principle of separating privileged/system network lifecycle from product authentication UI, while implementing platform-appropriate equivalents rather than cloning GNOME's topology on every OS.
 
-See `DEPENDENCIES_AND_LGPL.md`; final legal review is still required.
+## Dependency / LGPL direction established
 
-## Compatibility rule
+`libopenconnect` remains **`REUSE-CANDIDATE / LGPL-DISTRIBUTION-REVIEW-REQUIRED`**.
 
-Do not translate “OpenConnect implements this protocol mode” into “PVNetwork fully supports this vendor”. Cisco, GlobalProtect, Fortinet, Pulse/Ivanti, Juniper, F5 and Array all require separate capability/version evidence.
+Preferred engineering shape for legal/platform review: a replaceable shared-library boundary where technically and Store-feasible. Static linking is not the default approved path without a deliberate compliance/relinking design.
 
-The vendor matrix and current issue/fix matrix record distinctions such as basic auth, MFA, browser/SSO, posture/host-check, reconnect, packet framing, IPv6 and known upstream limitations.
+Final distribution must use the exact per-platform SBOM and dependency graph of the build actually shipped.
 
-## Current issue/MR findings now recorded
+## Compatibility rule established
 
-`ISSUE_MR_FIX_MATRIX.md` records current or representative high-impact classes including:
+Never translate “OpenConnect has this protocol mode” into “PVNetwork fully supports this vendor.”
 
-- Cisco MFA continuation-state loss and evolving external-auth/SSO support;
-- GlobalProtect non-progress SSO loops, empty-token handling and multi-phase portal/gateway SAML;
-- Fortinet SAML/SSO work and reconnect/DPD variation;
-- Pulse/Ivanti client-identity/config behavior and TLS framing/throughput concerns;
-- Juniper/Pulse macOS parsing work;
-- F5 form/MFA/SSO diversity and historical auth regressions;
-- Array TLS-frame packet splitting/concatenation performance fixes;
-- Windows abnormal-exit cleanup lessons.
+Cisco, GlobalProtect, Fortinet, Pulse/Ivanti, Juniper, F5 and Array require separate evidence for:
 
-All open states must be rechecked against canonical GitLab immediately before an implementation/release decision.
+- exact server/vendor/version;
+- auth mode;
+- MFA/challenge;
+- browser/SSO;
+- posture/host-check;
+- IPv4/IPv6;
+- preferred/fallback transport;
+- reconnect/network changes;
+- tested PVNetwork platform/build;
+- known limitations.
 
-## Test/CI direction now established
+## Research-stage implementation/certification priority
 
-Current upstream CI covers multiple Linux configurations, static analysis, sanitizers, Windows MinGW and Android build paths. The upstream `tests/` tree includes protocol/framing, certificate, token, TPM/SoftHSM, signal and API-symbol consistency coverage.
+Current provisional ordering from `SUPPORT_REUSE_DECISIONS.md`:
 
-PVNetwork should not duplicate upstream internal tests. Add layered tests for product models, public-API adapter contracts, controlled local integration, vendor interoperability and real platform/device/package behavior. See `TEST_AND_CI_INVENTORY.md`.
+1. **017 OpenConnect/ocserv** — first controlled real-server integration baseline.
+2. **016 Cisco AnyConnect-compatible** — highest-priority proprietary enterprise certification target.
+3. **018 GlobalProtect** — high-value target with explicit SSO/HIP/version capability matrix.
+4. **019 Fortinet** — conditional, exact FortiOS/protocol-mode certification only.
+5. **020/021 Pulse/Ivanti** — appliance/auth/posture matrix.
+6. **022 Juniper Network Connect** — legacy compatibility target.
+7. **023 F5** — experimental/partial vendor-specific certification.
+8. **024 Array** — limited/experimental, demand-driven.
+
+This ordering is research planning, not a marketing ranking.
+
+## Security direction established
+
+`SECURITY_AND_ADVISORIES.md` records current/historical upstream security lessons including certificate-validation, certificate-metadata parsing, chunked/framing parsing, reconnect/MTU state and route-control/leakage classes.
+
+PVNetwork must:
+
+- pin maintained upstream versions;
+- avoid reimplementing protocol parsers/crypto;
+- keep certificate exceptions explicit/scoped;
+- redact upstream debug logs;
+- test route/DNS/kill-switch behavior independently from engine “connected” state;
+- review exact shipped build dependencies/advisories before each release.
+
+## Packaging direction established
+
+A portable OpenConnect core does not imply one portable product package.
+
+Packaging is separate for:
+
+- core/library;
+- standalone desktop GUI references;
+- NetworkManager Linux integration;
+- Windows service/helper/driver decisions;
+- Android VpnService/native ABI packaging;
+- Apple Network Extension/signing/Store feasibility;
+- Linux distro/package/service choices.
+
+See `PACKAGING_AND_DISTRIBUTION.md`.
+
+## UI / menu / profile lessons established
+
+The standalone GUI source/release history and GNOME frontend establish the following product needs:
+
+- quick connect and full profile paths;
+- profile management/editor;
+- generic dynamic authentication challenges;
+- browser/SSO handoff;
+- certificate/trust decision UI;
+- connect/disconnect/session state;
+- logs/diagnostics;
+- tray/menu-bar quick actions;
+- explicit credential-retention controls.
+
+These are references only. The later `COMPLETE-REFERENCE-v2` campaign must build full screen/menu inventories per client and server UI.
+
+## Asset policy established
+
+OpenConnect/OpenConnect-GUI/NetworkManager assets are research references, not PVNetwork branding. Public-repository presence does not automatically grant unrestricted asset reuse.
+
+PVNetwork must use the owner's supplied official logo and its own UI identity. See `ASSETS_AND_SCREENSHOT_CATALOG.md`.
+
+## Test/CI direction established
+
+Upstream tests cover internal protocol/parser/auth/certificate/token/platform concerns. PVNetwork must test what it owns:
+
+1. product models/capability/redaction;
+2. public API adapter contract;
+3. deterministic local integration;
+4. exact vendor interoperability;
+5. real platform/device/package lifecycle.
+
+Do not claim enterprise support from upstream unit tests alone.
 
 ## Current protocol-folder synchronization
 
-Individual protocol dossiers 017, 018, 019, 020, 021, 022, 023 and 024 have been linked to the current shared evidence. Entry 016 Cisco remains a connector-write documentation gap: repeated materially different README updates were rejected, so do not retry the same path blindly. The Cisco-specific conclusions remain preserved in `VENDOR_COMPATIBILITY_MATRIX.md`, `ISSUE_MR_FIX_MATRIX.md`, Project State/status snapshots and AGENTS handoff.
+Entries 017–024 have shared evidence links/updates in their numbered research areas. Entry 016 Cisco remains a connector-write documentation blocker after materially different attempts; do not loop on the same README path. Cisco conclusions are fully preserved in the shared vendor/issues/support-decision files and handoff state.
 
-## Frontend / credential / SSO lessons
+## Remaining v1 evidence gaps
 
-- Library SSO capability is not enough: the product frontend must implement the required browser/webview/external-browser handoff.
-- Enterprise authentication should be represented as a generic challenge/form state model rather than one username/password page.
-- Product profile metadata, remembered non-secret choices, protected credentials/tokens, runtime session material and engine configuration are distinct data classes.
-- Standalone desktop and NetworkManager-integrated Linux frontends can use the same core while requiring materially different service, secret-store and browser architectures.
-- NetworkManager-openconnect's current tree contains `po/fa.po`, useful for Persian terminology reference; this is not proof of correct RTL behavior, which PVNetwork must test independently.
-- Frontend application licenses can differ from the reusable OpenConnect library license; do not infer one from the other.
+The family is now broad enough for a reasonable **`V1-HANDOFF-READY`** state, but the following remain explicit gaps rather than hidden assumptions:
 
-## Remaining original-research gaps
+- authoritative materialized full v9.21 source-archive manifest remains tool-blocked;
+- stronger machine-readable current canonical OpenConnect GUI main/v1.6.2 tree materialization;
+- current running-client screenshot catalog rather than source/resource-only references;
+- exact dependency-advisory/SBOM review for the build eventually selected;
+- current source-level frontend issue details can still be expanded;
+- performance evidence remains framework/test-plan heavy until reproducible pinned benchmarks are available;
+- vendor certification requires real server/version labs and implementation evidence.
 
-- full machine-readable source manifest for the stable v9.21 release;
-- public API ownership/threading/callback mapping through a safe documentation path;
-- exact NetworkManager secret-agent/storage calls and service D-Bus map;
-- OpenConnect GUI file-to-screen/storage map and complete current issue triage;
-- platform packaging/integration review beyond the current desktop references;
-- full security-advisory/CVE and dependency-advisory review;
-- screenshot/asset catalogs and reuse-rights audit;
-- performance/resource evidence;
-- final numbered-entry support/reuse decisions.
+These do not justify holding the entire original research campaign on this one family indefinitely. Preserve the gaps and move to the next high-value original-family backlog.
 
-## Second-layer work is queued, not yet the active priority
+## Second-layer work is mandatory later
 
-After the original research gates are finished, every applicable protocol must also execute:
+After the original `COMPLETE-RESEARCH-v1` campaign reaches its intended gates across the scope, execute:
 
 `research/FULL_PROTOCOL_REFERENCE_CONTRACT.md`
 
-That second layer adds server implementation/installer research, server/client install matrices, complete server/client UI menus, cryptography, wire/data path, transports/handshake and deployment topologies. Do not abandon unfinished original research to start mass v2 expansion.
+for every applicable entry. That second layer adds server implementations/installers, server/client OS install matrices, exhaustive server/client menu maps, cryptography, data-path/wire flow, ports/transports/handshake and deployment topologies.
 
 Nothing in this dossier means PVNetwork currently implements or production-supports any enterprise protocol.
