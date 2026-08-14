@@ -37,6 +37,24 @@ Additional current evidence to evaluate during the full V1 gate pass:
 
 Do not treat third-party client support as evidence that `anytls-go` itself supplies a production GUI, secure profile store, OS VPN/TUN lifecycle, Store packaging, or platform-native UI. Those gates need evidence from the selected host client/core.
 
+### Pinned sing-box integration evidence
+
+`SagerNet/sing-box` is a concrete maintained multi-protocol host candidate. Reviewed default branch `testing` at commit `db1053f8bc16c860225afc97ac6417e42a81dc64` (2026-08-13). At that pin:
+
+- `protocol/anytls/outbound.go` contains the AnyTLS outbound engine integration.
+- `option/anytls.go` defines inbound and outbound schema rather than treating AnyTLS as an opaque generic TLS profile.
+- Outbound schema includes `Password`, `IdleSessionCheckInterval`, `IdleSessionTimeout`, `MinIdleSession`, and `ClientMetadata`, alongside a distinct `OutboundTLSOptionsContainer`.
+- Inbound schema includes users/passwords and `PaddingScheme`, alongside a distinct `InboundTLSOptionsContainer`.
+- This is strong source-level confirmation that PVNetwork should preserve the protocol/TLS separation described by the canonical AnyTLS specification.
+- sing-box's reviewed `LICENSE` is GPL-3.0-or-later and adds a naming/association restriction for derivative work. Treat embedding/derivative distribution as a legal/product-architecture decision, not as automatically permissive reuse.
+
+Pinned source references:
+
+- https://github.com/SagerNet/sing-box/tree/db1053f8bc16c860225afc97ac6417e42a81dc64
+- https://github.com/SagerNet/sing-box/blob/db1053f8bc16c860225afc97ac6417e42a81dc64/protocol/anytls/outbound.go
+- https://github.com/SagerNet/sing-box/blob/db1053f8bc16c860225afc97ac6417e42a81dc64/option/anytls.go
+- https://github.com/SagerNet/sing-box/blob/db1053f8bc16c860225afc97ac6417e42a81dc64/LICENSE
+
 ## Release/maintenance evidence
 
 `v0.0.13` added a client option to disable connection reuse. The release note states that optimized client/server combinations have no known reuse issue but exposes strict 1:1 behavior for users who prefer it. PVNetwork should therefore model reuse as an engine capability/advanced option only where the selected implementation exposes it, rather than assuming reuse is mandatory protocol behavior.
@@ -51,6 +69,7 @@ The repository remained active after the release: reviewed HEAD is dated 2026-08
 4. Preserve protocol-version negotiation and v1/v2 fallback semantics; do not expose v2-only health/SYNACK behavior as universally available.
 5. Add regression cases for authentication failure, version fallback, SYN/FIN lifecycle, stuck-session recovery, connection reuse on/off, padding updates, and UDP-over-TCP interoperability.
 6. UI/persistence/platform/diagnostics/store gates must be satisfied from the actual selected host client/core; the reference protocol repository is not evidence for those product layers.
+7. If sing-box is selected as the AnyTLS host engine, explicitly resolve GPL-3.0-or-later distribution obligations and the additional naming/association language before deciding how the engine is packaged with PVNetwork.
 
 ## Remaining V1 work
 
