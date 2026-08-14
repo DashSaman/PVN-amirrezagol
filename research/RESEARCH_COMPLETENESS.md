@@ -17,7 +17,7 @@ This file tracks the **research campaign**, not implementation. `SKELETON` means
 | 011 | SSTP / MS-SSTP | SKELETON |
 | 012 | PPTP | SKELETON |
 | 013 | SoftEther VPN Protocol | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled in `research/protocols/013-softether/V1_GATE_RECONCILIATION.md` |
-| 014 | EtherIP | IN-RESEARCH — shared SoftEther evidence started |
+| 014 | EtherIP | COMPLETE-RESEARCH-v1 — all 20 original research gates reconciled with infrastructure/N-A treatment in `research/protocols/014-etherip/V1_GATE_RECONCILIATION.md` |
 | 015 | EtherIP/IPsec | IN-RESEARCH — shared SoftEther evidence started |
 | 016 | Cisco AnyConnect | IN-RESEARCH — shared OpenConnect dossier created |
 | 017 | OpenConnect / ocserv-compatible | IN-RESEARCH — shared OpenConnect dossier created |
