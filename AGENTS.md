@@ -136,6 +136,8 @@ Do not copy branding or incompatible-license code.
 
 The existing `COMPLETE-RESEARCH-v1` campaign and previously active backlog remain first priority. Do not abandon unfinished prior research merely because the full-reference scope below was added.
 
+A family may be marked `V1-HANDOFF-READY` when its original research is broad enough to move on with residual evidence gaps explicitly preserved. This is not implementation/support certification and does not make its numbered entries production-ready.
+
 ## 15. Full protocol reference expansion — mandatory second layer
 
 After the prior research gates for an entry/family are satisfied, execute:
@@ -175,11 +177,15 @@ Use meaningful commit messages such as `docs(research): ...`, `docs(protocols): 
 
 Newest handoff:
 
+`AGENTS_HANDOFF_2026-08-14_OPENCONNECT_V1_CLOSURE_2.md`
+
+This checkpoint records the reasonable original-research family closure for OpenConnect/Enterprise, including D-Bus/secret ownership, GUI screen/storage map, security/advisory review, packaging, asset references, performance evidence, support/reuse decisions and all remaining explicit gaps.
+
+Earlier OpenConnect closure handoff remains available at:
+
 `AGENTS_HANDOFF_2026-08-14_OPENCONNECT_V1_CLOSURE.md`
 
-This checkpoint contains the latest OpenConnect dependency/LGPL, issue/MR/fix, test/CI, configuration/storage, API lifetime/callback findings, the v9.21 source-materialization blocker, and exact remaining original-research gaps.
-
-Earlier scope-expansion handoff remains available at:
+Scope-expansion handoff remains available at:
 
 `AGENTS_HANDOFF_2026-08-14_REFERENCE_EXPANSION.md`
 
@@ -189,4 +195,10 @@ Previous OpenConnect handoff remains available at:
 
 ## 19. Exact current next action
 
-Continue the previous-priority OpenConnect/Enterprise `COMPLETE-RESEARCH-v1` closure from the newest handoff: map NetworkManager D-Bus/service/secret ownership and OpenConnect GUI screen/profile-storage internals, then security/advisory and packaging gaps. Only after the original research campaign reaches its intended gates should the 93-entry `COMPLETE-REFERENCE-v2` expansion become the main campaign.
+OpenConnect/Enterprise shared-family original research is now `V1-HANDOFF-READY / NOT IMPLEMENTED`. Move to the next highest-value unfinished **original `COMPLETE-RESEARCH-v1` family** from actual repository state.
+
+Recommended next family: **Xray / modern proxy ecosystem**, because shared/client research exists but source/core/client/storage/issues/platform/reuse closure is incomplete and it covers many numbered entries.
+
+Keep remaining WireGuard/AmneziaWG v1 gaps queued and return before claiming overall original-campaign completion.
+
+Do **not** begin mass `COMPLETE-REFERENCE-v2` work until the original campaign reaches its intended gates. After every meaningful work unit, create/update a newer AGENTS handoff and point this file to it.
