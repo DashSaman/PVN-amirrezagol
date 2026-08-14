@@ -6,12 +6,12 @@
   "owner_scope": "All repository-documented PVNetwork research work: 93-entry COMPLETE-RESEARCH-v1 campaign, all currently documented fine-grained gaps, then COMPLETE-REFERENCE-v2 for all applicable entries. Completion of one protocol/family is never overall completion.",
   "total_matrix_entries": 93,
   "active_phase": "COMPLETE-RESEARCH-v1",
-  "priority_entries": [42, 43],
+  "priority_entries": [4, 5, 6, 7, 8],
   "active_work_unit": {
-    "id": "HYSTERIA-V1-CLOSURE",
+    "id": "IPSEC-IKE-V1-CLOSURE",
     "status": "IN_PROGRESS",
-    "source_handoff": "AGENTS_HANDOFF_2026-08-14_SOFTETHER_V1.md",
-    "exact_next_action": "Read the current hysteria-family dossier and entries 042/043. Pin official Hysteria/Hysteria2 source, release and licenses; separate v1 and v2 protocol semantics; map client/server architecture, configuration/storage, QUIC/transport dependencies, platform integration, tests/CI, advisories/issues/releases and client references; write explicit per-entry support/reuse decisions; synchronize entries 042/043, checkpoint, then immediately continue the next unfinished original-v1 family without waiting for owner. Do not begin mass COMPLETE-REFERENCE-v2 yet."
+    "source_handoff": "AGENTS_HANDOFF_2026-08-14_HYSTERIA_V1.md",
+    "exact_next_action": "Inspect existing strongSwan/IPsec and numbered 004-008 research first. Pin current strongSwan source/release/license; map charon, libstrongswan, plugins and front ends; distinguish IKE negotiation/authentication from ESP/AH data plane and L2TP composition; compare reusable strongSwan components against native Windows/Apple/Android platform capabilities; add dependency/security/test and per-entry support/reuse decisions; synchronize entries 004-008, checkpoint, then immediately continue the next unfinished original-v1 family. Do not begin mass COMPLETE-REFERENCE-v2 yet."
   },
   "campaign_sources_of_truth": {
     "matrix": "docs/PROTOCOL_MATRIX.md",
@@ -59,7 +59,7 @@
   },
   "last_checkpoint": {
     "date": "2026-08-14",
-    "summary": "WireGuard/AmneziaWG and OpenVPN were handed off at original-v1 research level. SoftEther entries 013-015 now have synchronized native-client, EtherIP, EtherIP/IPsec, config/storage/license, release/security and issue evidence with explicit reuse decisions. A high-severity upstream advisory affecting Developer Edition 5.2.5188 remains an explicit production-pin blocker. Hysteria/Hysteria2 original-v1 closure is now active.",
-    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_SOFTETHER_V1.md"
+    "summary": "SoftEther entries 013-015 and Hysteria/Hysteria2 entries 042-043 are at original-v1 research handoff level with residual gaps explicit. Hysteria2 generation/security research includes separate legacy-v1 semantics and known v2 advisory patch floors. The IKE/IPsec original-v1 family is now active.",
+    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_HYSTERIA_V1.md"
   }
 }
