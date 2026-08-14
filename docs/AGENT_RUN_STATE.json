@@ -6,12 +6,12 @@
   "owner_scope": "All repository-documented PVNetwork research work: 93-entry COMPLETE-RESEARCH-v1 campaign, all currently documented fine-grained gaps, then COMPLETE-REFERENCE-v2 for all applicable entries. Completion of one protocol/family is never overall completion.",
   "total_matrix_entries": 93,
   "active_phase": "COMPLETE-RESEARCH-v1",
-  "priority_entries": [37,38,39,40,74,75,76,84,88,89,91,92],
+  "priority_entries": [2,3],
   "active_work_unit": {
-    "id": "XRAY-MODERN-PROXY-V1-CLOSURE",
+    "id": "WIREGUARD-AMNEZIAWG-V1-CLOSURE",
     "status": "IN_PROGRESS",
-    "source_handoff": "AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md",
-    "exact_next_action": "Continue Xray original-v1 closure from AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md: deep-audit libXray API/lifecycle/build/dependencies/issues, create Xray per-entry capability/support-reuse decisions, expand v2rayNG source/storage/VpnService/import evidence, add security/dependency-advisory and commander/API/stats control maps, synchronize Xray INDEX and numbered entries, checkpoint, then continue the next unfinished original v1 family without waiting for owner. Keep WireGuard/AmneziaWG residual v1 work queued before any overall v1 completion claim."
+    "source_handoff": "AGENTS_HANDOFF_2026-08-14_XRAY_V1_2.md",
+    "exact_next_action": "Re-read current wireguard-family research and previous gaps. Close high-value Windows source/storage/service evidence, dependency/SBOM/license distinctions, AmneziaWG platform/source/version evidence, client reference and issue/regression gaps, synchronize numbered entries 002/003 and shared family index/state. If the family becomes V1-HANDOFF-READY, checkpoint and immediately select the next unfinished original-v1 family without waiting for owner. Do not begin mass COMPLETE-REFERENCE-v2 yet."
   },
   "campaign_sources_of_truth": {
     "matrix": "docs/PROTOCOL_MATRIX.md",
@@ -59,7 +59,7 @@
   },
   "last_checkpoint": {
     "date": "2026-08-14",
-    "summary": "OpenConnect shared-family v1 research is handoff-ready; Xray/modern-proxy is active. Xray source architecture, config/capability model, dependencies/tests/releases, client ecosystem, issue lessons and libXray wrapper evidence were committed. Local clone-based agent_state verification was attempted but the local runtime could not resolve github.com; GitHub connector remains available, so this is a tooling-path failure and work continues through connector-backed repository evidence.",
-    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_XRAY_V1_1.md"
+    "summary": "OpenConnect and Xray shared-family original-v1 research are handoff-ready with residual gaps explicit. Xray closure added advisory-aware release selection, libXray lifecycle/issue evidence, v2rayNG Android architecture/storage/menu/CI supply-chain analysis and synchronized numbered protocol/transport entries. WireGuard/AmneziaWG residual v1 closure is now active.",
+    "last_known_repo_handoff": "AGENTS_HANDOFF_2026-08-14_XRAY_V1_2.md"
   }
 }
