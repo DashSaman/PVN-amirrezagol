@@ -43,7 +43,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 035 | Barracuda TINA VPN | COMPLETE-REFERENCE-v2 |
 | 036 | Juniper Secure Connect | COMPLETE-REFERENCE-v2 |
 | 037 | VLESS | COMPLETE-REFERENCE-v2 |
-| 038 | VMess | PENDING |
+| 038 | VMess | COMPLETE-REFERENCE-v2 |
 | 039 | Trojan | PENDING |
 | 040 | Shadowsocks | PENDING |
 | 041 | Shadowsocks 2022 | PENDING |
