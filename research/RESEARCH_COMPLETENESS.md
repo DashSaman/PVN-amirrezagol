@@ -82,7 +82,7 @@ Authoritative tracker for **COMPLETE-RESEARCH-v1** only. This is not implementat
 | 076 | XTLS Vision | COMPLETE-RESEARCH-v1 |
 | 077 | TLS | COMPLETE-RESEARCH-v1 |
 | 078 | uTLS / TLS Fingerprinting | COMPLETE-RESEARCH-v1 |
-| 079 | Cloak | PENDING |
+| 079 | Cloak | COMPLETE-RESEARCH-v1 |
 | 080 | TLS Fragmentation | PENDING |
 | 081 | TCP | PENDING |
 | 082 | UDP | PENDING |
