@@ -1,15 +1,11 @@
 # 019 — Fortinet FortiGate SSL VPN
 
-Status: `IN-RESEARCH`; not implemented by PVNetwork.
+V1 status: `COMPLETE-RESEARCH-v1`.
 
-Shared research:
-- `research/upstreams/openconnect-family/SOURCE_PIN.md`
-- `research/upstreams/openconnect-family/VENDOR_COMPATIBILITY_MATRIX.md`
+V2 status: `COMPLETE-REFERENCE-v2` as of 2026-08-14 UTC.
 
-OpenConnect is the current open-source compatibility candidate for the subset of Fortinet behavior it implements. Upstream documentation marks this family as partial/experimental and identifies version-dependent limitations, so PVNetwork must not translate library protocol availability into a blanket Fortinet-support claim.
+The complete V2 dossier is under `reference-v2/` and the exact 16-gate reconciliation is `V2_GATE_RECONCILIATION.md`.
 
-This dossier must eventually record tested appliance/software versions, authentication capability, reconnect behavior, platform integration and known unsupported behavior.
+FortiGate/FortiOS and FortiClient are proprietary Fortinet products and remain vendor reference/certification targets, not source-reuse candidates. OpenConnect Fortinet mode is tracked separately as an LGPL public compatible client implementation and remains experimental/partial upstream.
 
-Remaining gaps: current issue/release mapping, version matrix, authentication/frontend research, dependency/license packaging, platform tests and final PVNetwork compatibility decision.
-
-Research completion is not implementation completion.
+Current lifecycle boundary is critical: FortiOS 7.6.3 and later remove SSL VPN tunnel mode and require migration to IPsec VPN. Entry 019 therefore remains a **legacy/version-bounded SSL-VPN tunnel compatibility target** for maintained older branches such as FortiOS 7.4.x and other explicitly supported pre-7.6.3 deployments. Agentless VPN/web mode is a different product mode and must not be substituted for the removed tunnel protocol.
