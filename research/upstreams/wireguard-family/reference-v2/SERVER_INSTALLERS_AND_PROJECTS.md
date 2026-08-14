@@ -77,6 +77,28 @@ Evidence anchors:
 
 This closes the **routing/setup-state and unattended bootstrap-secret semantics** research gap, but does not prove that every setup API endpoint is safe pre-initialization. A route-by-route setup API audit and execution receipt remain required before production certification. CSRF/origin/reverse-proxy trust and session invalidation semantics also remain open.
 
+### Stable patch-line delta — v15.0.0 is no longer a current deployment baseline
+
+Release reconciliation performed 2026-08-14 against the upstream release ledger shows **v15.3.0 is the latest stable release**, while `v15.4.0-beta.1` is explicitly a prerelease. Therefore the earlier immutable v15.0.0 source audit remains useful for understanding the generation, but it MUST NOT be treated as a current production recommendation.
+
+Security/compatibility-relevant stable changes visible in the upstream release history include:
+
+- `v15.2.0` introduced experimental AmneziaWG support and explicitly lists “make api more secure” among the release changes;
+- `v15.2.1` includes a session-handling refactor and an adjustment to setup middleware (`exclude i18n from setup middleware`), so authentication/setup conclusions pinned to v15.0.0 need revalidation before they are inherited by current stable;
+- `v15.2.2` added userspace WireGuard support by packaging `wireguard-go` and added an admin CLI action to reset 2FA;
+- `v15.3.0` adds server-side enforcement of Allowed IP rules and AWG 2.0 H1-H4 range support;
+- `v15.4.0-beta.1` advertises OAuth plus security/performance changes but is a prerelease and is not promoted to the stable baseline.
+
+Operational consequences for PVNetwork:
+
+1. A production image must be pinned to an exact stable release **and** OCI digest; `:15` remains unacceptable as certification evidence.
+2. v15.0.0 authentication/session observations are not silently projected through the v15.2.x session/API changes. Current-stable source must be audited before claiming equivalent controls.
+3. AWG support in wg-easy is version-sensitive: v15.2.x introduced experimental support and v15.3.0 changed AWG 2.0 parameter handling. Interoperability receipts therefore need to record the wg-easy release as well as AWG tools/module/client generations.
+4. ARMv7 support was dropped in the v15.2.x line; deployment matrices must not retain an older ARMv7 assumption.
+5. `v15.4.0-beta.1` must remain a research target only unless a deliberate prerelease policy is adopted.
+
+Upstream release ledger: <https://github.com/wg-easy/wg-easy/releases>. This closes the **current stable patch-line identification** gap but does not close the current-stable route/auth/source audit or immutable OCI digest receipt.
+
 ### Version and release provenance rule
 
 The current tag inventory observed on 2026-08-14 includes stable `v15.0.0`, `v15.1.0`, `v15.2.0`, `v15.2.1`, `v15.2.2`, and `v15.3.0`, while newer `v15.4.0-beta.*` tags are prereleases. Therefore `:15` is a moving major-version selector, not an immutable production pin. PVNetwork certification MUST record both the application release/commit and the exact deployed OCI image digest. A source tag alone does not prove which container bytes ran.
@@ -132,4 +154,4 @@ No row may be converted to PASS from documentation alone when the contract requi
 
 ## Residual gates
 
-This file does **not** close the v2 contract. Still required include exact Apple export/share/deep-link/QR evidence, immutable installer/image receipts and rollback tests, route-by-route wg-easy setup API plus CSRF/origin/reverse-proxy/session-invalidation/current-patch audit, generation-specific AWG execution receipts, and entry-specific 002/003 reconciliation against every applicable FULL_PROTOCOL_REFERENCE_CONTRACT gate.
+This file does **not** close the v2 contract. Still required include exact Apple export/share/deep-link/QR evidence, immutable installer/image receipts and rollback tests, route-by-route wg-easy setup API plus CSRF/origin/reverse-proxy/session-invalidation/current-stable source audit, generation-specific AWG execution receipts, and entry-specific 002/003 reconciliation against every applicable FULL_PROTOCOL_REFERENCE_CONTRACT gate.
