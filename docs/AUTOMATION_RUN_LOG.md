@@ -12,11 +12,6 @@ Durable ledger for **actual ChatGPT scheduled continuation runs**. This is separ
 
 ## Records
 
-<!-- Append machine-readable single-line records below. Example:
-RUN_START | ts=2026-08-14T02:00:00Z | trigger=scheduled | work_unit=XRAY-MODERN-PROXY-V1-CLOSURE | resume_from=<sha> | manual_request=none
-RUN_END | ts=2026-08-14T02:47:00Z | status=COMPLETED_SLICE | last_research_commit=<sha>
-INTERRUPTION | ts=2026-08-14T03:00:00Z | status=INTERRUPTED_INFERRED | prior_start=2026-08-14T02:00:00Z
--->
 RUN_START | ts=2026-08-14T02:00:57Z | trigger=scheduled | work_unit=WIREGUARD-AMNEZIAWG-V1-CLOSURE | handoff=AGENTS_HANDOFF_2026-08-14_XRAY_V1_2.md | resume_from=252ff882b62caa9bc0ad923f67953316d40c9e1e | manual_request=none
 INTERRUPTION | ts=2026-08-14T02:19:39Z | status=INTERRUPTED_INFERRED | prior_start=2026-08-14T02:00:57Z
 RUN_START | ts=2026-08-14T02:19:39Z | trigger=scheduled | work_unit=IPSEC-IKE-V1-CLOSURE | handoff=AGENTS_HANDOFF_2026-08-14_HYSTERIA_V1.md | resume_from=8936effeb8aa508065388ff6a6b787b5133bd83c | manual_request=none
@@ -48,3 +43,4 @@ RUN_END | ts=2026-08-14T13:42:45Z | status=COMPLETED_SLICE | last_research_commi
 RUN_START | ts=2026-08-14T14:02:48Z | trigger=scheduled | work_unit=V1-GATE-RECONCILIATION | handoff=AGENTS_HANDOFF_2026-08-14_V1_GATE_RECONCILIATION_3.md | resume_from=47f487eadff471bd22cda87f2cdd53ba0aa6ff96 | manual_request=none
 RUN_END | ts=2026-08-14T14:20:20Z | status=COMPLETED_SLICE | last_research_commit=d4b34adadf4e1f19363253fa6e53fd9c91361539
 RUN_START | ts=2026-08-14T14:38:27Z | trigger=scheduled | work_unit=V1-GATE-RECONCILIATION | handoff=AGENTS_HANDOFF_2026-08-14_V1_GATE_RECONCILIATION_4.md | resume_from=4b5a516bf90d57dc37b6966bebd52836ab803cf4 | manual_request=none
+RUN_END | ts=2026-08-14T14:48:30Z | status=COMPLETED_SLICE | last_research_commit=30a6bdbbf70b38503a2f8a7786f037c277b048c8
