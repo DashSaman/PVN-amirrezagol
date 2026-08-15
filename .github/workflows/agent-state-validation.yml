@@ -40,6 +40,20 @@ jobs:
       - name: Show exact next work item
         run: python scripts/agent_state.py next
 
+      - name: Strict completion validation when state claims complete
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          state = json.loads(Path('docs/AGENT_RUN_STATE.json').read_text())
+          print(state.get('run_status', 'UNKNOWN'))
+          PY
+          if [ "$(python -c "import json; print(json.load(open('docs/AGENT_RUN_STATE.json')).get('run_status',''))")" = "COMPLETE" ]; then
+            python scripts/agent_state.py verify --require-complete
+          else
+            echo 'Strict completion validation skipped: run_status is not COMPLETE.'
+          fi
+
       - name: Explain watchdog boundary
         run: |
           echo 'PASS: repository state is resumable and the next work item is derivable.'
