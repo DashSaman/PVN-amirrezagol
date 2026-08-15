@@ -63,7 +63,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 055 | Tor SOCKS | COMPLETE-REFERENCE-v2 |
 | 056 | Tailscale | COMPLETE-REFERENCE-v2 |
 | 057 | ZeroTier | COMPLETE-REFERENCE-v2 |
-| 058 | NetBird | PENDING |
+| 058 | NetBird | COMPLETE-REFERENCE-v2 |
 | 059 | Netmaker | PENDING |
 | 060 | Nebula | PENDING |
 | 061 | Tinc | PENDING |
