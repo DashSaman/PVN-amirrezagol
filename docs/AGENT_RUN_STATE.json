@@ -5,13 +5,13 @@
   "run_status": "IN_PROGRESS",
   "total_matrix_entries": 93,
   "v1_complete_count": 93,
-  "v2_complete_count": 47,
+  "v2_complete_count": 48,
   "active_phase": "COMPLETE-REFERENCE-v2",
   "hard_phase_lock": {"enabled":false,"reason":"V1 is 93/93; V2 active.","unlock_condition":"satisfied"},
-  "priority_entries": [48,49,50,51,52,53,54,55,56,57],
-  "active_work_unit": {"id":"V2-ENTRY-048-SNELL","status":"IN_PROGRESS","current_entry":48,"source_handoff":"AGENTS_HANDOFF_2026-08-15_NAIVEPROXY_V2_COMPLETE.md","exact_next_action":"Continue COMPLETE-REFERENCE-v2 at entry 048 Snell. Apply all exact 16 gates while preserving proprietary/source-unavailable boundaries. Pin current official Snell protocol/version/server packages and official documentation/license terms, map supported crypto/auth/UDP behavior/install/admin/client matrices and interoperability implementations without fabricating source. Promote only when all gates pass, then continue to entry 049 SOCKS4."},
+  "priority_entries": [49,50,51,52,53,54,55,56,57,58],
+  "active_work_unit": {"id":"V2-ENTRY-049-SOCKS4","status":"IN_PROGRESS","current_entry":49,"source_handoff":"AGENTS_HANDOFF_2026-08-15_SNELL_V2_COMPLETE.md","exact_next_action":"Continue COMPLETE-REFERENCE-v2 at entry 049 SOCKS4. Apply all exact 16 gates using historical specification/reference implementations and current maintained libraries/servers as appropriate; separate SOCKS4 from SOCKS4a/SOCKS5, map CONNECT-only IPv4 semantics, user-id/no-auth security limitations, ports/wire flow/client/server/deployment matrices/source-license pins. Promote only when all gates pass, then continue directly to entry 050 SOCKS4a."},
   "campaign_sources_of_truth": {"matrix":"docs/PROTOCOL_MATRIX.md","v1_contract":"research/PROTOCOL_RESEARCH_TEMPLATE.md","v1_tracker":"research/RESEARCH_COMPLETENESS.md","v2_contract":"research/FULL_PROTOCOL_REFERENCE_CONTRACT.md","v2_tracker":"research/REFERENCE_V2_COMPLETENESS.md","startup":"AI_START_HERE.md","agent_rules":"AGENTS.md","continuous_execution_contract":"AGENT_EXECUTION_CONTRACT.md"},
   "resume_policy": {"ask_owner_to_continue":false,"restart_from_chat_memory":false,"resume_from_repository_checkpoint":true,"on_single_task_blocker":"record blocker and continue independent required V2 work","on_work_unit_pass":"update V2 tracker and continue next unfinished V2 entry until all applicable entries complete"},
   "completion_validation": {"command":"python scripts/agent_state.py verify --require-complete","allow_done_claim_without_validator_pass":false},
-  "last_checkpoint": {"date":"2026-08-15","summary":"Entry 047 NaiveProxy satisfies all exact 16 COMPLETE-REFERENCE-v2 gates. Stable Naive+Chromium release provenance, Caddy forwardproxy server fork, H2/H3 CONNECT/padding/Fast Open flow, diagnostics and full license/SBOM boundary are explicit. V2 is 47/93 and advances to entry 048 Snell.","last_known_repo_handoff":"AGENTS_HANDOFF_2026-08-15_NAIVEPROXY_V2_COMPLETE.md"}
+  "last_checkpoint": {"date":"2026-08-15","summary":"Entry 048 Snell satisfies all exact 16 COMPLETE-REFERENCE-v2 gates with proprietary evidence-backed boundaries. Official stable server remains v5.0.1 binary-only; v6 is current beta, community opensnell is GPL interoperability evidence only, and unpublished cipher/wire internals are explicit N/A rather than fabricated. V2 is 48/93 and advances to entry 049 SOCKS4.","last_known_repo_handoff":"AGENTS_HANDOFF_2026-08-15_SNELL_V2_COMPLETE.md"}
 }
