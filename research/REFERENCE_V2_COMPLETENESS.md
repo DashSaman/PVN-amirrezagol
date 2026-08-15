@@ -52,7 +52,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 044 | TUIC | COMPLETE-REFERENCE-v2 |
 | 045 | AnyTLS | COMPLETE-REFERENCE-v2 |
 | 046 | ShadowTLS | COMPLETE-REFERENCE-v2 |
-| 047 | NaiveProxy | PENDING |
+| 047 | NaiveProxy | COMPLETE-REFERENCE-v2 |
 | 048 | Snell | PENDING |
 | 049 | SOCKS4 | PENDING |
 | 050 | SOCKS4a | PENDING |
