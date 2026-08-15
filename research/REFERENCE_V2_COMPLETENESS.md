@@ -85,7 +85,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 077 | TLS | COMPLETE-REFERENCE-v2 |
 | 078 | uTLS / TLS Fingerprinting | COMPLETE-REFERENCE-v2 |
 | 079 | Cloak | COMPLETE-REFERENCE-v2 |
-| 080 | TLS Fragmentation | PENDING |
+| 080 | TLS Fragmentation | COMPLETE-REFERENCE-v2 |
 | 081 | TCP | PENDING |
 | 082 | UDP | PENDING |
 | 083 | QUIC | PENDING |
