@@ -66,7 +66,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 058 | NetBird | COMPLETE-REFERENCE-v2 |
 | 059 | Netmaker | COMPLETE-REFERENCE-v2 |
 | 060 | Nebula | COMPLETE-REFERENCE-v2 |
-| 061 | Tinc | PENDING |
+| 061 | Tinc | COMPLETE-REFERENCE-v2 |
 | 062 | innernet | PENDING |
 | 063 | GRE | PENDING |
 | 064 | GRE over IPsec | PENDING |
