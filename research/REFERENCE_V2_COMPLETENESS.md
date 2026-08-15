@@ -47,7 +47,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 039 | Trojan | COMPLETE-REFERENCE-v2 |
 | 040 | Shadowsocks | COMPLETE-REFERENCE-v2 |
 | 041 | Shadowsocks 2022 | COMPLETE-REFERENCE-v2 |
-| 042 | Hysteria | PENDING |
+| 042 | Hysteria | COMPLETE-REFERENCE-v2 |
 | 043 | Hysteria2 | PENDING |
 | 044 | TUIC | PENDING |
 | 045 | AnyTLS | PENDING |
