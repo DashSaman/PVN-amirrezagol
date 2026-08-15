@@ -57,7 +57,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 049 | SOCKS4 | COMPLETE-REFERENCE-v2 |
 | 050 | SOCKS4a | COMPLETE-REFERENCE-v2 |
 | 051 | SOCKS5 | COMPLETE-REFERENCE-v2 |
-| 052 | HTTP Proxy | PENDING |
+| 052 | HTTP Proxy | COMPLETE-REFERENCE-v2 |
 | 053 | HTTPS / HTTP CONNECT | PENDING |
 | 054 | SSH Tunnel | PENDING |
 | 055 | Tor SOCKS | PENDING |
