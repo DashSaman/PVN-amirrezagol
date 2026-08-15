@@ -1,0 +1,3 @@
+# innernet client UI and menus
+
+Canonical client UX is CLI. Evidence-backed commands/workflows include invitation install, `list`/`list --tree`, admin `add-cidr`, `add-association`, `list-associations`, `delete-associations`, peer enable/disable, endpoint override and local WireGuard listen-port control. Invitation redemption generates a new key pair and invalidates reuse of the invitation private key. No canonical graphical desktop/mobile/TV client is claimed; graphical onboarding, theme, tray, widgets, QR UI, accessibility and responsive-screen categories are evidence-backed NOT-APPLICABLE to the canonical CLI rather than inferred missing features.
