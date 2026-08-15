@@ -50,7 +50,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 042 | Hysteria | COMPLETE-REFERENCE-v2 |
 | 043 | Hysteria2 | COMPLETE-REFERENCE-v2 |
 | 044 | TUIC | COMPLETE-REFERENCE-v2 |
-| 045 | AnyTLS | PENDING |
+| 045 | AnyTLS | COMPLETE-REFERENCE-v2 |
 | 046 | ShadowTLS | PENDING |
 | 047 | NaiveProxy | PENDING |
 | 048 | Snell | PENDING |
