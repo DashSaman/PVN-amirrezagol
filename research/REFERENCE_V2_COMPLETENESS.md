@@ -49,7 +49,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 041 | Shadowsocks 2022 | COMPLETE-REFERENCE-v2 |
 | 042 | Hysteria | COMPLETE-REFERENCE-v2 |
 | 043 | Hysteria2 | COMPLETE-REFERENCE-v2 |
-| 044 | TUIC | PENDING |
+| 044 | TUIC | COMPLETE-REFERENCE-v2 |
 | 045 | AnyTLS | PENDING |
 | 046 | ShadowTLS | PENDING |
 | 047 | NaiveProxy | PENDING |

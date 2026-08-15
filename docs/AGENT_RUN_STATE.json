@@ -5,13 +5,13 @@
   "run_status": "IN_PROGRESS",
   "total_matrix_entries": 93,
   "v1_complete_count": 93,
-  "v2_complete_count": 43,
+  "v2_complete_count": 44,
   "active_phase": "COMPLETE-REFERENCE-v2",
   "hard_phase_lock": {"enabled":false,"reason":"V1 is 93/93; V2 active.","unlock_condition":"satisfied"},
-  "priority_entries": [44,45,46,47,48,49,50,51,52,53],
-  "active_work_unit": {"id":"V2-ENTRY-044-TUIC","status":"IN_PROGRESS","current_entry":44,"source_handoff":"AGENTS_HANDOFF_2026-08-15_HYSTERIA2_V2_COMPLETE.md","exact_next_action":"Continue COMPLETE-REFERENCE-v2 at entry 044 TUIC. Identify canonical TUIC specification and maintained v5 implementation(s), pin current source/releases/licenses, independently map QUIC/TLS/auth/token/UUID/congestion/UDP relay/heartbeat/wire behavior, deployment/client/admin matrices and version differences, promote only when all applicable gates pass, then continue to entry 045 AnyTLS."},
+  "priority_entries": [45,46,47,48,49,50,51,52,53,54],
+  "active_work_unit": {"id":"V2-ENTRY-045-ANYTLS","status":"IN_PROGRESS","current_entry":45,"source_handoff":"AGENTS_HANDOFF_2026-08-15_TUIC_V2_COMPLETE.md","exact_next_action":"Continue COMPLETE-REFERENCE-v2 at entry 045 AnyTLS. Identify protocol authority/spec and current maintained server/client/core implementations. Apply all exact 16 gates; map TLS security, password/auth, padding/multiplexing, UDP-over-stream, fallback/probe behavior, install/admin/client matrices, source/license/releases and wire flow independently; do not infer AnyTLS from TLS alone. Promote only when all gates pass, then continue directly to entry 046 ShadowTLS."},
   "campaign_sources_of_truth": {"matrix":"docs/PROTOCOL_MATRIX.md","v1_contract":"research/PROTOCOL_RESEARCH_TEMPLATE.md","v1_tracker":"research/RESEARCH_COMPLETENESS.md","v2_contract":"research/FULL_PROTOCOL_REFERENCE_CONTRACT.md","v2_tracker":"research/REFERENCE_V2_COMPLETENESS.md","startup":"AI_START_HERE.md","agent_rules":"AGENTS.md","continuous_execution_contract":"AGENT_EXECUTION_CONTRACT.md"},
   "resume_policy": {"ask_owner_to_continue":false,"restart_from_chat_memory":false,"resume_from_repository_checkpoint":true,"on_single_task_blocker":"record blocker and continue independent required V2 work","on_work_unit_pass":"update V2 tracker and continue next unfinished V2 entry until all applicable entries complete"},
   "completion_validation": {"command":"python scripts/agent_state.py verify --require-complete","allow_done_claim_without_validator_pass":false},
-  "last_checkpoint": {"date":"2026-08-15","summary":"Entry 043 Hysteria2 satisfies all exact 16 COMPLETE-REFERENCE-v2 gates. Current v2.12.1 source/release/protocol, QUIC+HTTP3 auth/TCP/UDP/SST? wire, TLS trust, Salamander obfs, deployment/lifecycle and advisory floor are explicit, independent from v1. V2 is 43/93 and advances to entry 044 TUIC.","last_known_repo_handoff":"AGENTS_HANDOFF_2026-08-15_HYSTERIA2_V2_COMPLETE.md"}
+  "last_checkpoint": {"date":"2026-08-15","summary":"Entry 044 TUIC v5 satisfies all exact 16 COMPLETE-REFERENCE-v2 gates. Canonical v0x05 spec, exporter-based auth, TCP/UDP/heartbeat/error semantics and three current implementation/license paths are pinned; no official implementation is fabricated. V2 is 44/93 and advances to entry 045 AnyTLS.","last_known_repo_handoff":"AGENTS_HANDOFF_2026-08-15_TUIC_V2_COMPLETE.md"}
 }
