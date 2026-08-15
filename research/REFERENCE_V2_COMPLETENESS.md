@@ -74,7 +74,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 066 | IPIP over IPsec | COMPLETE-REFERENCE-v2 |
 | 067 | VTI/IPsec | COMPLETE-REFERENCE-v2 |
 | 068 | XFRM/IPsec | COMPLETE-REFERENCE-v2 |
-| 069 | VXLAN | PENDING |
+| 069 | VXLAN | COMPLETE-REFERENCE-v2 |
 | 070 | VXLAN over IPsec | PENDING |
 | 071 | DMVPN | PENDING |
 | 072 | Cisco FlexVPN | PENDING |
