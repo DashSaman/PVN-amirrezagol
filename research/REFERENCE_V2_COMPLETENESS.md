@@ -72,7 +72,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 064 | GRE over IPsec | COMPLETE-REFERENCE-v2 |
 | 065 | IP-in-IP / IPIP | COMPLETE-REFERENCE-v2 |
 | 066 | IPIP over IPsec | COMPLETE-REFERENCE-v2 |
-| 067 | VTI/IPsec | PENDING |
+| 067 | VTI/IPsec | COMPLETE-REFERENCE-v2 |
 | 068 | XFRM/IPsec | PENDING |
 | 069 | VXLAN | PENDING |
 | 070 | VXLAN over IPsec | PENDING |
