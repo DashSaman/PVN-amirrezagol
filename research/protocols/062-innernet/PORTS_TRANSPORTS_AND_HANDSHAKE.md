@@ -1,0 +1,3 @@
+# innernet ports, transports and handshake
+
+WireGuard UDP is the peer transport. The listen port is configured per innernet/WireGuard interface and may be changed or unset for randomized behavior. A coordination server behind NAT needs forwarding for its configured listen port. Joining is a distinct control workflow: one-time invitation -> WireGuard contact with server -> fresh client key generation -> registration -> normal state fetch. Endpoint observation/override assists reachability but is not a new cryptographic handshake. No TCP/TLS/QUIC fallback or protocol-specific obfuscation is claimed for canonical innernet.
