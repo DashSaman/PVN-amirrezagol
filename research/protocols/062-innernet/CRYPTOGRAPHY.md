@@ -1,0 +1,3 @@
+# innernet cryptography
+
+innernet does not define a replacement cipher suite: its peer data plane uses WireGuard. Therefore WireGuard's authenticated encrypted tunnel is the cryptographic boundary and innernet's contribution is coordination, membership, CIDR policy and endpoint distribution. During invitation redemption the client reaches the server through WireGuard, generates a fresh key pair, registers it, and the invitation private key is no longer usable. Do not attribute additional TLS/PKI/cipher negotiation to innernet without source evidence. Upstream also warns that innernet itself has not received an independent security audit; production certification remains separate from this research gate.
