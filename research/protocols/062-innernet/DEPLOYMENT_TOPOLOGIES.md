@@ -1,0 +1,3 @@
+# innernet deployment topologies
+
+Canonical topology is a private WireGuard mesh coordinated by one innernet server. The server belongs to a special `infra` CIDR reachable from all CIDRs. Administrators create hierarchical CIDRs and explicit associations to allow communication between groups; peers in one CIDR otherwise communicate with their own CIDR plus infra by default. Admin peers can manage network state after bootstrap. This supports organization/group segmentation and direct peer connectivity. HA control-plane clustering, hosted SaaS, mandatory relay, Kubernetes control plane and web-panel topologies are not claimed by reviewed upstream evidence.
