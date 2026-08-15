@@ -1,0 +1,3 @@
+# innernet server installers and deployment projects
+
+Canonical build/install paths documented by upstream are Cargo/source and Linux service operation. `innernet-server` build dependencies are Rust/Cargo, libclang and libsqlite3; Linux can run `innernet-server@<interface>` through systemd. Arch packages, community Debian/Ubuntu builds and Cargo are packaging paths; community packages are separate supply-chain trust boundaries. Upstream Docker scripts are development tests, not evidence of a canonical production container installer. No canonical Helm/Kubernetes/web-panel installer is claimed. Removal of a created network is explicitly supported with `innernet-server uninstall <interface>`.
