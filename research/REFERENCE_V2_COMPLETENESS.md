@@ -56,7 +56,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 048 | Snell | COMPLETE-REFERENCE-v2 |
 | 049 | SOCKS4 | COMPLETE-REFERENCE-v2 |
 | 050 | SOCKS4a | COMPLETE-REFERENCE-v2 |
-| 051 | SOCKS5 | PENDING |
+| 051 | SOCKS5 | COMPLETE-REFERENCE-v2 |
 | 052 | HTTP Proxy | PENDING |
 | 053 | HTTPS / HTTP CONNECT | PENDING |
 | 054 | SSH Tunnel | PENDING |
