@@ -64,7 +64,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 056 | Tailscale | COMPLETE-REFERENCE-v2 |
 | 057 | ZeroTier | COMPLETE-REFERENCE-v2 |
 | 058 | NetBird | COMPLETE-REFERENCE-v2 |
-| 059 | Netmaker | PENDING |
+| 059 | Netmaker | COMPLETE-REFERENCE-v2 |
 | 060 | Nebula | PENDING |
 | 061 | Tinc | PENDING |
 | 062 | innernet | PENDING |
