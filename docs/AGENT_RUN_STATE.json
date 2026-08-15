@@ -5,13 +5,13 @@
   "run_status": "IN_PROGRESS",
   "total_matrix_entries": 93,
   "v1_complete_count": 93,
-  "v2_complete_count": 50,
+  "v2_complete_count": 51,
   "active_phase": "COMPLETE-REFERENCE-v2",
   "hard_phase_lock": {"enabled":false,"reason":"V1 is 93/93; V2 active.","unlock_condition":"satisfied"},
-  "priority_entries": [51,52,53,54,55,56,57,58,59,60],
-  "active_work_unit": {"id":"V2-ENTRY-051-SOCKS5","status":"IN_PROGRESS","current_entry":51,"source_handoff":"research/protocols/050-entry/REFERENCE_V2_AUDIT.md","exact_next_action":"Continue COMPLETE-REFERENCE-v2 at entry 051 SOCKS5. Apply all exact 16 gates; reuse SOCKS-family evidence only where traceable, but explicitly map SOCKS5 method negotiation, address types, CONNECT/BIND/UDP ASSOCIATE, authentication extensions, remote/local DNS behavior, IPv6, server/client/install/UI/wire/deployment/source-license/security boundaries, then promote only when every applicable gate passes and continue entry 052 HTTP Proxy."},
+  "priority_entries": [52,53,54,55,56,57,58,59,60,61],
+  "active_work_unit": {"id":"V2-ENTRY-052-HTTP-PROXY","status":"IN_PROGRESS","current_entry":52,"source_handoff":"research/protocols/051-entry/REFERENCE_V2_AUDIT.md","exact_next_action":"Continue COMPLETE-REFERENCE-v2 at entry 052 HTTP Proxy. Apply all exact 16 gates; distinguish forward HTTP proxy semantics from entry 053 HTTPS/HTTP CONNECT, map canonical HTTP specifications and maintained proxy/server/client implementations, install/UI/deployment/source-license/security/lifecycle boundaries, promote only when every applicable gate passes, then continue entry 053 HTTPS / HTTP CONNECT."},
   "campaign_sources_of_truth": {"matrix":"docs/PROTOCOL_MATRIX.md","v1_contract":"research/PROTOCOL_RESEARCH_TEMPLATE.md","v1_tracker":"research/RESEARCH_COMPLETENESS.md","v2_contract":"research/FULL_PROTOCOL_REFERENCE_CONTRACT.md","v2_tracker":"research/REFERENCE_V2_COMPLETENESS.md","startup":"AI_START_HERE.md","agent_rules":"AGENTS.md","continuous_execution_contract":"AGENT_EXECUTION_CONTRACT.md"},
   "resume_policy": {"ask_owner_to_continue":false,"restart_from_chat_memory":false,"resume_from_repository_checkpoint":true,"on_single_task_blocker":"record blocker and continue independent required V2 work","on_work_unit_pass":"update V2 tracker and continue next unfinished V2 entry until all applicable entries complete"},
   "completion_validation": {"command":"python scripts/agent_state.py verify --require-complete","allow_done_claim_without_validator_pass":false},
-  "last_checkpoint": {"date":"2026-08-15","summary":"Entry 050 SOCKS4a satisfies all exact 16 COMPLETE-REFERENCE-v2 gates. It is kept distinct from SOCKS4 by proxy-side hostname resolution and from SOCKS5 by the absence of method negotiation, IPv6 address framing and UDP ASSOCIATE. Canonical 3proxy evidence and shared SOCKS-family pins are reused traceably; protocol crypto remains N/A and outer security is separate. V2 is 50/93 and advances to entry 051 SOCKS5.","last_known_repo_handoff":"research/protocols/050-entry/REFERENCE_V2_AUDIT.md"}
+  "last_checkpoint": {"date":"2026-08-15","summary":"Entry 051 SOCKS5 satisfies all exact 16 COMPLETE-REFERENCE-v2 gates. RFC 1928/1929 semantics, method negotiation, IPv4/domain/IPv6 addressing, CONNECT/BIND/UDP ASSOCIATE, authentication and plaintext-security boundaries are explicit; RFC 1928 verified erratum 3198 is recorded. V2 is 51/93 and advances to entry 052 HTTP Proxy.","last_known_repo_handoff":"research/protocols/051-entry/REFERENCE_V2_AUDIT.md"}
 }
