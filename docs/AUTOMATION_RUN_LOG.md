@@ -66,3 +66,4 @@ RUN_START | ts=2026-08-15T01:42:00Z | trigger=scheduled | work_unit=V2-ENTRY-050
 RUN_END | ts=2026-08-15T01:50:30Z | status=COMPLETED_SLICE | last_research_commit=f18c5b3efa71a72a3436a4a2bf2215cbdd598eb7
 RUN_START | ts=2026-08-15T03:40:30Z | trigger=scheduled | work_unit=V2-ENTRY-052-HTTP-PROXY | handoff=research/protocols/051-entry/REFERENCE_V2_AUDIT.md | resume_from=v2-51-of-93 | manual_request=none
 RUN_END | ts=2026-08-15T03:50:05Z | status=COMPLETED_SLICE | last_research_commit=4edb9db960c4931c4b7c75b69fb089bb42849e1d
+RUN_START | ts=2026-08-15T04:38:05Z | trigger=scheduled | work_unit=V2-ENTRY-056-TAILSCALE | handoff=AGENTS_HANDOFF_2026-08-15_TOR_SOCKS_V2_COMPLETE.md | resume_from=2b1542b65bce9152332be2a68093751f7cd2ca81 | manual_request=none
