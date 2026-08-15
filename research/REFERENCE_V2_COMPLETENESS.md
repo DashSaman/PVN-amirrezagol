@@ -60,7 +60,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 052 | HTTP Proxy | COMPLETE-REFERENCE-v2 |
 | 053 | HTTPS / HTTP CONNECT | COMPLETE-REFERENCE-v2 |
 | 054 | SSH Tunnel | COMPLETE-REFERENCE-v2 |
-| 055 | Tor SOCKS | PENDING |
+| 055 | Tor SOCKS | COMPLETE-REFERENCE-v2 |
 | 056 | Tailscale | PENDING |
 | 057 | ZeroTier | PENDING |
 | 058 | NetBird | PENDING |
