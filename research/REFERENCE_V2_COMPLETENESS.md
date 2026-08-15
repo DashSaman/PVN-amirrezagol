@@ -80,8 +80,8 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 072 | Cisco FlexVPN | COMPLETE-REFERENCE-v2 |
 | 073 | GETVPN | COMPLETE-REFERENCE-v2 |
 | 074 | REALITY | COMPLETE-REFERENCE-v2 |
-| 075 | XTLS | PENDING |
-| 076 | XTLS Vision | PENDING |
+| 075 | XTLS | COMPLETE-REFERENCE-v2 |
+| 076 | XTLS Vision | COMPLETE-REFERENCE-v2 |
 | 077 | TLS | PENDING |
 | 078 | uTLS / TLS Fingerprinting | PENDING |
 | 079 | Cloak | PENDING |
