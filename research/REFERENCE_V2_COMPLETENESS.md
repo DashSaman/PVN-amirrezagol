@@ -78,7 +78,7 @@ This tracker covers the second exhaustive reference layer defined by `research/F
 | 070 | VXLAN over IPsec | COMPLETE-REFERENCE-v2 |
 | 071 | DMVPN | COMPLETE-REFERENCE-v2 |
 | 072 | Cisco FlexVPN | COMPLETE-REFERENCE-v2 |
-| 073 | GETVPN | PENDING |
+| 073 | GETVPN | COMPLETE-REFERENCE-v2 |
 | 074 | REALITY | PENDING |
 | 075 | XTLS | PENDING |
 | 076 | XTLS Vision | PENDING |
