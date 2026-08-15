@@ -64,3 +64,4 @@ RUN_START | ts=2026-08-15T00:41:30Z | trigger=scheduled | work_unit=V2-ENTRY-049
 RUN_END | ts=2026-08-15T00:50:30Z | status=COMPLETED_SLICE | last_research_commit=552c3e57ea8596a12e988a2554a3aea3ee13628d
 RUN_START | ts=2026-08-15T01:42:00Z | trigger=scheduled | work_unit=V2-ENTRY-050-SOCKS4A | handoff=AGENTS_HANDOFF_2026-08-15_SOCKS4_V2_COMPLETE.md | resume_from=v2-49-of-93 | manual_request=none
 RUN_END | ts=2026-08-15T01:50:30Z | status=COMPLETED_SLICE | last_research_commit=f18c5b3efa71a72a3436a4a2bf2215cbdd598eb7
+RUN_START | ts=2026-08-15T03:40:30Z | trigger=scheduled | work_unit=V2-ENTRY-052-HTTP-PROXY | handoff=research/protocols/051-entry/REFERENCE_V2_AUDIT.md | resume_from=v2-51-of-93 | manual_request=none
