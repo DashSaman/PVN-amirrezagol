@@ -93,8 +93,8 @@ jobs:
               kill "$server_pid" >/dev/null 2>&1 || true
               wait "$server_pid" >/dev/null 2>&1 || true
             fi
-            ip link del pvnsvr0 >/dev/null 2>&1 || true
-            ip link del pvncli0 >/dev/null 2>&1 || true
+            ip link del tun23 >/dev/null 2>&1 || true
+            ip link del tun24 >/dev/null 2>&1 || true
             rm -rf "$workdir"
           }
           trap cleanup EXIT INT TERM
@@ -138,7 +138,7 @@ jobs:
           cat >"$workdir/server.conf" <<EOF
           port 11941
           proto udp
-          dev pvnsvr0
+          dev tun23
           topology subnet
           server 10.77.23.0 255.255.255.0
           ca $workdir/ca.crt
@@ -176,7 +176,7 @@ jobs:
           export PVNETWORK_OPENVPN_REAL_CA="$workdir/ca.crt"
           export PVNETWORK_OPENVPN_REAL_CLIENT_CERT="$workdir/client.crt"
           export PVNETWORK_OPENVPN_REAL_CLIENT_KEY="$workdir/client.key"
-          export PVNETWORK_OPENVPN_REAL_CLIENT_DEVICE=pvncli0
+          export PVNETWORK_OPENVPN_REAL_CLIENT_DEVICE=tun24
 
           gradle --no-daemon :engines:openvpn-adapter:jvmTest \
             --tests 'com.pvnetwork.engine.openvpn.JvmSystemOpenVpnRuntimeTest.realSystemOpenVpnRuntimePathReachesConnectedWhenCiFixtureEnabled' \
