@@ -4,16 +4,9 @@ Status: **IN PROGRESS — CI failures are being resolved; no successful desktop 
 
 ## Scope implemented in this slice
 
-A real Compose Multiplatform desktop client shell exists under `apps/desktop` using:
+A real Compose Multiplatform desktop client shell exists under `apps/desktop` using Kotlin `2.4.10`, Compose Multiplatform `1.11.1`, product-owned `core:foundation` contracts, and no protocol engine dependency.
 
-- Kotlin `2.4.10`;
-- Compose Multiplatform `1.11.1`;
-- product-owned `core:foundation` contracts;
-- no protocol engine dependency.
-
-The shell includes the M1 roadmap surfaces: PVNetwork branding, English/Persian toggle, LTR/RTL layouts, technical-token LTR isolation, system/light/dark theme preference, profile list, canonical connection state, and sanitized diagnostics.
-
-The initial shell state is intentionally honest: empty profile list, `DISCONNECTED`, empty diagnostics. No mock profile and no fake `CONNECTED` state are used to make the UI look complete.
+The shell includes PVNetwork branding, English/Persian toggle, LTR/RTL layouts, technical-token LTR isolation, system/light/dark theme preference, profile list, canonical connection state, and sanitized diagnostics. The initial state is intentionally empty/`DISCONNECTED`; no mock profile or fake connected state is used.
 
 ## Build gate
 
@@ -25,16 +18,17 @@ gradle --no-daemon :apps:desktop:test :apps:desktop:createDistributable --stackt
 
 ### Failure evidence retained
 
-- Run `31938655622`: failed before a valid build result; source review also identified a Compose scope/import issue which was corrected in commit `5de7f36480e9a985d2b05496d10f245dc7737eb0`.
-- Run `31938706717`: failed dependency resolution because AndroidX transitive artifacts were not available from Maven Central alone. Google Maven was added in commit `c84a4ef7dfa7166002e16057131dd2d9b56e4095`.
-- Run `31938789626`: dependency resolution succeeded and the build advanced through runtime-image creation and foundation compilation. It then failed at `:apps:desktop:compileKotlin` because Java targeted JVM 21 while Kotlin targeted JVM 17. The desktop Java source/target compatibility is now explicitly pinned to 17 while CI continues to run on the JDK 21 toolchain.
+- Run `31938655622`: failed before a valid build result; source review identified a Compose scope/import issue.
+- Run `31938706717`: failed dependency resolution because AndroidX transitive artifacts required Google Maven; `google()` was added.
+- Run `31938789626`: dependency resolution passed, then Java 21/Kotlin 17 JVM target validation failed; Java source/target was aligned to 17.
+- Run `31938875712`: JVM target validation passed and compilation advanced further. Kotlin compilation then rejected a direct `androidx.compose.foundation.layout.weight` import because the referenced symbol is internal in this Compose version. The unnecessary direct import is removed; `weight()` remains used only in its valid `RowScope`/`ColumnScope` receivers.
 
-These failures are evidence and are not erased or re-labelled as successful tests.
+Failures remain recorded as failures; none is re-labelled as successful evidence.
 
 ## Still required before M1 close
 
-- successful compile/unit-test/distributable evidence after the JVM target alignment;
-- a real desktop launch smoke so "first working client shell" is supported by runtime evidence rather than packaging alone;
-- fix any further CI/runtime failure found by those gates.
+- successful compile/unit-test/distributable evidence;
+- real desktop launch smoke;
+- fix any further gate failure.
 
 No protocol adapter, connection, interoperability, device verification, Store verification or production readiness is claimed by M1 shell work.

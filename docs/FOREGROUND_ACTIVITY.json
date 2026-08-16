@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-16T08:56:57Z",
-  "heartbeat_at_utc": "2026-08-16T09:22:30Z",
-  "task": "M1 Compose Desktop build repair: align Java/Kotlin JVM 17 targets, then compile/test/distributable and launch validation.",
-  "note": "Run 31938789626 proved Google Maven fixed dependency resolution; the current exact blocker is Java 21 vs Kotlin 17 target validation. Java source/target is now being aligned to 17."
+  "heartbeat_at_utc": "2026-08-16T09:24:15Z",
+  "task": "M1 Compose Desktop build repair: remove invalid direct weight import, then compile/test/distributable and launch validation.",
+  "note": "Run 31938875712 passed dependency and JVM-target blockers, then failed only because a direct Compose weight import resolved to an internal symbol. The import is being removed; no desktop build success is claimed yet."
 }
