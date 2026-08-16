@@ -19,12 +19,22 @@
       "id": "R6-MINIMUM-VIABLE-ENGINE-SET",
       "status": "PASS",
       "evidence": ["docs/ENGINE_SET_R6.md"]
+    },
+    {
+      "id": "M0-FOUNDATION-CONTRACTS-SLICE",
+      "status": "TESTED",
+      "evidence": [
+        "core/foundation/src/commonMain/kotlin",
+        "tools/foundation-smoke/Main.kt",
+        "scripts/test-foundation.sh",
+        "docs/M0_FOUNDATION_VALIDATION_2026-08-16.md"
+      ]
     }
   ],
   "active_work_unit": {
-    "id": "M0-FOUNDATION-CONTRACTS",
+    "id": "M0-KMP-BUILD-CI",
     "status": "IN_PROGRESS",
-    "exact_next_action": "Implement and execute engine-independent profile, secret-storage, adapter, connection-state, diagnostics, import, routing and DNS contracts; then add the reproducible KMP build/CI layer without importing protocol engines."
+    "exact_next_action": "Add the reproducible Kotlin Multiplatform build configuration and CI validation for the foundation module, then add localization and branding foundation without importing protocol engines."
   },
   "status_vocabulary": [
     "RESEARCHED",
@@ -35,5 +45,5 @@
     "DEVICE_VERIFIED",
     "PRODUCTION_READY"
   ],
-  "updated_at_utc": "2026-08-16T09:04:38Z"
+  "updated_at_utc": "2026-08-16T09:06:00Z"
 }

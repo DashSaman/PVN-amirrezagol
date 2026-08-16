@@ -22,26 +22,39 @@ Last synchronized: 2026-08-16
 
 Machine-readable implementation state: `docs/IMPLEMENTATION_PHASE_STATE.json`.
 
+## Current M0 evidence
+
+The first engine-independent foundation slice is now source-backed and locally executable:
+
+- versioned canonical `PVProfile` metadata with opaque `SecretRef` values;
+- `SecretStore` platform boundary with no production plaintext fallback implementation;
+- product-owned `CoreAdapter`/capability contracts;
+- canonical connection state machine;
+- structured diagnostic event/redaction contract;
+- import warning/lossiness contracts;
+- routing and DNS policy contracts;
+- executable foundation smoke harness.
+
+Validation evidence: `docs/M0_FOUNDATION_VALIDATION_2026-08-16.md`.
+
+This slice was compiled with `kotlinc-jvm 1.9.0` and executed successfully in the run that created it. That is a real JVM smoke build/test, not a claim that the Kotlin 2.4.10 KMP application or target apps have been built.
+
 ## R6 approved initial networking families
 
-The smallest approved initial set is WireGuard, OpenVPN and Xray-core, matching the roadmap's first networking wave while deferring redundant cores. Approval means integration planning may proceed; it does not mean implemented.
-
-- WireGuard: official/mature implementation reuse, no cryptography rewrite; per-platform artifact pin/license gate before import.
-- OpenVPN: platform-specific engine strategy. OpenVPN 2 desktop subprocess is preferred where obligations are satisfied; AGPL OpenVPN3 is not silently embedded in a closed product; Apple/Android candidates retain their own license/import gates.
-- Xray-core: MPL-2.0 research baseline with libXray MIT wrapper reference; exact stable production release/SBOM must be locked before dependency import.
+The smallest approved initial set is WireGuard, OpenVPN and Xray-core. Dependency imports remain gated by exact per-platform source/release/license decisions in `docs/ENGINE_SET_R6.md`.
 
 ## Current active work unit
 
-`M0-FOUNDATION-CONTRACTS / IN_PROGRESS`
+`M0-KMP-BUILD-CI / IN_PROGRESS`
 
-Exact next action: implement and execute engine-independent profile/security/adapter/connection/diagnostics/import/routing/DNS contracts, then establish the reproducible KMP build and CI layer without importing protocol engines.
+Exact next action: add the reproducible Kotlin Multiplatform build configuration and CI validation for the foundation module, then localization and branding foundation without importing protocol engines.
 
 ## Current product evidence state
 
 - RESEARCHED: 93/93 V1 and 93/93 V2.
-- IMPLEMENTED: no protocol engine claimed implemented. Product-owned M0 foundation work is starting independently.
-- BUILT: no production application build yet.
-- TESTED: no protocol/product E2E claim yet.
+- IMPLEMENTED: M0 product-owned foundation contracts slice; **no protocol engine claimed implemented**.
+- BUILT: M0 foundation JVM smoke artifact only; **no production application build yet**.
+- TESTED: M0 foundation smoke assertions only; **no protocol or product E2E claim**.
 - INTEROPERABILITY VERIFIED: none claimed.
 - DEVICE VERIFIED: none claimed.
 - PRODUCTION READY: no.
@@ -49,7 +62,7 @@ Exact next action: implement and execute engine-independent profile/security/ada
 ## Non-negotiable boundaries
 
 - Do not reopen completed research without a real contradiction.
-- Do not infer implementation from research or R6 approval.
+- Do not infer protocol implementation from research or R6 approval.
 - Do not copy GPL/AGPL/reference-only code into a closed product without an explicit compatible strategy.
 - Do not implement cryptography from scratch.
 - Do not log or persist reusable secrets in plaintext.
