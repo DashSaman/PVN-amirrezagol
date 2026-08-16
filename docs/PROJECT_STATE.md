@@ -16,53 +16,38 @@ Last synchronized: 2026-08-16
 ## Phase progression
 
 - R1–R4.5 research/reference work: COMPLETE.
-- R5 — Architecture decision phase: **PASS** (`docs/ARCHITECTURE_DECISIONS_R5.md`).
-- R6 — Minimum viable engine set approval: **PASS** (`docs/ENGINE_SET_R6.md`).
-- M0 — Application foundation: **IN PROGRESS**.
+- R5 architecture decision: **PASS**.
+- R6 minimum viable engine set: **PASS**.
+- M0 application foundation: **PASS**.
+- M1 first working platform/client shell: **IN PROGRESS**.
 
-Machine-readable implementation state: `docs/IMPLEMENTATION_PHASE_STATE.json`.
+## M0 close evidence
 
-## Current M0 evidence
+M0 now meets every roadmap item: repository/build/CI structure, shared models, secure-storage and adapter interfaces, localization foundation, and PVNetwork branding foundation. The final M0 localization/branding commit passed pinned Kotlin 2.4.10 / Gradle 9.5.0 CI in GitHub Actions run `31938458227`.
 
-The first engine-independent foundation slice is now source-backed and locally executable:
+M0 PASS does not claim a production application or any protocol implementation.
 
-- versioned canonical `PVProfile` metadata with opaque `SecretRef` values;
-- `SecretStore` platform boundary with no production plaintext fallback implementation;
-- product-owned `CoreAdapter`/capability contracts;
-- canonical connection state machine;
-- structured diagnostic event/redaction contract;
-- import warning/lossiness contracts;
-- routing and DNS policy contracts;
-- executable foundation smoke harness.
+## Current M1 work
 
-Validation evidence: `docs/M0_FOUNDATION_VALIDATION_2026-08-16.md`.
+A Compose Multiplatform `1.11.1` desktop shell is being added under `apps/desktop` with English/Persian, RTL, system/light/dark themes, a profile-list surface, canonical connection-state surface, and sanitized diagnostics surface.
 
-This slice was compiled with `kotlinc-jvm 1.9.0` and executed successfully in the run that created it. That is a real JVM smoke build/test, not a claim that the Kotlin 2.4.10 KMP application or target apps have been built.
+The shell starts with no invented profiles, `DISCONNECTED`, and no invented diagnostic events. Compile/test/package results remain pending until the M1 workflow executes successfully.
 
-## R6 approved initial networking families
+## Product evidence state
 
-The smallest approved initial set is WireGuard, OpenVPN and Xray-core. Dependency imports remain gated by exact per-platform source/release/license decisions in `docs/ENGINE_SET_R6.md`.
-
-## Current active work unit
-
-`M0-KMP-BUILD-CI / IN_PROGRESS`
-
-Exact next action: add the reproducible Kotlin Multiplatform build configuration and CI validation for the foundation module, then localization and branding foundation without importing protocol engines.
-
-## Current product evidence state
-
-- RESEARCHED: 93/93 V1 and 93/93 V2.
-- IMPLEMENTED: M0 product-owned foundation contracts slice; **no protocol engine claimed implemented**.
-- BUILT: M0 foundation JVM smoke artifact only; **no production application build yet**.
-- TESTED: M0 foundation smoke assertions only; **no protocol or product E2E claim**.
-- INTEROPERABILITY VERIFIED: none claimed.
-- DEVICE VERIFIED: none claimed.
+- RESEARCHED: V1 93/93 and V2 93/93.
+- IMPLEMENTED: M0 product-owned foundation; M1 desktop shell source is present in the active work unit.
+- BUILT: M0 shared foundation JVM/KMP gate PASS; M1 desktop app build not yet claimed.
+- TESTED: M0 foundation tests PASS; M1 tests not yet claimed.
+- INTEROPERABILITY VERIFIED: none.
+- DEVICE VERIFIED: none.
 - PRODUCTION READY: no.
 
 ## Non-negotiable boundaries
 
 - Do not reopen completed research without a real contradiction.
-- Do not infer protocol implementation from research or R6 approval.
+- Do not infer protocol implementation from research/R6/M0/M1 UI work.
+- Dependency imports remain governed by `docs/ENGINE_SET_R6.md`.
 - Do not copy GPL/AGPL/reference-only code into a closed product without an explicit compatible strategy.
 - Do not implement cryptography from scratch.
 - Do not log or persist reusable secrets in plaintext.

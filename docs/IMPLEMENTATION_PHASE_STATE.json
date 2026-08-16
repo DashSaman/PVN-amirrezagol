@@ -2,15 +2,17 @@
   "schema_version": 1,
   "repository": "DashSaman/PVN-amirrezagol",
   "research_boundary": {"v1":"93/93","v2":"93/93","strict_validator":"PASS","research_reopen_required":false},
-  "phase": "M0_APPLICATION_FOUNDATION",
+  "phase": "M1_FIRST_CLIENT_SHELL",
   "phase_status": "IN_PROGRESS",
   "completed_work_units": [
     {"id":"R5-ARCHITECTURE-DECISION","status":"PASS","evidence":["docs/ARCHITECTURE_DECISIONS_R5.md"]},
     {"id":"R6-MINIMUM-VIABLE-ENGINE-SET","status":"PASS","evidence":["docs/ENGINE_SET_R6.md"]},
-    {"id":"M0-FOUNDATION-CONTRACTS-SLICE","status":"TESTED","evidence":["core/foundation/src/commonMain/kotlin","tools/foundation-smoke/Main.kt","scripts/test-foundation.sh","docs/M0_FOUNDATION_VALIDATION_2026-08-16.md"]},
-    {"id":"M0-KMP-BUILD-CI","status":"TESTED","evidence":["build.gradle.kts","settings.gradle.kts","core/foundation/build.gradle.kts",".github/workflows/m0-foundation-ci.yml","GitHub Actions run 31938297195 SUCCESS","docs/M0_BUILD_SYSTEM.md"]}
+    {"id":"M0-FOUNDATION-CONTRACTS-SLICE","status":"TESTED","evidence":["core/foundation/src/commonMain/kotlin","docs/M0_FOUNDATION_VALIDATION_2026-08-16.md"]},
+    {"id":"M0-KMP-BUILD-CI","status":"TESTED","evidence":["GitHub Actions run 31938297195 SUCCESS","docs/M0_BUILD_SYSTEM.md"]},
+    {"id":"M0-LOCALIZATION-BRANDING","status":"TESTED","evidence":["core/foundation/src/commonMain/kotlin/com/pvnetwork/core/i18n/Localization.kt","core/foundation/src/commonMain/kotlin/com/pvnetwork/core/branding/Branding.kt","GitHub Actions run 31938458227 SUCCESS"]},
+    {"id":"M0-APPLICATION-FOUNDATION","status":"PASS","evidence":["docs/ROADMAP.md","docs/M0_FOUNDATION_VALIDATION_2026-08-16.md","docs/M0_BUILD_SYSTEM.md","GitHub Actions run 31938458227 SUCCESS"]}
   ],
-  "active_work_unit": {"id":"M0-LOCALIZATION-BRANDING","status":"IN_PROGRESS","exact_next_action":"Validate English/Persian RTL and PVNetwork branding foundation through the pinned KMP CI gate; if it passes, close M0 and start M1 client shell work."},
+  "active_work_unit": {"id":"M1-DESKTOP-CLIENT-SHELL","status":"IN_PROGRESS","exact_next_action":"Run the pinned M1 Compose Desktop CI for compile, unit tests and createDistributable; fix failures, then add a real launch smoke before closing M1."},
   "status_vocabulary": ["RESEARCHED","IMPLEMENTED","BUILT","TESTED","INTEROPERABILITY_VERIFIED","DEVICE_VERIFIED","PRODUCTION_READY"],
-  "updated_at_utc": "2026-08-16T09:12:15Z"
+  "updated_at_utc": "2026-08-16T09:15:00Z"
 }

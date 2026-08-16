@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-16T08:56:57Z",
-  "heartbeat_at_utc": "2026-08-16T09:12:15Z",
-  "task": "M0 localization/RTL and branding foundation validation after successful pinned Kotlin 2.4.10 / Gradle 9.5.0 CI.",
-  "note": "GitHub Actions run 31938297195 succeeded for the foundation KMP JVM test gate. Concurrent dashboard commits 959e75c0 and d0e4e91e were preserved during reconciliation. M0 remains IN_PROGRESS until this localization/branding commit is validated."
+  "heartbeat_at_utc": "2026-08-16T09:15:00Z",
+  "task": "M1 Compose Desktop client shell: compile, test, distributable build and runtime launch validation with EN/FA, RTL, themes, profile/connection/diagnostics surfaces.",
+  "note": "M0 closed PASS after GitHub Actions run 31938458227 succeeded. M1 source does not imply protocol implementation or desktop runtime success until its own build and launch gates pass."
 }
