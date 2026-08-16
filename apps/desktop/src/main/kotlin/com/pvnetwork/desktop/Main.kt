@@ -27,6 +27,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,11 +46,23 @@ import com.pvnetwork.core.diagnostics.DiagnosticEvent
 import com.pvnetwork.core.i18n.TextDirection
 import com.pvnetwork.core.profile.PVProfile
 
+private const val UI_SMOKE_ENV = "PVNETWORK_UI_SMOKE"
+private const val UI_SMOKE_PASS = "PVNetwork desktop launch smoke: PASS"
+
 fun main() = application {
+    val smokeMode = System.getenv(UI_SMOKE_ENV) == "1"
+    val exit = ::exitApplication
+
     Window(
-        onCloseRequest = ::exitApplication,
+        onCloseRequest = exit,
         title = PVNetworkBrand.identity.productName,
     ) {
+        if (smokeMode) {
+            LaunchedEffect(Unit) {
+                println(UI_SMOKE_PASS)
+                exit()
+            }
+        }
         PVNetworkDesktopApp()
     }
 }
@@ -208,9 +221,7 @@ private fun DiagnosticsPanel(
             EmptyState(copy.noDiagnostics)
         } else {
             LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(events) { event ->
-                    DiagnosticRow(event)
-                }
+                items(events) { event -> DiagnosticRow(event) }
             }
         }
     }
@@ -220,9 +231,7 @@ private fun DiagnosticsPanel(
 private fun DiagnosticRow(event: DiagnosticEvent) {
     Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
         TechnicalText("${event.severity.name} · ${event.subsystem} · ${event.code}")
-        event.metadata.forEach { (key, value) ->
-            TechnicalText("$key=$value")
-        }
+        event.metadata.forEach { (key, value) -> TechnicalText("$key=$value") }
         Spacer(Modifier.height(6.dp))
         Divider()
     }
