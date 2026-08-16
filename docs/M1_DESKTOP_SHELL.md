@@ -1,10 +1,10 @@
 # M1 Desktop Client Shell
 
-Status: **IN PROGRESS — source committed; build/test/distributable CI pending for this commit**
+Status: **IN PROGRESS — CI failures are being resolved; no successful desktop build claim yet**
 
 ## Scope implemented in this slice
 
-A real Compose Multiplatform desktop client shell now exists under `apps/desktop` using:
+A real Compose Multiplatform desktop client shell exists under `apps/desktop` using:
 
 - Kotlin `2.4.10`;
 - Compose Multiplatform `1.11.1`;
@@ -26,18 +26,23 @@ The initial shell state is intentionally honest: empty profile list, `DISCONNECT
 
 ## Build gate
 
-`.github/workflows/m1-desktop-shell-ci.yml` runs the pinned build environment and executes:
+`.github/workflows/m1-desktop-shell-ci.yml` executes:
 
 ```bash
 gradle --no-daemon :apps:desktop:test :apps:desktop:createDistributable --stacktrace
 ```
 
-This must succeed before this slice can be marked BUILT/TESTED. A source commit is not a build result.
+### Failure evidence retained
+
+- Run `31938655622`: failed before a valid build result; source review also identified a Compose scope/import issue which was corrected in commit `5de7f36480e9a985d2b05496d10f245dc7737eb0`.
+- Run `31938706717`: failed dependency resolution. Its decoded job log showed Compose 1.11.1 requiring AndroidX artifacts such as `androidx.collection:collection:1.5.0` and `androidx.annotation:annotation:1.9.1`, while repository policy contained only Maven Central. Google Maven has now been added to dependency resolution.
+
+These failures are not erased or re-labelled as successful tests.
 
 ## Still required before M1 close
 
-- real successful compile/unit-test/distributable evidence for this commit;
+- successful compile/unit-test/distributable evidence after the repository fix;
 - a real desktop launch smoke so "first working client shell" is supported by runtime evidence rather than packaging alone;
-- fix any CI/runtime failure found by those gates.
+- fix any further CI/runtime failure found by those gates.
 
 No protocol adapter, connection, interoperability, device verification, Store verification or production readiness is claimed by M1 shell work.
