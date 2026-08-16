@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-16T08:56:57Z",
-  "heartbeat_at_utc": "2026-08-16T10:08:00Z",
-  "task": "M2 OpenVPN fail-closed adapter/import hardening after Xray/VLESS product-owned slice reached TESTED at GitHub Actions run 31940779078.",
-  "note": "Research remains closed complete. OpenVPN runtime/dependency distribution boundaries remain governed by R6; no third-party core is being silently embedded and no runtime/interoperability/device/production claim is inferred from parser tests."
+  "heartbeat_at_utc": "2026-08-16T10:13:30Z",
+  "task": "M2 OpenVPN desktop system-runtime implementation after isolated CI interoperability passed at GitHub Actions run 31941002218.",
+  "note": "Research remains closed complete. The active runtime work must use an unbundled system OpenVPN executable through the R6-approved process boundary, keep reusable secrets behind SecretRef, clean ephemeral runtime material, and make no device/Store/production claim."
 }
