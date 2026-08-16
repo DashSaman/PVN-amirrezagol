@@ -79,7 +79,6 @@ ip -n "$server_ns" link set "$server_if" up
 ip -n "$client_ns" link set "$client_if" up
 
 cat >"$workdir/server.conf" <<EOF
-client-to-client
 dev tun
 proto udp
 local 192.0.2.1
@@ -112,7 +111,6 @@ remote-cert-tls server
 data-ciphers AES-256-GCM:AES-128-GCM
 auth SHA256
 connect-retry-max 3
-connect-timeout 10
 verb 3
 EOF
 
