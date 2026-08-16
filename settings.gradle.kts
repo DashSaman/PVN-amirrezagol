@@ -27,3 +27,6 @@ project(":engines:wireguard-adapter").projectDir = file("engines/wireguard-adapt
 
 include(":engines:openvpn-adapter")
 project(":engines:openvpn-adapter").projectDir = file("engines/openvpn-adapter")
+
+include(":engines:xray-adapter")
+project(":engines:xray-adapter").projectDir = file("engines/xray-adapter")

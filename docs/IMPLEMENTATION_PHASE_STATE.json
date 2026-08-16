@@ -9,9 +9,10 @@
     {"id":"R6-MINIMUM-VIABLE-ENGINE-SET","status":"PASS","evidence":["docs/ENGINE_SET_R6.md"]},
     {"id":"M0-APPLICATION-FOUNDATION","status":"PASS","evidence":["GitHub Actions run 31938458227 SUCCESS","docs/M0_BUILD_SYSTEM.md"]},
     {"id":"M1-DESKTOP-CLIENT-SHELL","status":"PASS","evidence":["GitHub Actions run 31938962751 SUCCESS","GitHub Actions run 31939070255 SUCCESS","PVNetwork desktop launch smoke: PASS","docs/M1_DESKTOP_SHELL.md"]},
-    {"id":"M2-WIREGUARD-ADAPTER-REAL-LINK","status":"INTEROPERABILITY_VERIFIED","scope":"Linux kernel WireGuard isolated CI namespace harness only","evidence":["GitHub Actions run 31939414530 SUCCESS","PVNetwork WireGuard real-link: PASS","docs/M2_WIREGUARD_SLICE.md"]}
+    {"id":"M2-WIREGUARD-ADAPTER-REAL-LINK","status":"INTEROPERABILITY_VERIFIED","scope":"Linux kernel WireGuard isolated CI namespace harness only","evidence":["GitHub Actions run 31939414530 SUCCESS","PVNetwork WireGuard real-link: PASS","docs/M2_WIREGUARD_SLICE.md"]},
+    {"id":"M2-OPENVPN-ADAPTER-SLICE","status":"TESTED","scope":"product-owned import/config/runtime-boundary only","evidence":["GitHub Actions run 31939586890 SUCCESS","docs/M2_OPENVPN_SLICE.md"]}
   ],
-  "active_work_unit": {"id":"M2-OPENVPN-ADAPTER-SLICE","status":"IN_PROGRESS","exact_next_action":"Run and fix the OpenVPN adapter KMP tests. Do not import OpenVPN3 until the exact production release, MPL path, transitive dependency/SBOM and platform distribution gate is recorded. Then continue with an independent Xray adapter slice or an approved concrete runtime integration."},
+  "active_work_unit": {"id":"M2-XRAY-VLESS-ADAPTER-SLICE","status":"IN_PROGRESS","exact_next_action":"Run and fix the Xray/VLESS KMP tests. Keep Xray-core/libXray unimported until an exact stable production release, dependency/SBOM/vulnerability/MPL and platform lifecycle strategy is recorded; then add a concrete runtime or continue independent M2 integration work."},
   "status_vocabulary": ["RESEARCHED","IMPLEMENTED","BUILT","TESTED","INTEROPERABILITY_VERIFIED","DEVICE_VERIFIED","PRODUCTION_READY"],
-  "updated_at_utc": "2026-08-16T09:39:00Z"
+  "updated_at_utc": "2026-08-16T09:45:00Z"
 }

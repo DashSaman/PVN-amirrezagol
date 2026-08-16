@@ -18,33 +18,34 @@ Last synchronized: 2026-08-16
 - M1 first desktop client shell: PASS.
 - M2 core networking wave 1: **IN PROGRESS**.
 
-## M2 WireGuard evidence
+## M2 evidence now established
 
-The PVNetwork-owned WireGuard adapter/import boundary is implemented, built and tested. GitHub Actions run `31939414530` also executed a real Linux kernel WireGuard namespace lab: three tunneled pings succeeded with 0% loss, both peer handshake timestamps were non-zero, transfer counters increased, and the marker `PVNetwork WireGuard real-link: PASS` was recorded.
+### WireGuard
 
-That is scoped interoperability evidence for the isolated Linux CI harness only. No PVNetwork privileged platform runtime, device verification or production readiness is inferred from it.
+PVNetwork-owned WireGuard import/adapter source is built/tested, and GitHub Actions run `31939414530` performed a real Linux kernel WireGuard namespace handshake plus three tunneled pings at 0% loss. This is narrow CI-harness interoperability evidence, not production runtime or device certification.
 
-## M2 OpenVPN active work
+### OpenVPN
 
-A PVNetwork-owned `.ovpn` import/adapter module is now the active independent work item. It protects the complete source and inline key/TLS/certificate material behind `SecretStore`, reports unsupported or external-file directives, and gates capability on a concrete runtime.
+PVNetwork-owned OpenVPN `.ovpn` import/adapter source is built/tested. GitHub Actions run `31939586890` passed its KMP/JVM test gate. No OpenVPN3 dependency or runtime has been imported; the exact MPL/dependency/platform gate remains open.
 
-No OpenVPN3 dependency is imported yet. The authoritative dossier pin is `OpenVPN/openvpn3@1fd271caefc9a71406afdc2ff2460999dcfdb234`, with the recorded `AGPL-3.0-only OR MPL-2.0` licensing and an explicit MPL/dependency/platform review gate before product import.
+### Xray/VLESS active work
+
+A PVNetwork-owned VLESS share-link/canonical-combination/runtime-boundary module is the active work item. It keeps VLESS separate from security/flow/transport, protects the identity and original link behind `SecretStore`, and does not import Xray-core/libXray before a production stable-release/SBOM/MPL/platform decision.
 
 ## Product evidence state
 
 - RESEARCHED: V1 93/93 and V2 93/93.
-- IMPLEMENTED: M0 foundation, M1 desktop shell, WireGuard adapter/import; OpenVPN adapter/import source is active.
-- BUILT: M0/M1/WireGuard adapter gates PASS; OpenVPN gate pending.
-- TESTED: M0/M1/WireGuard adapter tests PASS; OpenVPN tests pending.
+- IMPLEMENTED: M0, M1, WireGuard adapter/import, OpenVPN adapter/import; Xray/VLESS adapter source active.
+- BUILT: M0/M1/WireGuard/OpenVPN scoped gates PASS; Xray gate pending.
+- TESTED: M0/M1/WireGuard/OpenVPN scoped tests PASS; Xray pending.
 - INTEROPERABILITY VERIFIED: WireGuard Linux kernel isolated CI namespace harness only.
 - DEVICE VERIFIED: none.
 - PRODUCTION READY: no.
 
 ## Non-negotiable boundaries
 
-- M2 still requires actual product runtime/connection evidence and the other first-wave cores.
-- Do not reimplement cryptography.
-- Do not infer OpenVPN runtime support from parsing or research.
-- Dependency/runtime imports remain governed by exact dossier source/license/SBOM gates.
+- Do not infer product runtime support from parser/adapter tests.
+- Do not reimplement protocol cryptography.
+- Do not import third-party cores before exact source/release/license/SBOM/platform gates.
 - Do not log or persist reusable secrets in plaintext.
-- Store/device claims require their own downstream evidence.
+- M2 cannot close before roadmap real-connection requirements are satisfied for the actual product runtime scope.
