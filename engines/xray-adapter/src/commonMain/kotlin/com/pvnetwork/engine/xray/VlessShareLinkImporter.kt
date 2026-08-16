@@ -152,16 +152,34 @@ class VlessShareLinkImporter private constructor(
         return result
     }
 
+    /** Decode RFC 3986 percent-encoded octets as UTF-8. A literal '+' stays '+'. */
     private fun percentDecode(value: String): String {
         val out = StringBuilder()
         var i = 0
         while (i < value.length) {
-            val c = value[i]
-            if (c == '%' && i + 2 < value.length) {
-                val hi = hex(value[i + 1]); val lo = hex(value[i + 2])
-                if (hi >= 0 && lo >= 0) { out.append(((hi shl 4) or lo).toChar()); i += 3; continue }
+            if (value[i] != '%' || i + 2 >= value.length) {
+                out.append(value[i])
+                i++
+                continue
             }
-            out.append(if (c == '+') ' ' else c); i++
+
+            val bytes = mutableListOf<Byte>()
+            var cursor = i
+            while (cursor + 2 < value.length && value[cursor] == '%') {
+                val hi = hex(value[cursor + 1])
+                val lo = hex(value[cursor + 2])
+                if (hi < 0 || lo < 0) break
+                bytes += ((hi shl 4) or lo).toByte()
+                cursor += 3
+            }
+
+            if (bytes.isEmpty()) {
+                out.append('%')
+                i++
+            } else {
+                out.append(bytes.toByteArray().decodeToString())
+                i = cursor
+            }
         }
         return out.toString()
     }
