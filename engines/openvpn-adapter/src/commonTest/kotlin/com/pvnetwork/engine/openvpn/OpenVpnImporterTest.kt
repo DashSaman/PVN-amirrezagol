@@ -60,7 +60,7 @@ class OpenVpnImporterTest {
     }
 
     @Test
-    fun unsupportedDirectivesAreNamedAndFullSourceIsPreservedProtected() {
+    fun unsupportedOrUnresolvedDirectivesCannotBecomeRuntimeSupport() {
         val store = MemorySecretStore()
         val source = """
             client
@@ -74,7 +74,31 @@ class OpenVpnImporterTest {
         assertTrue("cipher" in result.config.unsupportedDirectiveNames)
         assertTrue("redirect-gateway" in result.config.unsupportedDirectiveNames)
         assertTrue(result.warnings.any { it.field == "ca" })
+        assertEquals("ca", result.canonicalProfile.extensions["openvpn.unresolved-external-material-names"])
         assertEquals(source, store.read(result.config.materials.originalProfileRef))
+
+        val validation = OpenVpnAdapter(FakeRuntimeFactory(true)).validate(result.canonicalProfile)
+        assertFalse(validation.isValid)
+        val codes = validation.issues.map { it.code }.toSet()
+        assertTrue("OPENVPN_UNSUPPORTED_DIRECTIVES_PRESENT" in codes)
+        assertTrue("OPENVPN_EXTERNAL_MATERIAL_UNRESOLVED" in codes)
+    }
+
+    @Test
+    fun externalAuthUserPassFileIsExplicitlyUnresolved() {
+        val result = OpenVpnImporter(MemorySecretStore()).import(
+            """
+                client
+                remote example.invalid 1194 udp
+                auth-user-pass credentials.txt
+            """.trimIndent(),
+            ProfileId("auth-file"),
+            "External auth",
+        )
+        assertEquals("auth-user-pass", result.canonicalProfile.extensions["openvpn.unresolved-external-material-names"])
+        val validation = OpenVpnAdapter(FakeRuntimeFactory(true)).validate(result.canonicalProfile)
+        assertFalse(validation.isValid)
+        assertTrue(validation.issues.any { it.code == "OPENVPN_EXTERNAL_MATERIAL_UNRESOLVED" })
     }
 
     @Test
