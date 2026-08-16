@@ -9,48 +9,39 @@ Last synchronized: 2026-08-16
 - Product: **PVNetwork**
 - Research V1: **93/93 COMPLETE-RESEARCH-v1**
 - Research V2: **93/93 COMPLETE-REFERENCE-v2**
-- Strict research validator: **PASS** on current main via scheduled `Agent State Validation`
+- Strict research validator: **PASS**
 - Research backlog remaining: **0 numbered entries**
 - Research completion remains separate from implementation/build/test/device/Store/production status.
 
 ## Phase progression
 
-R1–R4.5 research/reference work is complete. The implementation roadmap now governs execution.
-
-- **R5 — Architecture decision phase: PASS**
-- **R6 — Minimum viable engine set approval: IN PROGRESS**
-- M0 — Application foundation: PENDING after R6 engine-set approval; engine-independent foundation contracts may be prepared without claiming engine implementation.
+- R1–R4.5 research/reference work: COMPLETE.
+- R5 — Architecture decision phase: **PASS** (`docs/ARCHITECTURE_DECISIONS_R5.md`).
+- R6 — Minimum viable engine set approval: **PASS** (`docs/ENGINE_SET_R6.md`).
+- M0 — Application foundation: **IN PROGRESS**.
 
 Machine-readable implementation state: `docs/IMPLEMENTATION_PHASE_STATE.json`.
-Architecture decisions: `docs/ARCHITECTURE_DECISIONS_R5.md`.
 
-## R5 decisions now fixed
+## R6 approved initial networking families
 
-- Kotlin Multiplatform for product-owned shared domain/application code.
-- Compose Multiplatform for supported presentation targets beginning in M1, with native/OS-specific networking kept behind platform adapters.
-- Product-owned versioned `PVProfile` canonical model.
-- Stable core-adapter API independent of UI and individual engines.
-- Secrets represented by opaque references and resolved through a platform `SecretStore` boundary; no approved production plaintext fallback.
-- Routing, DNS, import/subscription, localization/RTL and diagnostics are shared product subsystems with platform execution boundaries.
-- Third-party engine integrations must follow each completed dossier's source/release/commit pin, reuse decision and license strategy.
+The smallest approved initial set is WireGuard, OpenVPN and Xray-core, matching the roadmap's first networking wave while deferring redundant cores. Approval means integration planning may proceed; it does not mean implemented.
+
+- WireGuard: official/mature implementation reuse, no cryptography rewrite; per-platform artifact pin/license gate before import.
+- OpenVPN: platform-specific engine strategy. OpenVPN 2 desktop subprocess is preferred where obligations are satisfied; AGPL OpenVPN3 is not silently embedded in a closed product; Apple/Android candidates retain their own license/import gates.
+- Xray-core: MPL-2.0 research baseline with libXray MIT wrapper reference; exact stable production release/SBOM must be locked before dependency import.
 
 ## Current active work unit
 
-`R6-MINIMUM-VIABLE-ENGINE-SET / IN_PROGRESS`
+`M0-FOUNDATION-CONTRACTS / IN_PROGRESS`
 
-Exact next action:
-
-1. Read completed reuse/support decisions and pins for the candidate baseline.
-2. Approve the smallest engine set that provides the initial high-value coverage with a compatible license/integration strategy.
-3. Record library/subprocess/platform-native boundaries explicitly; proprietary/reference-only implementations remain reference-only.
-4. Start M0 engine-independent source foundation, build it, and add real contract tests before any protocol is marked implemented.
+Exact next action: implement and execute engine-independent profile/security/adapter/connection/diagnostics/import/routing/DNS contracts, then establish the reproducible KMP build and CI layer without importing protocol engines.
 
 ## Current product evidence state
 
 - RESEARCHED: 93/93 V1 and 93/93 V2.
-- IMPLEMENTED: no protocol engine is yet allowed to be claimed implemented.
+- IMPLEMENTED: no protocol engine claimed implemented. Product-owned M0 foundation work is starting independently.
 - BUILT: no production application build yet.
-- TESTED: no product integration/E2E claim yet.
+- TESTED: no protocol/product E2E claim yet.
 - INTEROPERABILITY VERIFIED: none claimed.
 - DEVICE VERIFIED: none claimed.
 - PRODUCTION READY: no.
@@ -58,7 +49,7 @@ Exact next action:
 ## Non-negotiable boundaries
 
 - Do not reopen completed research without a real contradiction.
-- Do not infer implementation from research.
+- Do not infer implementation from research or R6 approval.
 - Do not copy GPL/AGPL/reference-only code into a closed product without an explicit compatible strategy.
 - Do not implement cryptography from scratch.
 - Do not log or persist reusable secrets in plaintext.

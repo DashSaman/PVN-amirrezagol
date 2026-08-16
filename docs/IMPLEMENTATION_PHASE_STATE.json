@@ -7,19 +7,24 @@
     "strict_validator": "PASS",
     "research_reopen_required": false
   },
-  "phase": "R5_ARCHITECTURE_DECISION",
-  "phase_status": "PASS",
+  "phase": "M0_APPLICATION_FOUNDATION",
+  "phase_status": "IN_PROGRESS",
   "completed_work_units": [
     {
       "id": "R5-ARCHITECTURE-DECISION",
       "status": "PASS",
       "evidence": ["docs/ARCHITECTURE_DECISIONS_R5.md"]
+    },
+    {
+      "id": "R6-MINIMUM-VIABLE-ENGINE-SET",
+      "status": "PASS",
+      "evidence": ["docs/ENGINE_SET_R6.md"]
     }
   ],
   "active_work_unit": {
-    "id": "R6-MINIMUM-VIABLE-ENGINE-SET",
+    "id": "M0-FOUNDATION-CONTRACTS",
     "status": "IN_PROGRESS",
-    "exact_next_action": "Derive the smallest initial engine set from completed V1/V2 reuse decisions and license/source pins; approve only engines with an explicit integration strategy, then start M0 engine-independent source foundation."
+    "exact_next_action": "Implement and execute engine-independent profile, secret-storage, adapter, connection-state, diagnostics, import, routing and DNS contracts; then add the reproducible KMP build/CI layer without importing protocol engines."
   },
   "status_vocabulary": [
     "RESEARCHED",
@@ -30,5 +35,5 @@
     "DEVICE_VERIFIED",
     "PRODUCTION_READY"
   ],
-  "updated_at_utc": "2026-08-16T08:56:57Z"
+  "updated_at_utc": "2026-08-16T09:04:38Z"
 }
