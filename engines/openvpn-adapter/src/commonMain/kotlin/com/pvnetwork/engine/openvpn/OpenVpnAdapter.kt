@@ -39,13 +39,25 @@ class OpenVpnAdapter(
     override fun validate(profile: PVProfile): ProfileValidation {
         val issues = mutableListOf<ValidationIssue>()
         if (profile.protocolId != PROTOCOL_ID) {
-            issues += ValidationIssue("OPENVPN_PROTOCOL_MISMATCH", "profile protocolId must be $PROTOCOL_ID", ValidationSeverity.ERROR)
+            issues += error("OPENVPN_PROTOCOL_MISMATCH", "profile protocolId must be $PROTOCOL_ID")
         }
         if (profile.secretRefs["openvpn.original-profile"] == null) {
-            issues += ValidationIssue("OPENVPN_PROTECTED_SOURCE_MISSING", "OpenVPN profile must retain its protected source reference", ValidationSeverity.ERROR)
+            issues += error("OPENVPN_PROTECTED_SOURCE_MISSING", "OpenVPN profile must retain its protected source reference")
+        }
+        if (!profile.extensions["openvpn.unsupported-directive-names"].isNullOrBlank()) {
+            issues += error(
+                "OPENVPN_UNSUPPORTED_DIRECTIVES_PRESENT",
+                "profile contains directives not interpreted by this adapter slice; resolve them before runtime preparation",
+            )
+        }
+        if (!profile.extensions["openvpn.unresolved-external-material-names"].isNullOrBlank()) {
+            issues += error(
+                "OPENVPN_EXTERNAL_MATERIAL_UNRESOLVED",
+                "profile references external OpenVPN credential/key material that has not been explicitly resolved into protected storage",
+            )
         }
         if (!runtimeFactory.runtimeDescriptor.available) {
-            issues += ValidationIssue("OPENVPN_RUNTIME_UNAVAILABLE", "no approved concrete OpenVPN runtime is available on this platform", ValidationSeverity.ERROR)
+            issues += error("OPENVPN_RUNTIME_UNAVAILABLE", "no approved concrete OpenVPN runtime is available on this platform")
         }
         return ProfileValidation(issues)
     }
@@ -55,6 +67,8 @@ class OpenVpnAdapter(
         check(validation.isValid) { "OpenVPN profile/runtime is not ready: ${validation.issues.joinToString { it.code }}" }
         return runtimeFactory.prepare(profile, secretStore)
     }
+
+    private fun error(code: String, message: String) = ValidationIssue(code, message, ValidationSeverity.ERROR)
 
     companion object {
         const val PROTOCOL_ID = "openvpn"
