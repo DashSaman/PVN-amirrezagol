@@ -1,43 +1,51 @@
 # M2 OpenVPN Adapter — First Implementation Slice
 
-Status: **PASS for product-owned import/adapter build and tests; runtime integration remains pending**
+Status: **INTEROPERABILITY VERIFIED for the isolated Ubuntu CI real-link harness; product runtime integration remains pending**
 
 ## Research/license boundary reused
 
-The completed OpenVPN family reuse decision remains authoritative. Primary research candidate:
+The completed OpenVPN family reuse decision remains authoritative, with the newer implementation decision in `docs/ENGINE_SET_R6.md` controlling product integration. Historical research considered OpenVPN3 as a client-core candidate, but R6 does not authorize silently embedding it. This slice imports no OpenVPN3 source/binary and copies no GPL/reference-client code into PVNetwork.
 
-`OpenVPN/openvpn3@1fd271caefc9a71406afdc2ff2460999dcfdb234`
-
-The dossier records **AGPL-3.0-only OR MPL-2.0** at that pin and requires an MPL-path, dependency/SBOM and platform/distribution review before any product dependency import. No OpenVPN3 or GPL/reference client source/binary is imported by this slice.
+The real-link test uses the Ubuntu 24.04 GitHub Actions runner's system OpenVPN package in ephemeral Linux network namespaces. That is protocol/interoperability test infrastructure, not a PVNetwork-distributed OpenVPN binary.
 
 ## Product-owned source
 
-`engines/openvpn-adapter` implements PVNetwork-owned `.ovpn` normalization, protected original-source preservation, protected inline key/TLS/certificate material, explicit external-file/unsupported-directive warnings, transactional secret rollback, and a runtime-factory boundary. Runtime capability is advertised only by a concrete available runtime.
+`engines/openvpn-adapter` implements PVNetwork-owned `.ovpn` normalization, protected original-source preservation, protected inline key/TLS/certificate material, transactional secret rollback, and a runtime-factory boundary.
 
-The first slice intentionally requires an explicit `remote` port and does not invent an OpenVPN default during canonicalization.
+The adapter now fails closed when an imported profile contains semantics this slice did not resolve:
 
-## Real build/test evidence
+- unsupported directives are named in `openvpn.unsupported-directive-names` and block runtime preparation;
+- external `ca`, `cert`, `key`, `tls-auth`, `tls-crypt`, or file-backed `auth-user-pass` references are marked in `openvpn.unresolved-external-material-names` and block runtime preparation;
+- runtime capability is advertised only by a concrete available runtime;
+- the first slice still requires an explicit `remote` port and does not invent a default during canonicalization.
 
-GitHub Actions run `31939586890` on commit `6f1e65930382f2d5b656a09b54f45f510c213242` completed **SUCCESS** for:
+## Build/test evidence
 
-```bash
-gradle --no-daemon :engines:openvpn-adapter:jvmTest --stacktrace
-```
+GitHub Actions run `31940904674` completed **SUCCESS** after the fail-closed import/validation regression tests were added.
 
-Tests cover:
+The current workflow receipt is GitHub Actions run `31941002218` on commit `984ecea9d9539b330be227ae123e60956e1d92b7`. Both jobs completed **SUCCESS**:
 
-- protected original `.ovpn` preservation without raw sensitive material in normal profile/config strings;
-- inline private-key/TLS material moved behind `SecretRef`;
-- explicit warnings for unsupported and external-file directives;
-- rollback of protected refs after failed import;
-- no capability advertisement from research alone.
+1. `OpenVPN adapter/import contracts`
+   - ran `gradle --no-daemon :engines:openvpn-adapter:jvmTest --stacktrace`;
+   - verified protected source/material handling, rollback, runtime capability gating, and fail-closed unsupported/unresolved semantics.
+2. `OpenVPN real link / isolated Linux namespaces`
+   - installed the Ubuntu runner's OpenVPN package at test time;
+   - generated ephemeral CA/server/client certificates;
+   - created two isolated network namespaces and a veth underlay;
+   - established a TLS OpenVPN tunnel;
+   - completed tunneled ping in both directions.
+
+The real-link harness lives at `scripts/test-openvpn-real-link.sh`. It deliberately does not vendor or bundle an OpenVPN executable into PVNetwork.
 
 ## Status boundary
 
-- OpenVPN research: RESEARCHED.
-- PVNetwork OpenVPN import/adapter boundary: IMPLEMENTED + BUILT + TESTED.
-- OpenVPN3/native runtime in PVNetwork: NOT YET INTEGRATED.
-- real OpenVPN connection/interoperability: NOT YET VERIFIED.
-- DEVICE VERIFIED / Store / PRODUCTION READY: no.
+- OpenVPN research: **RESEARCHED**.
+- PVNetwork OpenVPN import/adapter boundary: **IMPLEMENTED + BUILT + TESTED**.
+- Isolated Ubuntu CI OpenVPN protocol link: **INTEROPERABILITY VERIFIED**.
+- Concrete OpenVPN runtime wired into the PVNetwork desktop/application lifecycle: **not yet implemented**.
+- OpenVPN3/native library embedded in PVNetwork: **no**.
+- DEVICE VERIFIED: **no**.
+- Store verified/certified: **no**.
+- PRODUCTION READY: **no**.
 
-M2 remains IN_PROGRESS.
+M2 remains **IN_PROGRESS**. The next product-runtime work must preserve the R6 license/distribution boundary, keep reusable secrets behind `SecretRef`, and obtain its own runtime/build/integration evidence.
