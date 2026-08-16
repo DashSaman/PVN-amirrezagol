@@ -51,6 +51,7 @@ class OpenVpnImporter private constructor(
         val remotes = mutableListOf<OpenVpnRemote>()
         val warnings = mutableListOf<ImportWarning>()
         val unknownNames = linkedSetOf<String>()
+        val unresolvedExternalNames = linkedSetOf<String>()
         val caRefs = mutableListOf<SecretRef>()
         val certificateRefs = mutableListOf<SecretRef>()
         val privateKeyRefs = mutableListOf<SecretRef>()
@@ -110,6 +111,7 @@ class OpenVpnImporter private constructor(
                 "auth-user-pass" -> {
                     authUserPassRequired = true
                     if (args.isNotEmpty()) {
+                        unresolvedExternalNames += directive
                         warnings += ImportWarning(
                             ImportWarningKind.UNSUPPORTED_FIELD,
                             "auth-user-pass",
@@ -118,6 +120,7 @@ class OpenVpnImporter private constructor(
                     }
                 }
                 "ca", "cert", "key", "tls-auth", "tls-crypt" -> {
+                    unresolvedExternalNames += directive
                     warnings += ImportWarning(
                         ImportWarningKind.UNSUPPORTED_FIELD,
                         directive,
@@ -161,6 +164,9 @@ class OpenVpnImporter private constructor(
         extensions["openvpn.auth-user-pass-required"] = authUserPassRequired.toString()
         if (unknownNames.isNotEmpty()) {
             extensions["openvpn.unsupported-directive-names"] = unknownNames.sorted().joinToString(",")
+        }
+        if (unresolvedExternalNames.isNotEmpty()) {
+            extensions["openvpn.unresolved-external-material-names"] = unresolvedExternalNames.sorted().joinToString(",")
         }
 
         return OpenVpnImportResult(
