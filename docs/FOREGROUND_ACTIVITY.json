@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-16T08:56:57Z",
-  "heartbeat_at_utc": "2026-08-16T10:20:30Z",
-  "task": "M2 OpenVPN real product-runtime-path interoperability: exercise JvmSystemOpenVpnRuntimeFactory with the runner's actual unbundled system OpenVPN executable in CI.",
-  "note": "The product-owned Linux system-process runtime boundary is IMPLEMENTED/BUILT/TESTED at GitHub Actions run 31941352613. Research remains closed complete. No device/Store/production claim is inferred; the current target is interoperability evidence for the PVNetwork runtime path itself."
+  "heartbeat_at_utc": "2026-08-16T10:33:00Z",
+  "task": "M2 OpenVPN real product-runtime-path interoperability: classify the pre-network startup failure without retaining raw product runtime logs, then rerun JvmSystemOpenVpnRuntimeFactory against the real TLS peer.",
+  "note": "Diagnostic run 31941810921 proved the peer initialized but received no client handshake and tun24 was never created. Adapter and standalone real-link gates remain SUCCESS; product runtime-path interoperability remains unverified."
 }
