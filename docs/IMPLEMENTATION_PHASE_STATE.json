@@ -10,9 +10,10 @@
     {"id":"M0-APPLICATION-FOUNDATION","status":"PASS","evidence":["GitHub Actions run 31938458227 SUCCESS","docs/M0_BUILD_SYSTEM.md"]},
     {"id":"M1-DESKTOP-CLIENT-SHELL","status":"PASS","evidence":["GitHub Actions run 31938962751 SUCCESS","GitHub Actions run 31939070255 SUCCESS","PVNetwork desktop launch smoke: PASS","docs/M1_DESKTOP_SHELL.md"]},
     {"id":"M2-WIREGUARD-ADAPTER-REAL-LINK","status":"INTEROPERABILITY_VERIFIED","scope":"Linux kernel WireGuard isolated CI namespace harness only","evidence":["GitHub Actions run 31939414530 SUCCESS","PVNetwork WireGuard real-link: PASS","docs/M2_WIREGUARD_SLICE.md"]},
-    {"id":"M2-OPENVPN-ADAPTER-SLICE","status":"TESTED","scope":"product-owned import/config/runtime-boundary only","evidence":["GitHub Actions run 31939586890 SUCCESS","docs/M2_OPENVPN_SLICE.md"]}
+    {"id":"M2-OPENVPN-ADAPTER-SLICE","status":"TESTED","scope":"product-owned import/config/runtime-boundary only","evidence":["GitHub Actions run 31939586890 SUCCESS","docs/M2_OPENVPN_SLICE.md"]},
+    {"id":"M2-XRAY-VLESS-ADAPTER-SLICE","status":"TESTED","scope":"product-owned VLESS import/model/validation/runtime-boundary only; no Xray runtime","evidence":["GitHub Actions run 31940779078 SUCCESS","docs/M2_XRAY_SLICE.md"]}
   ],
-  "active_work_unit": {"id":"M2-XRAY-VLESS-ADAPTER-SLICE","status":"IN_PROGRESS","exact_next_action":"Run and fix the Xray/VLESS KMP tests. Keep Xray-core/libXray unimported until an exact stable production release, dependency/SBOM/vulnerability/MPL and platform lifecycle strategy is recorded; then add a concrete runtime or continue independent M2 integration work."},
+  "active_work_unit": {"id":"M2-OPENVPN-FAIL-CLOSED-HARDENING","status":"IN_PROGRESS","exact_next_action":"Prevent unsupported or unresolved OpenVPN import semantics from becoming runnable merely because a concrete runtime is available; add regression tests and pass the OpenVPN adapter CI. Then proceed to a real OpenVPN connection/interoperability harness only through a license-compatible external-process/system-package boundary, without claiming production runtime bundling."},
   "status_vocabulary": ["RESEARCHED","IMPLEMENTED","BUILT","TESTED","INTEROPERABILITY_VERIFIED","DEVICE_VERIFIED","PRODUCTION_READY"],
-  "updated_at_utc": "2026-08-16T09:45:00Z"
+  "updated_at_utc": "2026-08-16T10:07:30Z"
 }
