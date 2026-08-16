@@ -1,6 +1,6 @@
 # M2 Xray/VLESS Adapter — First Implementation Slice
 
-Status: **IN PROGRESS — product-owned source prepared; CI pending**
+Status: **TESTED — product-owned adapter/share-link slice only; no Xray runtime/interoperability claim**
 
 ## Research boundary reused
 
@@ -17,17 +17,20 @@ This slice imports no Xray-core/libXray source or binary. Exact production stabl
 `engines/xray-adapter` adds:
 
 - an explicit VLESS application-protocol model separate from security, flow and transport;
-- first VLESS share-link import with IPv4/hostname/bracketed-IPv6 endpoint parsing;
+- VLESS share-link import with IPv4/hostname/bracketed-IPv6 endpoint parsing;
+- UTF-8 percent-decoding for URI components while preserving literal `+` URI semantics;
 - protected original share-link and VLESS identity references via `SecretStore`;
 - TLS/REALITY/none security classification;
 - RAW/TCP, WebSocket, gRPC, XHTTP and mKCP transport classification;
 - Vision flow preservation without presenting arbitrary future flows as certified;
 - explicit warnings for unknown security/transport/flow/query fields;
+- fail-closed adapter validation so unknown security/transport/flow cannot become runtime support merely because a runtime advertises `vless`;
+- REALITY validation requiring an explicit public key before runtime preparation;
 - product-owned runtime boundary whose capabilities come only from a concrete runtime descriptor.
 
 No VLESS cryptography is invented; the model preserves the research distinction that VLESS is the application protocol while security/transport are separate dimensions.
 
-## CI gate
+## CI evidence
 
 `.github/workflows/m2-xray-adapter-ci.yml` runs:
 
@@ -35,4 +38,23 @@ No VLESS cryptography is invented; the model preserves the research distinction 
 gradle --no-daemon :engines:xray-adapter:jvmTest --stacktrace
 ```
 
-Until CI succeeds, BUILT/TESTED are not claimed. No Xray runtime, connection, interoperability, device, Store or production claim is made.
+Evidence:
+
+- GitHub Actions run `31939691385`: **SUCCESS** for the initial Xray/VLESS adapter/share-link slice.
+- GitHub Actions run `31940684691`: **SUCCESS** after fail-closed unsupported-combination and REALITY-public-key regression coverage.
+- GitHub Actions run `31940779078`: **SUCCESS** after UTF-8 URI decoding/literal-plus regression coverage; this is the current slice test receipt.
+
+## Status boundary
+
+- RESEARCHED: yes, via the closed V1/V2 research gates.
+- IMPLEMENTED: **yes, for this product-owned adapter/import/model slice**.
+- BUILT: **yes, scoped JVM/KMP CI gate**.
+- TESTED: **yes, scoped adapter/import tests through run `31940779078`**.
+- Xray-core/libXray dependency imported: **no**.
+- Concrete Xray runtime connected: **no**.
+- INTEROPERABILITY VERIFIED: **no**.
+- DEVICE VERIFIED: **no**.
+- Store verified/certified: **no**.
+- PRODUCTION READY: **no**.
+
+M2 therefore remains open. A concrete Xray runtime must not be added until the exact stable production release, dependency/SBOM/vulnerability, MPL and platform lifecycle strategy is recorded.
