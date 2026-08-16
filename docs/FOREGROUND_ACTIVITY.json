@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-16T08:56:57Z",
-  "heartbeat_at_utc": "2026-08-16T09:31:00Z",
-  "task": "M2 WireGuard adapter/config/import implementation and KMP tests, then first official/native runtime integration boundary and real connection evidence when feasible.",
-  "note": "M1 closed PASS after GitHub Actions run 31939070255 successfully launched the actual Compose Desktop run task under Xvfb and emitted the required marker. M2 has started without importing or reimplementing WireGuard engine cryptography."
+  "heartbeat_at_utc": "2026-08-16T09:35:00Z",
+  "task": "M2 WireGuard transactional secret regression plus real Linux kernel WireGuard handshake/tunneled-ping CI gate; then concrete runtime integration or next independent M2 core.",
+  "note": "WireGuard adapter unit run 31939273972 passed. A secret-orphan rollback gap found during review is fixed in source and a real network-namespace WireGuard connection gate is being added; neither new gate is claimed PASS until CI completes."
 }

@@ -9,6 +9,7 @@ on:
       - "gradle.properties"
       - "core/**"
       - "engines/wireguard-adapter/**"
+      - "scripts/test-wireguard-real-link.sh"
       - ".github/workflows/m2-wireguard-adapter-ci.yml"
   pull_request:
     paths:
@@ -17,6 +18,7 @@ on:
       - "gradle.properties"
       - "core/**"
       - "engines/wireguard-adapter/**"
+      - "scripts/test-wireguard-real-link.sh"
       - ".github/workflows/m2-wireguard-adapter-ci.yml"
   workflow_dispatch:
 
@@ -25,9 +27,9 @@ permissions:
 
 jobs:
   adapter:
-    name: WireGuard adapter contracts and import tests
+    name: WireGuard adapter and real Linux link
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -42,3 +44,10 @@ jobs:
           gradle-version: "9.5.0"
       - name: Test WireGuard adapter slice
         run: gradle --no-daemon :engines:wireguard-adapter:jvmTest --stacktrace
+      - name: Install WireGuard test tooling
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends wireguard-tools iproute2 iputils-ping
+          wg --version
+      - name: Real WireGuard handshake and tunneled ping
+        run: sudo --preserve-env=PATH bash ./scripts/test-wireguard-real-link.sh

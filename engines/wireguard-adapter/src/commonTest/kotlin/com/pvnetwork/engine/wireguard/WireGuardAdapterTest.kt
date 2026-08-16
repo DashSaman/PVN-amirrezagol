@@ -57,6 +57,27 @@ class WireGuardAdapterTest {
     }
 
     @Test
+    fun failedImportRollsBackSecretsCreatedByThatImport() {
+        val store = MemorySecretStore()
+        assertFailsWith<WireGuardConfigException> {
+            WireGuardConfImporter(store).import(
+                """
+                    [Interface]
+                    PrivateKey = must-be-rolled-back
+                    Address = 10.0.0.999/32
+                    [Peer]
+                    PublicKey = public
+                    Endpoint = example.invalid:51820
+                    AllowedIPs = 0.0.0.0/0
+                """.trimIndent(),
+                ProfileId("rollback"),
+                "Rollback",
+            )
+        }
+        assertEquals(0, store.activeCount)
+    }
+
+    @Test
     fun importWarnsOnUnsupportedFieldInsteadOfSilentlyClaimingSupport() {
         val result = WireGuardConfImporter(MemorySecretStore()).import(
             text = """
@@ -163,6 +184,7 @@ class WireGuardAdapterTest {
     private class MemorySecretStore : SecretStore {
         private val values = linkedMapOf<String, CharArray>()
         private var nextId = 1
+        val activeCount: Int get() = values.size
 
         override fun put(purpose: SecretPurpose, secret: CharArray): SecretRef {
             val ref = SecretRef("secret://test/${nextId++}")

@@ -24,17 +24,34 @@ data class WireGuardImportResult(
  * WireGuard engine code. PrivateKey/PresharedKey values are moved immediately
  * into [SecretStore]; canonical/profile configuration retains only SecretRef.
  *
+ * Import is transactional for newly-created secret refs: a later parse/profile
+ * failure removes secrets created by that import rather than leaving orphans.
  * The input String itself is transient caller-owned material and must not be
  * persisted or logged by callers. Engine/runtime validation remains downstream.
  */
-class WireGuardConfImporter(
+class WireGuardConfImporter private constructor(
     private val secretStore: SecretStore,
+    private val transactional: Boolean,
 ) {
+    constructor(secretStore: SecretStore) : this(secretStore, true)
+
     fun import(
         text: String,
         profileId: ProfileId,
         displayName: String,
     ): WireGuardImportResult {
+        if (transactional) {
+            val transaction = SecretImportTransaction(secretStore)
+            return try {
+                WireGuardConfImporter(transaction, false)
+                    .import(text, profileId, displayName)
+                    .also { transaction.commit() }
+            } catch (failure: Throwable) {
+                transaction.rollback()
+                throw failure
+            }
+        }
+
         val interfaceValues = linkedMapOf<String, MutableList<String>>()
         val peerValues = mutableListOf<LinkedHashMap<String, MutableList<String>>>()
         val warnings = mutableListOf<ImportWarning>()
@@ -108,9 +125,10 @@ class WireGuardConfImporter(
         if (addresses.isEmpty()) throw WireGuardConfigException("[Interface] requires Address")
         addresses.forEach(::validateCidr)
         val dnsServers = listValues(interfaceValues, "DNS")
-        val mtu = singleton(interfaceValues, "MTU")?.toIntOrNull()?.also {
+        val mtuRaw = singleton(interfaceValues, "MTU")
+        val mtu = mtuRaw?.toIntOrNull()?.also {
             if (it !in 1..65535) throw WireGuardConfigException("MTU must be between 1 and 65535")
-        } ?: singleton(interfaceValues, "MTU")?.let { throw WireGuardConfigException("MTU must be an integer") }
+        } ?: mtuRaw?.let { throw WireGuardConfigException("MTU must be an integer") }
 
         val secretRefs = linkedMapOf("wireguard.private-key" to privateKeyRef)
         val peers = peerValues.mapIndexed { index, values ->
@@ -255,7 +273,7 @@ class WireGuardConfImporter(
     private fun isIpv4(value: String): Boolean {
         val parts = value.split('.')
         return parts.size == 4 && parts.all { part ->
-            part.isNotEmpty() && part.all(Char::isDigit) && part.toIntOrNull() in 0..255
+            part.isNotEmpty() && part.all(Char::isDigit) && (part.toIntOrNull()?.let { it in 0..255 } == true)
         }
     }
 }
