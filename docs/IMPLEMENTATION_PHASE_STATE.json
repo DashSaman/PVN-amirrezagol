@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "repository": "DashSaman/PVN-amirrezagol",
+  "research_boundary": {
+    "v1": "93/93",
+    "v2": "93/93",
+    "strict_validator": "PASS",
+    "research_reopen_required": false
+  },
+  "phase": "R5_ARCHITECTURE_DECISION",
+  "phase_status": "PASS",
+  "completed_work_units": [
+    {
+      "id": "R5-ARCHITECTURE-DECISION",
+      "status": "PASS",
+      "evidence": ["docs/ARCHITECTURE_DECISIONS_R5.md"]
+    }
+  ],
+  "active_work_unit": {
+    "id": "R6-MINIMUM-VIABLE-ENGINE-SET",
+    "status": "IN_PROGRESS",
+    "exact_next_action": "Derive the smallest initial engine set from completed V1/V2 reuse decisions and license/source pins; approve only engines with an explicit integration strategy, then start M0 engine-independent source foundation."
+  },
+  "status_vocabulary": [
+    "RESEARCHED",
+    "IMPLEMENTED",
+    "BUILT",
+    "TESTED",
+    "INTEROPERABILITY_VERIFIED",
+    "DEVICE_VERIFIED",
+    "PRODUCTION_READY"
+  ],
+  "updated_at_utc": "2026-08-16T08:56:57Z"
+}

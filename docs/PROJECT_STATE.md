@@ -1,140 +1,65 @@
 # PVNetwork Project State
 
-Last synchronized: 2026-08-14
+Last synchronized: 2026-08-16
 
-## Repository
+## Repository truth
 
 - Repository: `DashSaman/PVN-amirrezagol`
 - Branch: `main`
 - Product: **PVNetwork**
-- Phase: **research / requirements / architecture**
-- Production implementation: **not started**
-- Research scope: **93 numbered entries** in `docs/PROTOCOL_MATRIX.md`
-- Execution mode: **continuous until repository-defined gates pass or work is externally blocked**
+- Research V1: **93/93 COMPLETE-RESEARCH-v1**
+- Research V2: **93/93 COMPLETE-REFERENCE-v2**
+- Strict research validator: **PASS** on current main via scheduled `Agent State Validation`
+- Research backlog remaining: **0 numbered entries**
+- Research completion remains separate from implementation/build/test/device/Store/production status.
 
-## Recovery order
+## Phase progression
 
-A new AI must read:
+R1–R4.5 research/reference work is complete. The implementation roadmap now governs execution.
 
-1. `AI_START_HERE.md`
-2. `AGENTS.md`
-3. `AGENT_EXECUTION_CONTRACT.md`
-4. `docs/AGENT_RUN_STATE.json`
-5. the newest `AGENTS_HANDOFF_*.md` pointed to by `AGENTS.md`
-6. this file
-7. `docs/AGENT_CHECKPOINT_LOG.md`
-8. `docs/RESEARCH_LOG.md`
-9. newest dated research-status snapshot
-10. `research/RESEARCH_COMPLETENESS.md`
-11. relevant numbered/shared dossiers
-12. recent Git history and actual repository tree
+- **R5 — Architecture decision phase: PASS**
+- **R6 — Minimum viable engine set approval: IN PROGRESS**
+- M0 — Application foundation: PENDING after R6 engine-set approval; engine-independent foundation contracts may be prepared without claiming engine implementation.
 
-Repository evidence wins over chat memory. Trackers may lag newer commits when connector writes are rejected.
+Machine-readable implementation state: `docs/IMPLEMENTATION_PHASE_STATE.json`.
+Architecture decisions: `docs/ARCHITECTURE_DECISIONS_R5.md`.
 
-## Priority order
+## R5 decisions now fixed
 
-### Priority 1 — original campaign
+- Kotlin Multiplatform for product-owned shared domain/application code.
+- Compose Multiplatform for supported presentation targets beginning in M1, with native/OS-specific networking kept behind platform adapters.
+- Product-owned versioned `PVProfile` canonical model.
+- Stable core-adapter API independent of UI and individual engines.
+- Secrets represented by opaque references and resolved through a platform `SecretStore` boundary; no approved production plaintext fallback.
+- Routing, DNS, import/subscription, localization/RTL and diagnostics are shared product subsystems with platform execution boundaries.
+- Third-party engine integrations must follow each completed dossier's source/release/commit pin, reuse decision and license strategy.
 
-Continue the source/client/core/license/architecture/issues/platform campaign toward `COMPLETE-RESEARCH-v1` across all 93 entries.
+## Current active work unit
 
-### Priority 2 — exhaustive full reference
+`R6-MINIMUM-VIABLE-ENGINE-SET / IN_PROGRESS`
 
-After original v1 gates reach their intended state, execute `research/FULL_PROTOCOL_REFERENCE_CONTRACT.md` for the mandatory `COMPLETE-REFERENCE-v2` layer: server implementations/installers, server/client install matrices, full UI/menu maps, cryptography, data path/wire flow, ports/transports/handshake and deployment topologies.
+Exact next action:
 
-## Current active work unit — WireGuard / AmneziaWG
+1. Read completed reuse/support decisions and pins for the candidate baseline.
+2. Approve the smallest engine set that provides the initial high-value coverage with a compatible license/integration strategy.
+3. Record library/subprocess/platform-native boundaries explicitly; proprietary/reference-only implementations remain reference-only.
+4. Start M0 engine-independent source foundation, build it, and add real contract tests before any protocol is marked implemented.
 
-Machine state: `docs/AGENT_RUN_STATE.json`
+## Current product evidence state
 
-Active ID:
+- RESEARCHED: 93/93 V1 and 93/93 V2.
+- IMPLEMENTED: no protocol engine is yet allowed to be claimed implemented.
+- BUILT: no production application build yet.
+- TESTED: no product integration/E2E claim yet.
+- INTEROPERABILITY VERIFIED: none claimed.
+- DEVICE VERIFIED: none claimed.
+- PRODUCTION READY: no.
 
-`WIREGUARD-AMNEZIAWG-V1-CLOSURE / IN_PROGRESS`
+## Non-negotiable boundaries
 
-Resume source:
-
-`AGENTS_HANDOFF_2026-08-14_XRAY_V1_2.md`
-
-### Current goal
-
-Close the original-v1 gaps already identified for entries 002 WireGuard and 003 AmneziaWG:
-
-- Windows architecture/storage/service evidence;
-- dependency/SBOM/license distinctions;
-- AmneziaWG platform/source/version evidence;
-- major client/reference roles;
-- issue/regression/release evidence;
-- support/reuse decisions;
-- numbered entry synchronization;
-- shared family index/status/handoff.
-
-## Xray / modern proxy
-
-Shared family state:
-
-`V1-HANDOFF-READY / NOT IMPLEMENTED`
-
-Latest closure status:
-
-`docs/RESEARCH_CAMPAIGN_STATUS_2026-08-14_XRAY_V1_2.md`
-
-Latest closure handoff:
-
-`AGENTS_HANDOFF_2026-08-14_XRAY_V1_2.md`
-
-Important preserved security finding: Xray advisory `GHSA-5wf9-h793-w73c` marks versions `>= v26.1.13` vulnerable and `>= v26.7.11` patched. The non-prerelease `releases/latest` value observed during research (`v26.3.27`) must not be selected merely because it is labeled latest.
-
-## OpenConnect / Enterprise
-
-Shared family state:
-
-`V1-HANDOFF-READY / NOT IMPLEMENTED`
-
-Latest detailed status:
-
-`docs/RESEARCH_CAMPAIGN_STATUS_2026-08-14_OPENCONNECT_V1_CLOSURE_2.md`
-
-Latest family handoff:
-
-`AGENTS_HANDOFF_2026-08-14_OPENCONNECT_V1_CLOSURE_2.md`
-
-## WireGuard / AmneziaWG prior evidence
-
-Material research already exists for:
-
-- WireGuard Go core source/pin;
-- Windows/Android/Apple official source pins;
-- Android/Apple architecture;
-- AmneziaWG Go source/versioning;
-- issue-derived regression lessons;
-- official client/platform references.
-
-The family is not yet v1 handoff-ready and must be completed rather than restarted.
-
-## Current product architecture direction
-
-- product-owned stable Core Adapter contracts;
-- UI/business state independent from engine internals;
-- no custom cryptographic primitive implementation when mature engines exist;
-- separate import/export, canonical profile, protected persistence and runtime config;
-- separate reusable secrets, non-secret remembered choices and transient session values;
-- platform-native network lifecycle behind shared product contracts;
-- evidence/version/capability-based support state rather than Boolean marketing flags.
-
-## No false completion
-
-There is still no production PVNetwork app, build/package, product test suite, E2E proof, real-device certification or Store approval.
-
-Family research handoff states do not equal product protocol support.
-
-## Tooling-path note
-
-A local checkout/Python execution attempt for `scripts/agent_state.py verify/build/next` failed because the current container could not resolve `github.com`. GitHub connector access is working. Do not retry the same clone path unchanged in this runtime.
-
-## Exact next action
-
-1. read actual current `research/upstreams/wireguard-family/` tree and prior WireGuard evidence;
-2. close Windows/storage/service and dependency/SBOM gaps;
-3. close AmneziaWG platform/version/source gaps;
-4. create/refresh support/reuse decisions for 002/003;
-5. synchronize family index and numbered dossiers;
-6. checkpoint and, if v1 handoff-ready, immediately select the next unfinished original-v1 family without waiting for the owner;
-7. do not begin mass `COMPLETE-REFERENCE-v2` yet.
+- Do not reopen completed research without a real contradiction.
+- Do not infer implementation from research.
+- Do not copy GPL/AGPL/reference-only code into a closed product without an explicit compatible strategy.
+- Do not implement cryptography from scratch.
+- Do not log or persist reusable secrets in plaintext.
+- Re-check live Store/platform policy before release-affecting claims.

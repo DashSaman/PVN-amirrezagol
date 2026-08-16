@@ -2,8 +2,8 @@
   "schema_version": 1,
   "status": "ACTIVE",
   "actor": "interactive-chat",
-  "started_at_utc": "2026-08-14T22:40:00Z",
-  "heartbeat_at_utc": "2026-08-15T01:23:00Z",
-  "task": "Continue COMPLETE-REFERENCE-v2 from authoritative main tracker, currently entry 049 SOCKS4, applying all exact 16 gates with evidence reuse and gap-only research.",
-  "note": "Manual foreground session active. Promotion batch advances Snell to V2 48/93 and SOCKS4 becomes first PENDING; live main must be re-fetched before non-force publish."
+  "started_at_utc": "2026-08-16T08:56:57Z",
+  "heartbeat_at_utc": "2026-08-16T08:56:57Z",
+  "task": "R6 minimum viable engine-set approval, followed by M0 engine-independent Kotlin Multiplatform foundation implementation/build/tests.",
+  "note": "Corrected stale foreground state from the completed V2 research campaign. Research is closed at V1=93/93, V2=93/93 with strict validator PASS; this foreground session is post-research engineering work."
 }
