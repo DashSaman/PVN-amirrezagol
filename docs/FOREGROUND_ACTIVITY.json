@@ -2,8 +2,8 @@
   "schema_version": 1,
   "status": "ACTIVE",
   "actor": "interactive-chat",
-  "started_at_utc": "2026-08-16T11:15:00Z",
-  "heartbeat_at_utc": "2026-08-16T11:15:00Z",
-  "task": "M2 Xray stable-release import gate: lock an exact stable Xray-core release and desktop managed-subprocess integration evidence before adding any concrete runtime dependency/path.",
-  "note": "OpenVPN product runtime-path interoperability is now verified by GitHub Actions run 31942028587. Current work is the Xray release/source/checksum/license/security/update-rollback gate required by R6; no Xray runtime or interoperability claim is made yet."
+  "started_at_utc": "2026-08-16T11:28:12Z",
+  "heartbeat_at_utc": "2026-08-16T11:28:12Z",
+  "task": "M2 Xray host-supplied JVM managed-subprocess runtime: implement a narrow fail-closed product runtime without bundling or downloading Xray.",
+  "note": "The bundled/imported stable Xray production release gate is blocked and recorded in docs/M2_XRAY_STABLE_RELEASE_GATE.md. Independent runtime engineering continues with an external executable only; a patched prerelease may be used later as an exact-checksum CI-only fixture, never as an implicit production pin."
 }
