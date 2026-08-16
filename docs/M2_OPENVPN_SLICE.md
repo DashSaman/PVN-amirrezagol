@@ -1,6 +1,6 @@
 # M2 OpenVPN Adapter — Implementation and Interoperability Slices
 
-Status: **system-package protocol link INTEROPERABILITY VERIFIED; product-owned Linux system-process runtime IMPLEMENTED + BUILT + TESTED; runtime-path interoperability still pending**
+Status: **INTEROPERABILITY VERIFIED for the scoped Ubuntu/Linux product runtime path and isolated system-package protocol link**
 
 ## Research/license boundary reused
 
@@ -32,29 +32,37 @@ The adapter fails closed when an imported profile contains semantics this slice 
 - recognizes a successful OpenVPN initialization without storing raw log lines;
 - destroys the process and recursively removes transient runtime material on stop, startup failure, missing secret, or process exit.
 
-The JVM tests use a fake executable to verify discovery/probing, bounded output draining, 0700/0600 materialization, state transitions, missing-secret failure, process lifecycle and cleanup. A fake runtime is test evidence for product-owned lifecycle semantics only; it is not interoperability evidence.
+The JVM tests use a fake executable for deterministic lifecycle/probe/secret-cleanup coverage and a CI-only real-peer fixture for the actual system runtime path.
 
 ## Build/test/interoperability evidence
 
-- GitHub Actions run `31940904674`: **SUCCESS** after fail-closed import/validation regression coverage.
-- GitHub Actions run `31941002218`: **SUCCESS** for both adapter tests and the isolated system-package real-link harness.
-- GitHub Actions run `31941209625`: **SUCCESS** after the first Linux/JVM system runtime lifecycle tests.
-- GitHub Actions run `31941352613` on the current hardened runtime/test slice: **SUCCESS** for both jobs:
-  1. `OpenVPN adapter/import contracts` — JVM tests including system-process runtime, protected material lifecycle and stress version-probe coverage.
-  2. `OpenVPN real link / isolated Linux namespaces` — Ubuntu runner system OpenVPN package, ephemeral CA/server/client certificates, two isolated namespaces, TLS tunnel and bidirectional tunneled ping.
+Earlier receipts remain valid:
 
-The standalone real-link harness remains `scripts/test-openvpn-real-link.sh`. It establishes protocol interoperability but bypasses `JvmSystemOpenVpnRuntimeFactory`; therefore it cannot by itself promote the new product runtime path to interoperability-verified.
+- GitHub Actions run `31940904674`: **SUCCESS** after fail-closed import/validation regression coverage.
+- GitHub Actions run `31941002218`: **SUCCESS** for adapter tests plus the isolated system-package real-link harness.
+- GitHub Actions run `31941352613`: **SUCCESS** for the hardened product-owned runtime tests and repeated isolated real-link harness.
+
+Current promotion receipt:
+
+- GitHub Actions run `31942028587`: **SUCCESS** with all three jobs passing:
+  1. `OpenVPN adapter/import contracts`;
+  2. `OpenVPN real link / isolated Linux namespaces`;
+  3. `PVNetwork system runtime / real OpenVPN TLS peer`.
+- The third job installs the Ubuntu 24.04 runner's unbundled system OpenVPN `2.6.19`, starts a real local TLS peer, and executes the targeted product test `JvmSystemOpenVpnRuntimeTest.realSystemOpenVpnRuntimePathReachesConnectedWhenCiFixtureEnabled`.
+- That test requires the actual `JvmSystemOpenVpnRuntimeFactory` to discover the real executable, reach `CONNECTED`, create the requested TUN interface, avoid `ERROR`, then cleanly stop to `DISCONNECTED`, remove the TUN interface, and emit both `DISCONNECTING` and `DISCONNECTED` lifecycle states.
+
+The standalone data-plane harness remains `scripts/test-openvpn-real-link.sh`; run `31942028587` also repeats that independent isolated-namespace link gate.
 
 ## Status boundary
 
 - OpenVPN research: **RESEARCHED**.
 - PVNetwork OpenVPN import/adapter boundary: **IMPLEMENTED + BUILT + TESTED**.
-- PVNetwork Linux/JVM system-process runtime boundary: **IMPLEMENTED + BUILT + TESTED** via run `31941352613`.
-- Isolated Ubuntu CI system-package OpenVPN protocol link: **INTEROPERABILITY VERIFIED** via run `31941002218` / current repeated real-link success in `31941352613`.
-- `JvmSystemOpenVpnRuntimeFactory` exercised against a real OpenVPN executable/TLS peer: **not yet verified**.
+- PVNetwork Linux/JVM unbundled system-process runtime boundary: **IMPLEMENTED + BUILT + TESTED**.
+- Isolated Ubuntu CI system-package OpenVPN protocol link: **INTEROPERABILITY VERIFIED**.
+- `JvmSystemOpenVpnRuntimeFactory` against a real unbundled OpenVPN executable and TLS peer: **INTEROPERABILITY VERIFIED**, scoped to the Ubuntu 24.04 CI runtime path proven by run `31942028587`.
 - OpenVPN3/native library embedded in PVNetwork: **no**.
 - DEVICE VERIFIED: **no**.
 - Store verified/certified: **no**.
 - PRODUCTION READY: **no**.
 
-M2 remains **IN_PROGRESS**. The next gate is to exercise the actual PVNetwork `JvmSystemOpenVpnRuntimeFactory` path against a real system OpenVPN executable and real TLS peer in CI before upgrading that specific runtime path to interoperability-verified.
+M2 remains **IN PROGRESS** because Xray still lacks a concrete runtime/interoperability gate. The next active work is the Xray stable-release import gate defined by `docs/ENGINE_SET_R6.md` and `docs/M2_XRAY_SLICE.md`.
