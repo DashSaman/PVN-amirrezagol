@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-16T08:56:57Z",
-  "heartbeat_at_utc": "2026-08-16T09:20:30Z",
-  "task": "M1 Compose Desktop build repair: Google Maven dependency resolution, then compile/test/distributable and launch validation.",
-  "note": "Decoded GitHub Actions run 31938706717 proved the current blocker is missing Google Maven for AndroidX transitive dependencies. The repository policy is being corrected; no desktop build success is claimed yet."
+  "heartbeat_at_utc": "2026-08-16T09:22:30Z",
+  "task": "M1 Compose Desktop build repair: align Java/Kotlin JVM 17 targets, then compile/test/distributable and launch validation.",
+  "note": "Run 31938789626 proved Google Maven fixed dependency resolution; the current exact blocker is Java 21 vs Kotlin 17 target validation. Java source/target is now being aligned to 17."
 }
