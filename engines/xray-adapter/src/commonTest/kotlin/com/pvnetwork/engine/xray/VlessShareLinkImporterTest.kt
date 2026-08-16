@@ -33,17 +33,42 @@ class VlessShareLinkImporterTest {
         assertFalse(identity in persisted)
         assertEquals(identity, store.read(result.config.identityRef))
         assertEquals(link, store.read(result.config.protectedOriginalRef))
+
+        val available = XrayAdapter(FakeRuntimeFactory(setOf("vless")))
+        assertTrue(available.validate(result.canonicalProfile).isValid)
     }
 
     @Test
-    fun unknownCombinationFieldsAreWarningsNotFakeSupport() {
-        val result = VlessShareLinkImporter(MemorySecretStore()).import(
+    fun unknownCombinationFieldsAreWarningsAndCannotBecomeRuntimeSupport() {
+        val store = MemorySecretStore()
+        val result = VlessShareLinkImporter(store).import(
             "vless://id@example.invalid:443?security=future&type=futureTransport&flow=future-flow&experimental=1",
             ProfileId("vless-2"),
         )
         assertEquals(XraySecurity.UNKNOWN, result.config.security)
         assertEquals(XrayTransport.UNKNOWN, result.config.transport)
         assertTrue(result.warnings.size >= 4)
+
+        val validation = XrayAdapter(FakeRuntimeFactory(setOf("vless"))).validate(result.canonicalProfile)
+        assertFalse(validation.isValid)
+        val codes = validation.issues.map { it.code }.toSet()
+        assertTrue("XRAY_SECURITY_UNSUPPORTED" in codes)
+        assertTrue("XRAY_TRANSPORT_UNSUPPORTED" in codes)
+        assertTrue("XRAY_FLOW_UNSUPPORTED" in codes)
+    }
+
+    @Test
+    fun realityWithoutPublicKeyIsRejectedBeforeRuntimePreparation() {
+        val store = MemorySecretStore()
+        val result = VlessShareLinkImporter(store).import(
+            "vless://id@example.invalid:443?security=reality&type=grpc&sni=cdn.example",
+            ProfileId("reality-missing-pbk"),
+        )
+        assertTrue(result.warnings.any { it.field == "pbk" })
+
+        val validation = XrayAdapter(FakeRuntimeFactory(setOf("vless"))).validate(result.canonicalProfile)
+        assertFalse(validation.isValid)
+        assertTrue(validation.issues.any { it.code == "XRAY_REALITY_PUBLIC_KEY_MISSING" })
     }
 
     @Test
