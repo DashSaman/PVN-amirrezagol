@@ -89,10 +89,8 @@ jobs:
           server_pid=""
           cleanup() {
             set +e
-            if [[ -n "$server_pid" ]]; then
-              kill "$server_pid" >/dev/null 2>&1 || true
-              wait "$server_pid" >/dev/null 2>&1 || true
-            fi
+            [[ -z "$server_pid" ]] || kill "$server_pid" >/dev/null 2>&1 || true
+            [[ -z "$server_pid" ]] || wait "$server_pid" >/dev/null 2>&1 || true
             ip link del tun23 >/dev/null 2>&1 || true
             ip link del tun24 >/dev/null 2>&1 || true
             rm -rf "$workdir"
@@ -103,37 +101,31 @@ jobs:
           sudo setcap cap_net_admin+ep "$openvpn_bin"
           getcap "$openvpn_bin"
 
-          openssl req -x509 -newkey rsa:2048 -nodes \
-            -keyout "$workdir/ca.key" -out "$workdir/ca.crt" \
-            -days 1 -sha256 -subj "/CN=PVNetwork Runtime CI CA" >/dev/null 2>&1
-
-          openssl req -newkey rsa:2048 -nodes \
-            -keyout "$workdir/server.key" -out "$workdir/server.csr" \
-            -subj "/CN=pvnetwork-runtime-server" >/dev/null 2>&1
+          openssl req -x509 -newkey rsa:2048 -nodes -keyout "$workdir/ca.key" -out "$workdir/ca.crt" -days 1 -sha256 -subj "/CN=PVNetwork Runtime CI CA" >/dev/null 2>&1
+          openssl req -newkey rsa:2048 -nodes -keyout "$workdir/server.key" -out "$workdir/server.csr" -subj "/CN=pvnetwork-runtime-server" >/dev/null 2>&1
           cat >"$workdir/server.ext" <<'EOF'
           basicConstraints=CA:FALSE
           keyUsage=digitalSignature,keyEncipherment
           extendedKeyUsage=serverAuth
           subjectAltName=DNS:pvnetwork-runtime-server
           EOF
-          openssl x509 -req -in "$workdir/server.csr" \
-            -CA "$workdir/ca.crt" -CAkey "$workdir/ca.key" -CAcreateserial \
-            -out "$workdir/server.crt" -days 1 -sha256 \
-            -extfile "$workdir/server.ext" >/dev/null 2>&1
+          openssl x509 -req -in "$workdir/server.csr" -CA "$workdir/ca.crt" -CAkey "$workdir/ca.key" -CAcreateserial -out "$workdir/server.crt" -days 1 -sha256 -extfile "$workdir/server.ext" >/dev/null 2>&1
 
-          openssl req -newkey rsa:2048 -nodes \
-            -keyout "$workdir/client.key" -out "$workdir/client.csr" \
-            -subj "/CN=pvnetwork-runtime-client" >/dev/null 2>&1
+          openssl req -newkey rsa:2048 -nodes -keyout "$workdir/client.key" -out "$workdir/client.csr" -subj "/CN=pvnetwork-runtime-client" >/dev/null 2>&1
           cat >"$workdir/client.ext" <<'EOF'
           basicConstraints=CA:FALSE
           keyUsage=digitalSignature,keyEncipherment
           extendedKeyUsage=clientAuth
           EOF
-          openssl x509 -req -in "$workdir/client.csr" \
-            -CA "$workdir/ca.crt" -CAkey "$workdir/ca.key" -CAcreateserial \
-            -out "$workdir/client.crt" -days 1 -sha256 \
-            -extfile "$workdir/client.ext" >/dev/null 2>&1
+          openssl x509 -req -in "$workdir/client.csr" -CA "$workdir/ca.crt" -CAkey "$workdir/ca.key" -CAcreateserial -out "$workdir/client.crt" -days 1 -sha256 -extfile "$workdir/client.ext" >/dev/null 2>&1
           chmod 600 "$workdir"/*.key
+
+          # The current Kotlin fixture interpolates PEM text inside trimIndent().
+          # Indent continuation lines so trimIndent() removes the template indent
+          # uniformly; the server continues using the untouched PEM files.
+          for source in ca.crt client.crt client.key; do
+            awk 'NR == 1 { print; next } { print "            " $0 }' "$workdir/$source" > "$workdir/$source.inline"
+          done
 
           cat >"$workdir/server.conf" <<EOF
           port 11941
@@ -154,9 +146,7 @@ jobs:
           "$openvpn_bin" --config "$workdir/server.conf" --log "$workdir/server.log" &
           server_pid=$!
           for _ in $(seq 1 20); do
-            if grep -q "Initialization Sequence Completed" "$workdir/server.log" 2>/dev/null; then
-              break
-            fi
+            grep -q "Initialization Sequence Completed" "$workdir/server.log" 2>/dev/null && break
             if ! kill -0 "$server_pid" 2>/dev/null; then
               echo "real OpenVPN peer exited during startup" >&2
               cat "$workdir/server.log" >&2 || true
@@ -173,9 +163,9 @@ jobs:
           export PVNETWORK_OPENVPN_REAL_RUNTIME_TEST=1
           export PVNETWORK_OPENVPN_REAL_EXECUTABLE="$openvpn_bin"
           export PVNETWORK_OPENVPN_REAL_PORT=11941
-          export PVNETWORK_OPENVPN_REAL_CA="$workdir/ca.crt"
-          export PVNETWORK_OPENVPN_REAL_CLIENT_CERT="$workdir/client.crt"
-          export PVNETWORK_OPENVPN_REAL_CLIENT_KEY="$workdir/client.key"
+          export PVNETWORK_OPENVPN_REAL_CA="$workdir/ca.crt.inline"
+          export PVNETWORK_OPENVPN_REAL_CLIENT_CERT="$workdir/client.crt.inline"
+          export PVNETWORK_OPENVPN_REAL_CLIENT_KEY="$workdir/client.key.inline"
           export PVNETWORK_OPENVPN_REAL_CLIENT_DEVICE=tun24
 
           if ! gradle --no-daemon :engines:openvpn-adapter:jvmTest \
