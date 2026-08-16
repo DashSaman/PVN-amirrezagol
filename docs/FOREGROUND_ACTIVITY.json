@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-16T08:56:57Z",
-  "heartbeat_at_utc": "2026-08-16T09:06:00Z",
-  "task": "M0 Kotlin Multiplatform build/CI layer after a real PASS of the engine-independent foundation contracts smoke test.",
-  "note": "R5 and R6 are closed. The M0 foundation contracts are implemented and passed a JVM kotlinc smoke test; no protocol engine, target application, interoperability, device, Store or production claim is implied."
+  "heartbeat_at_utc": "2026-08-16T09:08:48Z",
+  "task": "M0 reproducible Kotlin Multiplatform/Gradle build gate and CI execution for the engine-independent foundation module.",
+  "note": "Kotlin 2.4.10 and Gradle 9.5.0 are pinned within the official fully-supported range. CI action dependencies are SHA-pinned. The KMP/Gradle gate remains unverified until the workflow actually passes."
 }
