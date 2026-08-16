@@ -39,6 +39,16 @@ class VlessShareLinkImporterTest {
     }
 
     @Test
+    fun decodesUtf8UriComponentsAndPreservesLiteralPlus() {
+        val result = VlessShareLinkImporter(MemorySecretStore()).import(
+            "vless://id@example.invalid:443?path=%2F%D9%85%D8%B3%DB%8C%D8%B1#%D8%B4%D8%A8%DA%A9%D9%87+%D8%AE%D8%B5%D9%88%D8%B5%DB%8C",
+            ProfileId("utf8"),
+        )
+        assertEquals("/مسیر", result.config.path)
+        assertEquals("شبکه+خصوصی", result.canonicalProfile.displayName)
+    }
+
+    @Test
     fun unknownCombinationFieldsAreWarningsAndCannotBecomeRuntimeSupport() {
         val store = MemorySecretStore()
         val result = VlessShareLinkImporter(store).import(
