@@ -11,8 +11,11 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.attribute.PosixFilePermission
+import java.nio.file.attribute.PosixFilePermissions
 import java.util.Comparator
+import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.concurrent.thread
 
 /**
@@ -20,7 +23,7 @@ import kotlin.concurrent.thread
  *
  * This module does not distribute OpenVPN. The complete protected source profile
  * is materialized only inside a mode-0700 temporary directory, with the config
- * itself mode 0600, and deleted on stop/failure/process exit.
+ * itself created atomically at mode 0600, and deleted on stop/failure/process exit.
  */
 class JvmSystemOpenVpnRuntimeFactory(
     executable: Path? = null,
@@ -46,6 +49,11 @@ class JvmSystemOpenVpnRuntimeFactory(
 
     private data class Probe(val usable: Boolean, val versionLine: String?)
 
+    /**
+     * Probe without retaining raw diagnostic output. Output is drained on a daemon
+     * reader so a silent or very chatty executable cannot bypass the process timeout
+     * or deadlock on a full pipe.
+     */
     private fun probeExecutable(path: Path): Probe {
         if (!isSupportedHost() || !supportsPosixPermissions()) return Probe(false, null)
         if (!Files.isRegularFile(path) || !Files.isExecutable(path)) return Probe(false, null)
@@ -53,12 +61,32 @@ class JvmSystemOpenVpnRuntimeFactory(
             val process = ProcessBuilder(path.toString(), "--version")
                 .redirectErrorStream(true)
                 .start()
-            val firstLine = process.inputStream.bufferedReader(StandardCharsets.UTF_8).use { it.readLine() }
+            val firstLine = AtomicReference<String?>(null)
+            val outputDone = CountDownLatch(1)
+            thread(name = "pvnetwork-openvpn-version-probe", isDaemon = true) {
+                try {
+                    process.inputStream.bufferedReader(StandardCharsets.UTF_8).useLines { lines ->
+                        lines.forEach { line ->
+                            if (firstLine.get() == null && line.isNotBlank()) {
+                                firstLine.compareAndSet(null, line.trim().take(MAX_VERSION_LINE_LENGTH))
+                            }
+                        }
+                    }
+                } finally {
+                    outputDone.countDown()
+                }
+            }
+
             val exited = process.waitFor(PROBE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            if (!exited) process.destroyForcibly()
+            if (!exited) {
+                process.destroyForcibly()
+                process.waitFor(PROBE_KILL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            }
+            outputDone.await(PROBE_KILL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            val versionLine = firstLine.get()
             Probe(
-                usable = exited && process.exitValue() == 0 && !firstLine.isNullOrBlank(),
-                versionLine = firstLine?.trim()?.take(MAX_VERSION_LINE_LENGTH),
+                usable = exited && process.exitValue() == 0 && !versionLine.isNullOrBlank(),
+                versionLine = versionLine,
             )
         }.getOrElse { Probe(false, null) }
     }
@@ -85,6 +113,7 @@ class JvmSystemOpenVpnRuntimeFactory(
     companion object {
         const val IMPLEMENTATION_ID = "system-openvpn-process-linux"
         private const val PROBE_TIMEOUT_SECONDS = 3L
+        private const val PROBE_KILL_TIMEOUT_SECONDS = 1L
         private const val MAX_VERSION_LINE_LENGTH = 160
     }
 }
@@ -113,6 +142,7 @@ private class JvmSystemOpenVpnPreparedConnection(
             fail("OPENVPN_SOURCE_SECRET_UNAVAILABLE", onState)
             return
         } catch (_: Throwable) {
+            cleanupRuntimeDirectory()
             fail("OPENVPN_RUNTIME_MATERIALIZATION_FAILED", onState)
             return
         }
@@ -175,12 +205,16 @@ private class JvmSystemOpenVpnPreparedConnection(
     }
 
     private fun createProtectedRuntimeConfig(): Path {
-        val directory = Files.createTempDirectory("pvnetwork-openvpn-")
-        FileSystemsCompat.setPermissions(directory, DIRECTORY_PERMISSIONS)
+        check(FileSystemsCompat.supportsPosixPermissions()) {
+            "POSIX permissions are required for the system OpenVPN runtime"
+        }
+        val directory = Files.createTempDirectory(
+            "pvnetwork-openvpn-",
+            PosixFilePermissions.asFileAttribute(DIRECTORY_PERMISSIONS),
+        )
         runtimeDirectory = directory
         val config = directory.resolve("profile.ovpn")
-        Files.createFile(config)
-        FileSystemsCompat.setPermissions(config, FILE_PERMISSIONS)
+        Files.createFile(config, PosixFilePermissions.asFileAttribute(FILE_PERMISSIONS))
         val found = secretStore.withSecret(sourceRef) { chars ->
             Files.newBufferedWriter(config, StandardCharsets.UTF_8).use { writer ->
                 writer.write(chars)
@@ -269,9 +303,4 @@ private class JvmSystemOpenVpnPreparedConnection(
 private object FileSystemsCompat {
     fun supportsPosixPermissions(): Boolean =
         java.nio.file.FileSystems.getDefault().supportedFileAttributeViews().contains("posix")
-
-    fun setPermissions(path: Path, permissions: Set<PosixFilePermission>) {
-        check(supportsPosixPermissions()) { "POSIX permissions are required for the system OpenVPN runtime" }
-        Files.setPosixFilePermissions(path, permissions)
-    }
 }
