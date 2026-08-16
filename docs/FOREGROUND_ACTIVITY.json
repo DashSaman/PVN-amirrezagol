@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-16T08:56:57Z",
-  "heartbeat_at_utc": "2026-08-16T09:15:00Z",
-  "task": "M1 Compose Desktop client shell: compile, test, distributable build and runtime launch validation with EN/FA, RTL, themes, profile/connection/diagnostics surfaces.",
-  "note": "M0 closed PASS after GitHub Actions run 31938458227 succeeded. M1 source does not imply protocol implementation or desktop runtime success until its own build and launch gates pass."
+  "heartbeat_at_utc": "2026-08-16T09:18:30Z",
+  "task": "M1 Compose Desktop client shell compile/test/distributable validation and runtime launch validation.",
+  "note": "Proactive source review found and corrected a definite Compose compile issue in ShellCard scope/weight imports before relying on CI. M0 remains PASS; no protocol implementation claim."
 }

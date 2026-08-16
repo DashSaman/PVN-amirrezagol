@@ -5,6 +5,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,7 +34,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -86,7 +86,7 @@ fun PVNetworkDesktopApp(
                     )
 
                     Row(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxWidth().weight(1f),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         ProfilesPanel(
@@ -209,7 +209,7 @@ private fun DiagnosticsPanel(
             EmptyState(copy.noDiagnostics)
         } else {
             LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(events, key = { "${it.timestampEpochMillis}:${it.subsystem}:${it.code}" }) { event ->
+                items(events) { event ->
                     DiagnosticRow(event)
                 }
             }
@@ -232,14 +232,14 @@ private fun DiagnosticRow(event: DiagnosticEvent) {
 @Composable
 private fun ShellCard(
     modifier: Modifier,
-    content: @Composable Column.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(18.dp),
         elevation = 4.dp,
     ) {
-        Column(modifier = Modifier.fillMaxSize().padding(18.dp), content = content)
+        Column(modifier = Modifier.padding(18.dp), content = content)
     }
 }
 
