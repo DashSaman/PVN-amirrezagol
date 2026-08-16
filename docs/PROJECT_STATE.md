@@ -15,34 +15,36 @@ Last synchronized: 2026-08-16
 - R5 architecture decision: PASS.
 - R6 minimum viable engine set: PASS.
 - M0 application foundation: PASS.
-- M1 first desktop client shell: **PASS**.
+- M1 first desktop client shell: PASS.
 - M2 core networking wave 1: **IN PROGRESS**.
 
-## M1 close evidence
+## M2 WireGuard evidence
 
-`apps/desktop` is implemented, built, unit-tested, packaged with `createDistributable`, and launch-smoke validated under Xvfb. GitHub Actions run `31939070255` executed the actual Compose desktop run task and recorded `PVNetwork desktop launch smoke: PASS`. The hosted runner also logged a Skiko GL-context fallback, so this is explicitly not treated as real-device/GPU verification.
+The PVNetwork-owned WireGuard adapter/import boundary is implemented, built and tested. GitHub Actions run `31939414530` also executed a real Linux kernel WireGuard namespace lab: three tunneled pings succeeded with 0% loss, both peer handshake timestamps were non-zero, transfer counters increased, and the marker `PVNetwork WireGuard real-link: PASS` was recorded.
 
-## M2 current work
+That is scoped interoperability evidence for the isolated Linux CI harness only. No PVNetwork privileged platform runtime, device verification or production readiness is inferred from it.
 
-The first WireGuard adapter slice is being added under `engines/wireguard-adapter`. It reuses the completed official WireGuard dossier and keeps upstream/native runtime integration behind a product-owned boundary. No engine binary/source is imported yet and no cryptography is reimplemented.
+## M2 OpenVPN active work
 
-The source moves imported private/pre-shared keys into `SecretStore`, keeps only opaque references in `PVProfile`, validates the first wg-quick configuration surface, and refuses to advertise the WireGuard capability while the concrete runtime is unavailable.
+A PVNetwork-owned `.ovpn` import/adapter module is now the active independent work item. It protects the complete source and inline key/TLS/certificate material behind `SecretStore`, reports unsupported or external-file directives, and gates capability on a concrete runtime.
+
+No OpenVPN3 dependency is imported yet. The authoritative dossier pin is `OpenVPN/openvpn3@1fd271caefc9a71406afdc2ff2460999dcfdb234`, with the recorded `AGPL-3.0-only OR MPL-2.0` licensing and an explicit MPL/dependency/platform review gate before product import.
 
 ## Product evidence state
 
 - RESEARCHED: V1 93/93 and V2 93/93.
-- IMPLEMENTED: M0 foundation + M1 desktop shell; M2 WireGuard product-owned adapter/config source is the active slice.
-- BUILT: M0 and M1 CI build gates PASS; M2 WireGuard adapter CI pending.
-- TESTED: M0 and M1 scoped tests PASS; M2 WireGuard adapter tests pending.
-- INTEROPERABILITY VERIFIED: none.
+- IMPLEMENTED: M0 foundation, M1 desktop shell, WireGuard adapter/import; OpenVPN adapter/import source is active.
+- BUILT: M0/M1/WireGuard adapter gates PASS; OpenVPN gate pending.
+- TESTED: M0/M1/WireGuard adapter tests PASS; OpenVPN tests pending.
+- INTEROPERABILITY VERIFIED: WireGuard Linux kernel isolated CI namespace harness only.
 - DEVICE VERIFIED: none.
 - PRODUCTION READY: no.
 
 ## Non-negotiable boundaries
 
-- Do not infer protocol runtime implementation from research or config parsing.
-- M2 requires real connection tests before phase close.
-- Do not reimplement WireGuard cryptography.
-- Dependency/runtime imports remain governed by `docs/ENGINE_SET_R6.md` and the exact WireGuard dossier pins/licenses.
+- M2 still requires actual product runtime/connection evidence and the other first-wave cores.
+- Do not reimplement cryptography.
+- Do not infer OpenVPN runtime support from parsing or research.
+- Dependency/runtime imports remain governed by exact dossier source/license/SBOM gates.
 - Do not log or persist reusable secrets in plaintext.
 - Store/device claims require their own downstream evidence.

@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-16T08:56:57Z",
-  "heartbeat_at_utc": "2026-08-16T09:35:00Z",
-  "task": "M2 WireGuard transactional secret regression plus real Linux kernel WireGuard handshake/tunneled-ping CI gate; then concrete runtime integration or next independent M2 core.",
-  "note": "WireGuard adapter unit run 31939273972 passed. A secret-orphan rollback gap found during review is fixed in source and a real network-namespace WireGuard connection gate is being added; neither new gate is claimed PASS until CI completes."
+  "heartbeat_at_utc": "2026-08-16T09:39:00Z",
+  "task": "M2 OpenVPN product-owned .ovpn import/adapter implementation and KMP CI validation; OpenVPN3 dependency remains blocked on exact MPL/SBOM/platform import gate.",
+  "note": "WireGuard run 31939414530 succeeded for transactional secret tests and a real Linux kernel namespace handshake/tunneled-ping gate. Scope is explicitly not device/production runtime verification."
 }

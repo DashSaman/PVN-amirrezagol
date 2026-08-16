@@ -1,42 +1,46 @@
 # M2 WireGuard Adapter — First Implementation Slice
 
-Status: **IN PROGRESS — adapter unit gate PASS; transactional secret fix and real Linux connection gate pending**
+Status: **PASS for product-owned adapter/import tests and isolated Linux kernel real-link verification**
 
-## Research reused before implementation
+## Research reused
 
-This slice reuses `SUPPORT_REUSE_DECISIONS.md`, `SOURCE_REVISIONS.md`, `CORE_ARCHITECTURE.md`, `DEPENDENCIES_SBOM.md`, and `LESSONS_AND_TESTS.md` from the completed WireGuard dossier. `WireGuard/wireguard-go@ecfc5a8d54462e18e13c72173e2623d16d8e25a0` remains a reviewed MIT source pin, but no upstream WireGuard engine source is vendored or linked by the application module in this slice.
+The implementation reused the completed WireGuard family dossier, including `SUPPORT_REUSE_DECISIONS.md`, `SOURCE_REVISIONS.md`, `CORE_ARCHITECTURE.md`, `DEPENDENCIES_SBOM.md`, and `LESSONS_AND_TESTS.md`. No protocol research was reopened.
 
-## Source and unit evidence
+The reviewed portable upstream pin remains `WireGuard/wireguard-go@ecfc5a8d54462e18e13c72173e2623d16d8e25a0` (MIT), but the product module still does not vendor or link that upstream source. The adapter keeps an explicit native/runtime boundary and does not implement cryptography.
 
-`engines/wireguard-adapter` contains typed non-secret config, first wg-quick import support, protected secret refs, unsupported-field warnings, validation, and a runtime factory boundary. Capability advertisement is withheld when no concrete runtime is available.
+## Adapter/security evidence
 
-GitHub Actions run `31939273972` on commit `1695abed2e2974ca65fc3018322c5c97fb6bc38f` completed **SUCCESS** for:
+`engines/wireguard-adapter` implements typed config/import, `SecretStore` separation, unsupported-field warnings, validation, runtime capability gating, and transactional rollback of newly-created secret refs when import fails.
+
+GitHub Actions run `31939414530` on commit `cc429454c54479abfd6bb05df2891e10fa3e7c57` completed **SUCCESS** for:
 
 ```bash
 gradle --no-daemon :engines:wireguard-adapter:jvmTest --stacktrace
 ```
 
-The importer is now additionally wrapped in a secret transaction so any secret refs created by a failed import are deleted. A regression test asserts that an invalid profile leaves zero newly-created secrets behind. This security change still requires its new CI run.
+This includes the regression test proving a failed import leaves zero newly-created secrets behind.
 
-## Real connection gate added
+## Real Linux WireGuard evidence
 
-`scripts/test-wireguard-real-link.sh` creates two isolated Linux network namespaces, a veth underlay, two kernel WireGuard interfaces, independently generated ephemeral key pairs, and a `10.203.0.0/24` encrypted tunnel. The gate requires:
+The same run installed Ubuntu `wireguard-tools 1.0.20210914-1ubuntu4` as CI test tooling and executed `scripts/test-wireguard-real-link.sh` as root on Ubuntu 24.04.4.
 
-- three successful ICMP packets through the WireGuard tunnel;
-- non-zero latest-handshake timestamps on both peers;
-- transfer counters;
-- exact marker `PVNetwork WireGuard real-link: PASS`.
+The harness created two network namespaces, a veth underlay, two Linux kernel WireGuard interfaces and independently generated ephemeral key pairs. Actual tunnel traffic result:
 
-GitHub CI installs distribution `wireguard-tools` only for this verification harness. This is **test tooling**, not a vendored or product runtime dependency. No private key is printed; ephemeral key files are mode-restricted by `umask 077` and removed by a cleanup trap.
+- `3 packets transmitted, 3 received, 0% packet loss` through `10.203.0.1/24 <-> 10.203.0.2/24`;
+- non-zero latest-handshake timestamps were required on both peers;
+- peer A transfer: `476 532` bytes;
+- peer B transfer: `532 476` bytes;
+- exact log marker: `PVNetwork WireGuard real-link: PASS`.
 
-This new real-link gate is pending and must not be called successful until the workflow actually completes.
+This is real Linux kernel WireGuard handshake/packet-transfer evidence in an isolated hosted-CI namespace harness. It is **not** evidence that a PVNetwork desktop/mobile privileged runtime has been integrated, and it is not device or public-server interoperability certification.
 
-## Evidence boundary
+## Status boundary
 
-- WireGuard: RESEARCHED.
-- product-owned config/import/adapter boundary: IMPLEMENTED; first unit run PASS, security revision pending retest.
-- Linux kernel WireGuard real-link interoperability: gate configured, **not yet verified**.
-- PVNetwork production platform runtime: NOT YET INTEGRATED.
-- DEVICE VERIFIED / Store / PRODUCTION READY: NOT CLAIMED.
+- WireGuard research: RESEARCHED.
+- PVNetwork WireGuard config/import/adapter boundary: IMPLEMENTED + BUILT + TESTED.
+- Linux kernel WireGuard peer interoperability in CI namespace harness: INTEROPERABILITY VERIFIED **for this narrow test setup only**.
+- PVNetwork platform runtime integration: NOT YET IMPLEMENTED.
+- DEVICE VERIFIED: no.
+- PRODUCTION READY: no.
 
-M2 remains IN_PROGRESS and also includes the OpenVPN and Xray priority candidates from the roadmap.
+M2 remains IN_PROGRESS because the roadmap also requires the OpenVPN and Xray first-wave cores and product runtime/real-connection integration.

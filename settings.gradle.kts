@@ -24,3 +24,6 @@ project(":apps:desktop").projectDir = file("apps/desktop")
 
 include(":engines:wireguard-adapter")
 project(":engines:wireguard-adapter").projectDir = file("engines/wireguard-adapter")
+
+include(":engines:openvpn-adapter")
+project(":engines:openvpn-adapter").projectDir = file("engines/openvpn-adapter")
