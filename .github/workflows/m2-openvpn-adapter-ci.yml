@@ -9,6 +9,7 @@ on:
       - "gradle.properties"
       - "core/**"
       - "engines/openvpn-adapter/**"
+      - "scripts/test-openvpn-real-link.sh"
       - ".github/workflows/m2-openvpn-adapter-ci.yml"
   pull_request:
     paths:
@@ -17,6 +18,7 @@ on:
       - "gradle.properties"
       - "core/**"
       - "engines/openvpn-adapter/**"
+      - "scripts/test-openvpn-real-link.sh"
       - ".github/workflows/m2-openvpn-adapter-ci.yml"
   workflow_dispatch:
 
@@ -42,3 +44,18 @@ jobs:
           gradle-version: "9.5.0"
       - name: Test OpenVPN adapter slice
         run: gradle --no-daemon :engines:openvpn-adapter:jvmTest --stacktrace
+
+  real-link:
+    name: OpenVPN real link / isolated Linux namespaces
+    needs: adapter
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install runner OpenVPN package
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends openvpn iproute2 iputils-ping openssl
+      - name: Establish real OpenVPN tunnel and ping both directions
+        run: sudo bash scripts/test-openvpn-real-link.sh
