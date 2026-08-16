@@ -2,26 +2,22 @@
 
 > **AI agents and new chats: read `AI_START_HERE.md` first.**
 
-## 🔴 Official Live Research Control Center
+## 🔴 Official Live Project Control Center
 
 ### **[🚀 OPEN THE ONLY OFFICIAL LIVE DASHBOARD](https://html-preview.github.io/?url=https://github.com/DashSaman/PVN-amirrezagol/blob/main/site/index.html)**
 
-This is the **single canonical dashboard URL** for PVNetwork research progress.
+This is the **single canonical dashboard URL** for PVNetwork project progress.
 
 Do not use commit-pinned dashboard URLs such as `.../blob/<old-sha>/site/index.html`; those are immutable historical snapshots and will not receive dashboard fixes.
 
-The official dashboard provides:
-- Persian / English instant language switching
-- current numbered entry and active research phase
-- exact next action
-- strict V1/V2 progress
-- live automation/run-log status
-- countdown to watchdog and hourly continuation
-- manual resume request control
-- resilient raw-data loading without browser GitHub REST API dependency
+The dashboard now derives live state directly from repository truth, including:
+- strict Research V1 / V2 completion and final validator state;
+- R5 architecture and R6 minimum engine-set gates;
+- the current implementation milestone from `docs/IMPLEMENTATION_PHASE_STATE.json`;
+- the M0–M15 implementation roadmap from `docs/ROADMAP.md`;
+- active work unit and exact next action;
+- remaining full milestones after the current milestone;
+- fresh/stale foreground activity without treating an old heartbeat as project truth;
+- Persian / English instant language switching.
 
-Current phase: **Research / requirements / architecture**.
-
-Production application code has not started yet.
-
-Persistent project state: `docs/PROJECT_STATE.md`
+Current repository state is documented in `docs/PROJECT_STATE.md`; the dashboard refreshes its data from `main` automatically.
