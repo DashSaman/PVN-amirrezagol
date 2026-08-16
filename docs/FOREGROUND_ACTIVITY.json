@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-16T08:56:57Z",
-  "heartbeat_at_utc": "2026-08-16T09:27:00Z",
-  "task": "M1 real Compose Desktop runtime launch smoke under Xvfb after successful compile, unit tests and distributable build.",
-  "note": "GitHub Actions run 31938962751 succeeded for :apps:desktop:test and :apps:desktop:createDistributable. M1 remains IN_PROGRESS until the actual Compose desktop run task launches under Xvfb and emits the required PASS marker."
+  "heartbeat_at_utc": "2026-08-16T09:31:00Z",
+  "task": "M2 WireGuard adapter/config/import implementation and KMP tests, then first official/native runtime integration boundary and real connection evidence when feasible.",
+  "note": "M1 closed PASS after GitHub Actions run 31939070255 successfully launched the actual Compose Desktop run task under Xvfb and emitted the required marker. M2 has started without importing or reimplementing WireGuard engine cryptography."
 }

@@ -4,51 +4,45 @@ Last synchronized: 2026-08-16
 
 ## Repository truth
 
-- Repository: `DashSaman/PVN-amirrezagol`
-- Branch: `main`
-- Product: **PVNetwork**
-- Research V1: **93/93 COMPLETE-RESEARCH-v1**
-- Research V2: **93/93 COMPLETE-REFERENCE-v2**
-- Strict research validator: **PASS**
-- Research backlog remaining: **0 numbered entries**
-- Research completion remains separate from implementation/build/test/device/Store/production status.
+- Repository: `DashSaman/PVN-amirrezagol`, branch `main`.
+- Research V1: **93/93 COMPLETE-RESEARCH-v1**.
+- Research V2: **93/93 COMPLETE-REFERENCE-v2**.
+- Strict research validator: **PASS**.
+- Research remains closed unless a real contradiction appears.
 
 ## Phase progression
 
-- R1–R4.5 research/reference work: COMPLETE.
-- R5 architecture decision: **PASS**.
-- R6 minimum viable engine set: **PASS**.
-- M0 application foundation: **PASS**.
-- M1 first working platform/client shell: **IN PROGRESS**.
+- R5 architecture decision: PASS.
+- R6 minimum viable engine set: PASS.
+- M0 application foundation: PASS.
+- M1 first desktop client shell: **PASS**.
+- M2 core networking wave 1: **IN PROGRESS**.
 
-## M0 close evidence
+## M1 close evidence
 
-M0 now meets every roadmap item: repository/build/CI structure, shared models, secure-storage and adapter interfaces, localization foundation, and PVNetwork branding foundation. The final M0 localization/branding commit passed pinned Kotlin 2.4.10 / Gradle 9.5.0 CI in GitHub Actions run `31938458227`.
+`apps/desktop` is implemented, built, unit-tested, packaged with `createDistributable`, and launch-smoke validated under Xvfb. GitHub Actions run `31939070255` executed the actual Compose desktop run task and recorded `PVNetwork desktop launch smoke: PASS`. The hosted runner also logged a Skiko GL-context fallback, so this is explicitly not treated as real-device/GPU verification.
 
-M0 PASS does not claim a production application or any protocol implementation.
+## M2 current work
 
-## Current M1 work
+The first WireGuard adapter slice is being added under `engines/wireguard-adapter`. It reuses the completed official WireGuard dossier and keeps upstream/native runtime integration behind a product-owned boundary. No engine binary/source is imported yet and no cryptography is reimplemented.
 
-A Compose Multiplatform `1.11.1` desktop shell is being added under `apps/desktop` with English/Persian, RTL, system/light/dark themes, a profile-list surface, canonical connection-state surface, and sanitized diagnostics surface.
-
-The shell starts with no invented profiles, `DISCONNECTED`, and no invented diagnostic events. Compile/test/package results remain pending until the M1 workflow executes successfully.
+The source moves imported private/pre-shared keys into `SecretStore`, keeps only opaque references in `PVProfile`, validates the first wg-quick configuration surface, and refuses to advertise the WireGuard capability while the concrete runtime is unavailable.
 
 ## Product evidence state
 
 - RESEARCHED: V1 93/93 and V2 93/93.
-- IMPLEMENTED: M0 product-owned foundation; M1 desktop shell source is present in the active work unit.
-- BUILT: M0 shared foundation JVM/KMP gate PASS; M1 desktop app build not yet claimed.
-- TESTED: M0 foundation tests PASS; M1 tests not yet claimed.
+- IMPLEMENTED: M0 foundation + M1 desktop shell; M2 WireGuard product-owned adapter/config source is the active slice.
+- BUILT: M0 and M1 CI build gates PASS; M2 WireGuard adapter CI pending.
+- TESTED: M0 and M1 scoped tests PASS; M2 WireGuard adapter tests pending.
 - INTEROPERABILITY VERIFIED: none.
 - DEVICE VERIFIED: none.
 - PRODUCTION READY: no.
 
 ## Non-negotiable boundaries
 
-- Do not reopen completed research without a real contradiction.
-- Do not infer protocol implementation from research/R6/M0/M1 UI work.
-- Dependency imports remain governed by `docs/ENGINE_SET_R6.md`.
-- Do not copy GPL/AGPL/reference-only code into a closed product without an explicit compatible strategy.
-- Do not implement cryptography from scratch.
+- Do not infer protocol runtime implementation from research or config parsing.
+- M2 requires real connection tests before phase close.
+- Do not reimplement WireGuard cryptography.
+- Dependency/runtime imports remain governed by `docs/ENGINE_SET_R6.md` and the exact WireGuard dossier pins/licenses.
 - Do not log or persist reusable secrets in plaintext.
-- Re-check live Store/platform policy before release-affecting claims.
+- Store/device claims require their own downstream evidence.

@@ -1,6 +1,6 @@
 # M1 Desktop Client Shell
 
-Status: **IN PROGRESS — build/test/distributable PASS; runtime launch validation pending**
+Status: **PASS — first desktop client shell is implemented, built, tested and launch-smoke validated**
 
 ## Implemented source scope
 
@@ -10,32 +10,27 @@ The shell includes PVNetwork branding, English/Persian toggle, LTR/RTL layouts, 
 
 ## Real build/test evidence
 
-GitHub Actions run `31938962751` on commit `00e8a6cc829084dbaf0f535a4b53ace885e342c8` completed **SUCCESS**. It executed:
+GitHub Actions run `31938962751` on commit `00e8a6cc829084dbaf0f535a4b53ace885e342c8` completed **SUCCESS** for unit tests and `createDistributable`.
+
+GitHub Actions run `31939070255` on commit `f1441c7b18c299ab83cdcfd4eee0062c815ff92b` completed **SUCCESS** and executed both:
 
 ```bash
 gradle --no-daemon :apps:desktop:test :apps:desktop:createDistributable --stacktrace
+PVNETWORK_UI_SMOKE=1 xvfb-run -a gradle --no-daemon :apps:desktop:run --stacktrace
 ```
 
-Therefore this M1 desktop source slice is now legitimately **BUILT** and **TESTED** for unit/build/package scope on Ubuntu CI. This does not imply a real network connection or target-device verification.
-
-## Runtime launch gate
-
-The application now has a CI-only launch-smoke mode selected by `PVNETWORK_UI_SMOKE=1`. It enters the actual Compose window composition, prints exactly:
+The runtime log contains the required marker:
 
 ```text
 PVNetwork desktop launch smoke: PASS
 ```
 
-and exits. The workflow launches the real desktop Gradle run task under Xvfb, requires a zero exit code, and greps that marker. Merely compiling or creating a distributable does not satisfy this gate.
-
-The launch-smoke workflow has not yet passed at the time of this source commit, so M1 remains IN_PROGRESS.
+The run also logged a Skiko warning/fallback because the hosted Xvfb environment could not create a Linux GL context. Compose fell back, the application entered composition, emitted the marker, exited normally, and the Gradle run completed successfully. This is CI virtual-display runtime evidence, **not** real-device/device-GPU verification.
 
 ## Retained failure evidence
 
-- `31938655622`: early source/build failure.
-- `31938706717`: missing Google Maven for AndroidX transitive artifacts.
-- `31938789626`: Java/Kotlin JVM target mismatch.
-- `31938875712`: invalid direct Compose `weight` import.
-- `31938962751`: first successful test + distributable run.
+The development failures remain useful evidence rather than being erased: `31938655622`, `31938706717`, `31938789626`, and `31938875712` each exposed and led to a concrete build fix before the two successful runs above.
 
-No protocol adapter, connection, interoperability, device verification, Store verification or production readiness is claimed by M1 shell work.
+## Status boundary
+
+M1 evidence supports IMPLEMENTED / BUILT / TESTED / CI launch-smoke for the desktop shell. It does not support protocol implementation, interoperability, device verification, Store verification or production readiness.
