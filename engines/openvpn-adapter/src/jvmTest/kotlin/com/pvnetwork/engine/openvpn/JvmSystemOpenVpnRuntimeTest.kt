@@ -7,6 +7,7 @@ import com.pvnetwork.core.profile.SecretRef
 import com.pvnetwork.core.security.SecretPurpose
 import com.pvnetwork.core.security.SecretStore
 import com.pvnetwork.core.security.clearSecret
+import java.net.NetworkInterface
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.attribute.PosixFilePermission
@@ -74,6 +75,73 @@ class JvmSystemOpenVpnRuntimeTest {
         } finally {
             fixture.close()
         }
+    }
+
+    @Test
+    fun realSystemOpenVpnRuntimePathReachesConnectedWhenCiFixtureEnabled() {
+        if (System.getenv("PVNETWORK_OPENVPN_REAL_RUNTIME_TEST") != "1") return
+
+        val executable = Path.of(requiredEnv("PVNETWORK_OPENVPN_REAL_EXECUTABLE"))
+        val port = requiredEnv("PVNETWORK_OPENVPN_REAL_PORT").toInt()
+        val ca = Files.readString(Path.of(requiredEnv("PVNETWORK_OPENVPN_REAL_CA")))
+        val certificate = Files.readString(Path.of(requiredEnv("PVNETWORK_OPENVPN_REAL_CLIENT_CERT")))
+        val privateKey = Files.readString(Path.of(requiredEnv("PVNETWORK_OPENVPN_REAL_CLIENT_KEY")))
+        val device = requiredEnv("PVNETWORK_OPENVPN_REAL_CLIENT_DEVICE")
+        val source = """
+            client
+            dev $device
+            proto udp
+            remote 127.0.0.1 $port
+            nobind
+            <ca>
+            ${ca.trim()}
+            </ca>
+            <cert>
+            ${certificate.trim()}
+            </cert>
+            <key>
+            ${privateKey.trim()}
+            </key>
+        """.trimIndent()
+
+        val store = MemorySecretStore()
+        val imported = OpenVpnImporter(store).import(source, ProfileId("real-system-runtime"), "Real system runtime")
+        assertTrue(imported.warnings.isEmpty(), "real runtime fixture must remain within the certified importer surface")
+
+        val factory = JvmSystemOpenVpnRuntimeFactory(executable)
+        assertTrue(factory.runtimeDescriptor.available, "real OpenVPN executable did not pass the runtime probe")
+        assertTrue(factory.runtimeDescriptor.upstreamVersion?.startsWith("OpenVPN ") == true)
+        val adapter = OpenVpnAdapter(factory)
+        assertTrue(adapter.validate(imported.canonicalProfile).isValid)
+
+        val states = CopyOnWriteArrayList<ConnectionSnapshot>()
+        val connected = CountDownLatch(1)
+        val prepared = adapter.prepare(imported.canonicalProfile, store)
+        try {
+            prepared.start { snapshot ->
+                states += snapshot
+                if (snapshot.state == ConnectionState.CONNECTED) connected.countDown()
+            }
+            assertTrue(
+                connected.await(25, TimeUnit.SECONDS),
+                "PVNetwork runtime path did not reach CONNECTED; final state=${prepared.snapshot().state}",
+            )
+            assertEquals(ConnectionState.CONNECTED, prepared.snapshot().state)
+            assertNotNull(NetworkInterface.getByName(device), "real OpenVPN process did not create the requested tunnel interface")
+            assertTrue(states.any { it.state == ConnectionState.ESTABLISHING_TUNNEL })
+            assertFalse(states.any { it.state == ConnectionState.ERROR })
+        } finally {
+            prepared.stop { states += it }
+        }
+
+        assertEquals(ConnectionState.DISCONNECTED, prepared.snapshot().state)
+        repeat(50) {
+            if (NetworkInterface.getByName(device) == null) return@repeat
+            Thread.sleep(50)
+        }
+        assertTrue(NetworkInterface.getByName(device) == null, "OpenVPN tunnel interface survived runtime stop")
+        assertTrue(states.any { it.state == ConnectionState.DISCONNECTING })
+        assertTrue(states.any { it.state == ConnectionState.DISCONNECTED })
     }
 
     @Test
@@ -194,6 +262,9 @@ while :; do sleep 1; done
     }
 
     companion object {
+        private fun requiredEnv(name: String): String =
+            System.getenv(name)?.takeIf(String::isNotBlank) ?: error("$name is required for real OpenVPN runtime CI")
+
         private fun shellSingleQuote(value: String): String = "'" + value.replace("'", "'\\''") + "'"
 
         private fun deleteTree(path: Path) {
