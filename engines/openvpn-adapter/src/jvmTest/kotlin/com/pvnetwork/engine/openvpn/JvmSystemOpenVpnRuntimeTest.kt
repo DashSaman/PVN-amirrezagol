@@ -162,6 +162,11 @@ class JvmSystemOpenVpnRuntimeTest {
                     """#!/bin/sh
 if [ "${'$'}{1:-}" = "--version" ]; then
   echo "OpenVPN 2.6.99 PVNetwork fake"
+  i=0
+  while [ "${'$'}i" -lt 2048 ]; do
+    echo "OpenVPN fake capability detail ${'$'}i abcdefghijklmnopqrstuvwxyz0123456789"
+    i=${'$'}((i + 1))
+  done
   exit 0
 fi
 config=""
