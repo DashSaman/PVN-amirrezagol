@@ -178,6 +178,13 @@ jobs:
           export PVNETWORK_OPENVPN_REAL_CLIENT_KEY="$workdir/client.key"
           export PVNETWORK_OPENVPN_REAL_CLIENT_DEVICE=tun24
 
-          gradle --no-daemon :engines:openvpn-adapter:jvmTest \
+          if ! gradle --no-daemon :engines:openvpn-adapter:jvmTest \
             --tests 'com.pvnetwork.engine.openvpn.JvmSystemOpenVpnRuntimeTest.realSystemOpenVpnRuntimePathReachesConnectedWhenCiFixtureEnabled' \
-            --stacktrace
+            --stacktrace; then
+            echo "--- real OpenVPN peer log (CI-only fixture diagnostic) ---" >&2
+            cat "$workdir/server.log" >&2 || true
+            echo "--- tunnel interfaces after product-runtime failure ---" >&2
+            ip -details addr show tun23 >&2 || true
+            ip -details addr show tun24 >&2 || true
+            exit 1
+          fi
