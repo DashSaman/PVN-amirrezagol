@@ -7,7 +7,6 @@ import com.pvnetwork.core.security.SecretPurpose
 import com.pvnetwork.core.security.SecretStore
 import com.pvnetwork.core.security.clearSecret
 import java.io.BufferedInputStream
-import java.io.ByteArrayOutputStream
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.ServerSocket
@@ -27,24 +26,26 @@ import kotlin.test.assertTrue
  * CI-only interoperability evidence against an exact-checksum external Xray binary.
  *
  * The workflow provides PVNETWORK_XRAY_TEST_EXECUTABLE. This test never downloads,
- * packages, publishes, or promotes that executable. It proves the product-owned
- * host-runtime path by carrying an HTTP response through:
+ * packages, publishes, or promotes that executable. It proves bidirectional bytes
+ * across the product-owned host-runtime path:
  *
  *   test client -> PVNetwork SOCKS inbound -> VLESS outbound -> real Xray VLESS
- *   server -> freedom outbound -> local HTTP origin.
+ *   server -> freedom outbound -> local TCP echo origin.
  */
 class JvmHostXrayRealBinaryInteropTest {
+    private val ipv4Loopback: InetAddress = InetAddress.getByName("127.0.0.1")
+
     @Test
-    fun realXrayCarriesHttpPayloadThroughProductVlessRuntime() {
+    fun realXrayCarriesPayloadThroughProductVlessRuntime() {
         val executableValue = System.getenv("PVNETWORK_XRAY_TEST_EXECUTABLE")?.takeIf(String::isNotBlank)
             ?: return
         val executable = Path.of(executableValue).toAbsolutePath().normalize()
         assertTrue(Files.isRegularFile(executable) && Files.isExecutable(executable))
 
         val identity = "a1b2c3d4-1111-4111-8111-1234567890ab"
-        val origin = LocalHttpOrigin()
-        val serverPort = reserveLoopbackPort()
-        val socksPort = reserveLoopbackPort()
+        val origin = LocalEchoOrigin(ipv4Loopback)
+        val serverPort = reserveIpv4LoopbackPort()
+        val socksPort = reserveIpv4LoopbackPort()
         val serverDirectory = Files.createTempDirectory("pvnetwork-xray-real-server-")
         val serverConfig = serverDirectory.resolve("server.json")
         var serverProcess: Process? = null
@@ -65,7 +66,7 @@ class JvmHostXrayRealBinaryInteropTest {
                 executable.toString(), "run", "-c", serverConfig.toString(),
             ).redirectErrorStream(true).start()
             drain(serverProcess, "pvnetwork-xray-real-server-output")
-            waitForTcpListener(serverPort)
+            waitForIpv4TcpListener(serverPort)
 
             val secretStore = MemorySecretStore()
             val imported = VlessShareLinkImporter(secretStore).import(
@@ -79,12 +80,11 @@ class JvmHostXrayRealBinaryInteropTest {
             val connected = CountDownLatch(1)
             prepared.start { if (it.state == ConnectionState.CONNECTED) connected.countDown() }
             assertTrue(connected.await(10, TimeUnit.SECONDS), "PVNetwork Xray runtime did not report engine readiness")
-            waitForTcpListener(socksPort)
+            waitForIpv4TcpListener(socksPort)
 
-            val response = fetchThroughSocks5(socksPort, origin.port)
-            assertTrue(response.startsWith("HTTP/1.1 200"), "HTTP origin response did not return through VLESS")
-            assertTrue(response.contains(LocalHttpOrigin.MARKER), "known payload marker did not traverse the real VLESS path")
-            assertTrue(origin.awaitRequest(), "local HTTP origin did not receive the proxied request")
+            val response = roundTripThroughSocks5(socksPort, origin.port, LocalEchoOrigin.MARKER)
+            assertEquals("echo:${LocalEchoOrigin.MARKER}", response, "known payload did not traverse the real VLESS path bidirectionally")
+            assertTrue(origin.awaitPayload(), "local TCP origin did not receive the proxied payload")
             assertEquals(ConnectionState.CONNECTED, prepared.snapshot().state)
         } finally {
             runCatching { prepared?.stop { } }
@@ -94,10 +94,10 @@ class JvmHostXrayRealBinaryInteropTest {
         }
     }
 
-    private fun fetchThroughSocks5(socksPort: Int, originPort: Int): String {
+    private fun roundTripThroughSocks5(socksPort: Int, originPort: Int, marker: String): String {
         Socket().use { socket ->
             socket.soTimeout = 10_000
-            socket.connect(InetSocketAddress(InetAddress.getLoopbackAddress(), socksPort), 5_000)
+            socket.connect(InetSocketAddress(ipv4Loopback, socksPort), 5_000)
             val input = BufferedInputStream(socket.getInputStream())
             val output = socket.getOutputStream()
 
@@ -122,27 +122,16 @@ class JvmHostXrayRealBinaryInteropTest {
             }
             readExactly(input, 2)
 
-            output.write(
-                "GET /pvnetwork-xray-real HTTP/1.1\r\nHost: 127.0.0.1:$originPort\r\nConnection: close\r\n\r\n"
-                    .toByteArray(StandardCharsets.US_ASCII),
-            )
+            assertTrue(origin.awaitConnection(), "VLESS server did not establish the target TCP connection")
+            val payload = marker.toByteArray(StandardCharsets.US_ASCII)
+            output.write(payload)
             output.flush()
-            return readUntilMarker(input, LocalHttpOrigin.MARKER)
-        }
-    }
 
-    private fun readUntilMarker(input: BufferedInputStream, marker: String): String {
-        val buffer = ByteArray(1024)
-        val collected = ByteArrayOutputStream()
-        repeat(64) {
-            val read = input.read(buffer)
-            check(read > 0) { "unexpected EOF before HTTP payload marker" }
-            collected.write(buffer, 0, read)
-            val value = collected.toString(StandardCharsets.UTF_8)
-            if (value.contains(marker)) return value
-            check(collected.size() <= 64 * 1024) { "HTTP response exceeded bounded interoperability buffer" }
+            val expected = "echo:$marker".toByteArray(StandardCharsets.US_ASCII)
+            val response = ByteArray(expected.size)
+            readExactly(input, response)
+            return response.toString(StandardCharsets.US_ASCII)
         }
-        error("HTTP payload marker was not observed through the real VLESS data path")
     }
 
     private fun readExactly(input: BufferedInputStream, count: Int) {
@@ -156,10 +145,19 @@ class JvmHostXrayRealBinaryInteropTest {
         }
     }
 
-    private fun waitForTcpListener(port: Int) {
+    private fun readExactly(input: BufferedInputStream, destination: ByteArray) {
+        var offset = 0
+        while (offset < destination.size) {
+            val read = input.read(destination, offset, destination.size - offset)
+            check(read > 0) { "unexpected EOF before complete proxied response" }
+            offset += read
+        }
+    }
+
+    private fun waitForIpv4TcpListener(port: Int) {
         repeat(100) {
             try {
-                Socket().use { it.connect(InetSocketAddress(InetAddress.getLoopbackAddress(), port), 100) }
+                Socket().use { it.connect(InetSocketAddress(ipv4Loopback, port), 100) }
                 return
             } catch (_: Exception) {
                 Thread.sleep(50)
@@ -168,7 +166,7 @@ class JvmHostXrayRealBinaryInteropTest {
         error("TCP listener 127.0.0.1:$port did not become ready")
     }
 
-    private fun reserveLoopbackPort(): Int = ServerSocket(0, 50, InetAddress.getLoopbackAddress()).use { it.localPort }
+    private fun reserveIpv4LoopbackPort(): Int = ServerSocket(0, 50, ipv4Loopback).use { it.localPort }
 
     private fun drain(process: Process, threadName: String) {
         thread(name = threadName, isDaemon = true) {
@@ -217,33 +215,39 @@ class JvmHostXrayRealBinaryInteropTest {
             values.remove(ref.value)?.let { it.clearSecret(); true } ?: false
     }
 
-    private class LocalHttpOrigin : AutoCloseable {
-        private val server = ServerSocket(0, 50, InetAddress.getLoopbackAddress())
-        private val requestObserved = CountDownLatch(1)
+    private class LocalEchoOrigin(private val ipv4Loopback: InetAddress) : AutoCloseable {
+        private val server = ServerSocket(0, 50, ipv4Loopback)
+        private val connectionObserved = CountDownLatch(1)
+        private val payloadObserved = CountDownLatch(1)
         private var worker: Thread? = null
         val port: Int get() = server.localPort
 
         fun start() {
-            worker = thread(name = "pvnetwork-xray-real-http-origin", isDaemon = true) {
+            worker = thread(name = "pvnetwork-xray-real-echo-origin", isDaemon = true) {
                 runCatching {
                     server.accept().use { socket ->
                         socket.soTimeout = 10_000
-                        val reader = socket.getInputStream().bufferedReader(StandardCharsets.US_ASCII)
-                        while (true) {
-                            val line = reader.readLine() ?: break
-                            if (line.isEmpty()) break
+                        connectionObserved.countDown()
+                        val expected = MARKER.toByteArray(StandardCharsets.US_ASCII)
+                        val received = ByteArray(expected.size)
+                        var offset = 0
+                        while (offset < received.size) {
+                            val read = socket.getInputStream().read(received, offset, received.size - offset)
+                            check(read > 0) { "unexpected EOF at echo origin" }
+                            offset += read
                         }
-                        requestObserved.countDown()
-                        val body = MARKER
-                        val response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${body.toByteArray().size}\r\nConnection: close\r\n\r\n$body"
-                        socket.getOutputStream().write(response.toByteArray(StandardCharsets.US_ASCII))
+                        check(received.contentEquals(expected)) { "unexpected payload at echo origin" }
+                        payloadObserved.countDown()
+                        val response = "echo:$MARKER".toByteArray(StandardCharsets.US_ASCII)
+                        socket.getOutputStream().write(response)
                         socket.getOutputStream().flush()
                     }
                 }
             }
         }
 
-        fun awaitRequest(): Boolean = requestObserved.await(3, TimeUnit.SECONDS)
+        fun awaitConnection(): Boolean = connectionObserved.await(5, TimeUnit.SECONDS)
+        fun awaitPayload(): Boolean = payloadObserved.await(3, TimeUnit.SECONDS)
 
         override fun close() {
             runCatching { server.close() }
