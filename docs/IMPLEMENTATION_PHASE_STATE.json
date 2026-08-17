@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repository": "DashSaman/PVN-amirrezagol",
   "research_boundary": {"v1":"93/93","v2":"93/93","strict_validator":"PASS","research_reopen_required":false},
-  "phase": "M2_CORE_NETWORKING_WAVE_1",
+  "phase": "M3_MODERN_PROXY_WAVE",
   "phase_status": "IN_PROGRESS",
   "completed_work_units": [
     {"id":"R5-ARCHITECTURE-DECISION","status":"PASS","evidence":["docs/ARCHITECTURE_DECISIONS_R5.md"]},
@@ -14,12 +14,14 @@
     {"id":"M2-OPENVPN-SYSTEM-PACKAGE-REAL-LINK","status":"INTEROPERABILITY_VERIFIED","scope":"Ubuntu 24.04 GitHub Actions isolated Linux namespaces using runner system OpenVPN package only; no OpenVPN binary bundled into PVNetwork","evidence":["GitHub Actions run 31942028587 SUCCESS","OpenVPN real link / isolated Linux namespaces SUCCESS","docs/M2_OPENVPN_SLICE.md"]},
     {"id":"M2-OPENVPN-DESKTOP-SYSTEM-RUNTIME","status":"TESTED","scope":"product-owned Linux/JVM unbundled system-process runtime boundary with lifecycle/probe/secret-cleanup tests","evidence":["GitHub Actions run 31942028587 SUCCESS","engines/openvpn-adapter/src/jvmMain/kotlin/com/pvnetwork/engine/openvpn/JvmSystemOpenVpnRuntime.kt","docs/M2_OPENVPN_SLICE.md"]},
     {"id":"M2-OPENVPN-REAL-SYSTEM-RUNTIME-PATH","status":"INTEROPERABILITY_VERIFIED","scope":"PVNetwork JvmSystemOpenVpnRuntimeFactory on Ubuntu 24.04 against unbundled system OpenVPN 2.6.19 and a real local TLS peer; reaches CONNECTED, creates the requested TUN interface, cleanly stops to DISCONNECTED and removes the TUN interface","evidence":["GitHub Actions run 31942028587 SUCCESS","job PVNetwork system runtime / real OpenVPN TLS peer SUCCESS","engines/openvpn-adapter/src/jvmTest/kotlin/com/pvnetwork/engine/openvpn/JvmSystemOpenVpnRuntimeTest.kt","docs/M2_OPENVPN_SLICE.md"]},
-    {"id":"M2-XRAY-VLESS-ADAPTER-SLICE","status":"TESTED","scope":"product-owned VLESS import/model/validation/runtime-boundary only; no Xray runtime","evidence":["GitHub Actions run 31940779078 SUCCESS","docs/M2_XRAY_SLICE.md"]}
+    {"id":"M2-XRAY-VLESS-ADAPTER-SLICE","status":"TESTED","scope":"product-owned VLESS import/model/validation/runtime-boundary","evidence":["GitHub Actions run 31940779078 SUCCESS","docs/M2_XRAY_SLICE.md"]},
+    {"id":"M2-XRAY-HOST-SUPPLIED-JVM-RUNTIME","status":"INTEROPERABILITY_VERIFIED","scope":"Ubuntu 24.04 POSIX/JVM host-supplied Xray managed-subprocess runtime; VLESS RAW security=none real bidirectional data path only; no bundled Xray dependency","evidence":["GitHub Actions run 32072138649 SUCCESS","job Real Xray VLESS JVM data path SUCCESS","job Xray VLESS adapter/share-link contracts SUCCESS","docs/M2_XRAY_HOST_RUNTIME_VALIDATION.md","docs/M2_XRAY_SLICE.md"]},
+    {"id":"M2-CORE-NETWORKING-WAVE-1","status":"PASS","scope":"Roadmap M2 selected runtime scope: WireGuard + OpenVPN + host-supplied Xray with retained real-connection evidence","evidence":["GitHub Actions run 31939414530 SUCCESS","GitHub Actions run 31942028587 SUCCESS","GitHub Actions run 32072138649 SUCCESS","docs/ROADMAP.md"]}
   ],
   "blockers": [
-    {"id":"M2-XRAY-STABLE-RELEASE-IMPORT-GATE","status":"BLOCKED","scope":"bundled/imported production Xray dependency only","reason":"Current non-prerelease stable v26.3.27 is inside an upstream advisory affected range patched from v26.7.11; inspected patched-line releases v26.7.11 and v26.7.28 are prereleases.","evidence":["docs/M2_XRAY_STABLE_RELEASE_GATE.md"]}
+    {"id":"XRAY-STABLE-RELEASE-IMPORT-GATE","status":"BLOCKED","scope":"future bundled/imported production Xray dependency only; does not block verified host-supplied runtime work","reason":"Reviewed non-prerelease stable v26.3.27 is inside an upstream advisory affected range patched from v26.7.11; reviewed patched-line v26.7.11 and v26.7.28 releases are prereleases.","evidence":["docs/M2_XRAY_STABLE_RELEASE_GATE.md"]}
   ],
-  "active_work_unit": {"id":"M2-XRAY-HOST-SUPPLIED-JVM-RUNTIME","status":"IN_PROGRESS","exact_next_action":"Implement and test a product-owned JVM managed-subprocess runtime using only a host-supplied Xray executable: bounded version/config probes, narrow fail-closed VLESS config generation, SecretStore-only transient secret material, no shell, canonical lifecycle/readiness and full cleanup. After deterministic fake-executable tests pass, add an exact-checksum patched prerelease CI-only fixture for real runtime-path evidence without approving product bundling."},
+  "active_work_unit": {"id":"M3-MODERN-PROXY-WAVE","status":"IN_PROGRESS","exact_next_action":"Inventory current implemented adapters/runtime boundaries against the M3 roadmap: Mihomo and/or selected modern core capabilities; VLESS/VMess/Trojan/Shadowsocks; REALITY/XTLS/XHTTP where supported; Hysteria2/TUIC/AnyTLS where selected. Reuse the verified host-supplied Xray boundary where technically valid, select exact external cores for capabilities Xray does not own, implement fail-closed adapters/config generation, and require retained real connection/data-path evidence before promoting each selected capability."},
   "status_vocabulary": ["RESEARCHED","IMPLEMENTED","BUILT","TESTED","INTEROPERABILITY_VERIFIED","DEVICE_VERIFIED","PRODUCTION_READY"],
-  "updated_at_utc": "2026-08-16T11:28:12Z"
+  "updated_at_utc": "2026-08-17T21:39:30Z"
 }
