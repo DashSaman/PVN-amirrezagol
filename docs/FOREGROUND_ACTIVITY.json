@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-17T21:14:42Z",
-  "heartbeat_at_utc": "2026-08-17T21:32:20Z",
-  "task": "M2 Xray host-supplied JVM managed-subprocess runtime: implement, test, and obtain real CI runtime-path evidence without bundling or dynamically downloading Xray.",
-  "note": "Unit/lifecycle contracts are green. Real-binary CI is on its third diagnostic pass using an exact-checksum v26.7.28 CI-only fixture and a deterministic IPv4 TCP echo payload; production bundling remains independently blocked."
+  "heartbeat_at_utc": "2026-08-17T21:41:00Z",
+  "task": "M3 modern proxy wave: extend the verified host-supplied Xray boundary to selected modern protocols and require real data-path evidence before promotion.",
+  "note": "M2 is PASS with GitHub Actions run 32072138649 proving the selected Xray VLESS runtime path. The bundled/imported Xray production gate remains a separate blocker. Active work is M3 inventory and implementation for Xray-owned modern protocols first, followed by exact upstream selection for remaining capabilities."
 }
