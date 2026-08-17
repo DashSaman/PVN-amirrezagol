@@ -200,7 +200,7 @@ class JvmHostXrayRealBinaryInteropTest {
     }
 
     private fun serverConfigJson(identity: String, port: Int): String =
-        """{"log":{"loglevel":"info"},"inbounds":[{"listen":"127.0.0.1","port":$port,"protocol":"vless","settings":{"clients":[{"id":"$identity"}],"decryption":"none"},"streamSettings":{"network":"raw","security":"none"}}],"outbounds":[{"protocol":"freedom","tag":"direct"}]}"""
+        """{"log":{"loglevel":"info"},"inbounds":[{"listen":"127.0.0.1","port":$port,"protocol":"vless","settings":{"clients":[{"id":"$identity"}],"decryption":"none"},"streamSettings":{"network":"raw","security":"none"}}],"outbounds":[{"protocol":"freedom","tag":"direct","settings":{"finalRules":[{"action":"allow"}]}}]}"""
 
     private fun deleteTree(path: Path) {
         if (!Files.exists(path)) return
