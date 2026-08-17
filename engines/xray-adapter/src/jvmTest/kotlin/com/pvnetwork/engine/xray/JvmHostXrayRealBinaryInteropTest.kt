@@ -57,11 +57,28 @@ class JvmHostXrayRealBinaryInteropTest {
         serverSettings = { credential -> "{\"method\":\"aes-128-gcm\",\"password\":\"$credential\",\"network\":\"tcp\"}" },
     )
 
+    @Test
+    fun realTrojanTlsDataPath() {
+        val cert = System.getenv("PVNETWORK_XRAY_TEST_TLS_CERT")?.takeIf(String::isNotBlank) ?: return
+        val key = System.getenv("PVNETWORK_XRAY_TEST_TLS_KEY")?.takeIf(String::isNotBlank) ?: return
+        runProtocolCase(
+            protocol = XrayAdapter.TROJAN_CAPABILITY,
+            credential = "pvnetwork-m3-trojan-password",
+            secretRole = XrayAdapter.TROJAN_PASSWORD_SECRET_ROLE,
+            extraExtensions = mapOf("xray.security" to "tls", "xray.server-name" to "localhost"),
+            serverSecurity = "tls",
+            serverSecuritySettings = "\"tlsSettings\":{\"certificates\":[{\"certificateFile\":${json(cert)},\"keyFile\":${json(key)}}]}",
+            serverSettings = { credential -> "{\"clients\":[{\"password\":\"$credential\"}]}" },
+        )
+    }
+
     private fun runProtocolCase(
         protocol: String,
         credential: String,
         secretRole: String,
         extraExtensions: Map<String, String>,
+        serverSecurity: String = "none",
+        serverSecuritySettings: String? = null,
         serverSettings: (String) -> String,
     ) {
         val executableValue = System.getenv("PVNETWORK_XRAY_TEST_EXECUTABLE")?.takeIf(String::isNotBlank) ?: return
@@ -80,7 +97,7 @@ class JvmHostXrayRealBinaryInteropTest {
             origin.start()
             Files.writeString(
                 serverConfig,
-                serverConfigJson(protocol, serverSettings(credential), serverPort),
+                serverConfigJson(protocol, serverSettings(credential), serverPort, serverSecurity, serverSecuritySettings),
                 StandardCharsets.UTF_8,
             )
             val validation = ProcessBuilder(executable.toString(), "run", "-test", "-c", serverConfig.toString())
@@ -110,7 +127,8 @@ class JvmHostXrayRealBinaryInteropTest {
                 origin = ProfileOrigin.MANUAL,
             )
             val adapter = XrayAdapter(JvmHostXrayRuntimeFactory(executable, socksPort))
-            assertTrue(adapter.validate(profile).isValid, adapter.validate(profile).issues.joinToString { it.code })
+            val validationResult = adapter.validate(profile)
+            assertTrue(validationResult.isValid, validationResult.issues.joinToString { it.code })
 
             prepared = adapter.prepare(profile, secretStore)
             val connected = CountDownLatch(1)
@@ -161,8 +179,31 @@ class JvmHostXrayRealBinaryInteropTest {
         }
     }
 
-    private fun serverConfigJson(protocol: String, settings: String, port: Int): String =
-        "{\"log\":{\"loglevel\":\"info\"},\"inbounds\":[{\"listen\":\"127.0.0.1\",\"port\":$port,\"protocol\":\"$protocol\",\"settings\":$settings,\"streamSettings\":{\"network\":\"raw\",\"security\":\"none\"}}],\"outbounds\":[{\"protocol\":\"freedom\",\"tag\":\"direct\",\"settings\":{\"finalRules\":[{\"action\":\"allow\"}]}}]}"
+    private fun serverConfigJson(
+        protocol: String,
+        settings: String,
+        port: Int,
+        security: String,
+        securitySettings: String?,
+    ): String {
+        val securityBlock = if (securitySettings == null) "" else ",$securitySettings"
+        return "{\"log\":{\"loglevel\":\"info\"},\"inbounds\":[{\"listen\":\"127.0.0.1\",\"port\":$port,\"protocol\":\"$protocol\",\"settings\":$settings,\"streamSettings\":{\"network\":\"raw\",\"security\":\"$security\"$securityBlock}}],\"outbounds\":[{\"protocol\":\"freedom\",\"tag\":\"direct\",\"settings\":{\"finalRules\":[{\"action\":\"allow\"}]}}]}"
+    }
+
+    private fun json(value: String): String = buildString {
+        append('"')
+        value.forEach { c ->
+            when (c) {
+                '\\' -> append("\\\\")
+                '"' -> append("\\\"")
+                '\n' -> append("\\n")
+                '\r' -> append("\\r")
+                '\t' -> append("\\t")
+                else -> append(c)
+            }
+        }
+        append('"')
+    }
 
     private fun readExactly(input: BufferedInputStream, count: Int) {
         var remaining = count
