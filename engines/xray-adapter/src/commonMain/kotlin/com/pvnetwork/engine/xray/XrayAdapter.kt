@@ -64,10 +64,10 @@ class XrayAdapter(private val runtimeFactory: XrayRuntimeFactory) : CoreAdapter 
             if (!flow.isNullOrBlank() && flow !in SUPPORTED_FLOWS) {
                 issues += error("XRAY_FLOW_UNSUPPORTED", "Xray flow '$flow' is not supported by this adapter slice")
             }
-            if (flow == "xtls-rprx-vision" && (transport != "raw" || security !in setOf("tls", "reality"))) {
+            if (flow == "xtls-rprx-vision" && security !in setOf("tls", "reality")) {
                 issues += error(
-                    "XRAY_VISION_TRANSPORT_INCOMPATIBLE",
-                    "xtls-rprx-vision is accepted only on the direct raw transport with TLS or REALITY",
+                    "XRAY_VISION_SECURITY_INCOMPATIBLE",
+                    "xtls-rprx-vision requires TLS or REALITY security",
                 )
             }
 
