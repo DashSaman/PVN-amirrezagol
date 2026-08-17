@@ -23,10 +23,10 @@ import kotlin.concurrent.thread
 /**
  * POSIX desktop runtime for an Xray executable supplied by the host.
  *
- * PVNetwork neither downloads nor bundles Xray here. The runtime probes the exact
- * executable it is handed, materializes one transient mode-0600 JSON config from
- * canonical profile metadata plus SecretStore material, asks Xray itself to test
- * that config, and only then starts the long-lived process without a shell.
+ * The product does not download or bundle Xray here. The exact executable is
+ * probed directly, transient configuration is mode 0600 in a mode 0700 directory,
+ * secrets are resolved only through SecretStore, Xray validates its own config,
+ * and only then is the long-lived process started without a shell.
  */
 class JvmHostXrayRuntimeFactory(
     executable: Path? = null,
@@ -36,10 +36,10 @@ class JvmHostXrayRuntimeFactory(
         require(socksListenPort in 1..65535) { "Xray SOCKS listen port must be between 1 and 65535" }
     }
 
-    private val selectedExecutable: Path? = executable?.toAbsolutePath()?.normalize() ?: discoverExecutable()
-    private val probe: Probe = selectedExecutable?.let(::probeExecutable) ?: Probe(false, null)
+    private val selectedExecutable = executable?.toAbsolutePath()?.normalize() ?: discoverExecutable()
+    private val probe = selectedExecutable?.let(::probeExecutable) ?: Probe(false, null)
 
-    override val runtimeDescriptor: XrayRuntimeDescriptor = XrayRuntimeDescriptor(
+    override val runtimeDescriptor = XrayRuntimeDescriptor(
         implementationId = IMPLEMENTATION_ID,
         upstreamVersion = probe.versionLine,
         availableCapabilities = if (probe.usable) setOf(XrayAdapter.VLESS_CAPABILITY) else emptySet(),
@@ -91,10 +91,16 @@ class JvmHostXrayRuntimeFactory(
             outputDone.await(PROBE_KILL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             val line = firstLine.get()
             Probe(
-                usable = exited && process.exitValue() == 0 && line?.contains("Xray", ignoreCase = true) == true,
+                usable = exited && process.exitValue() == 0 && isXrayVersionLine(line),
                 versionLine = line,
             )
         }.getOrElse { Probe(false, null) }
+    }
+
+    private fun isXrayVersionLine(line: String?): Boolean {
+        if (line == null || !line.startsWith("Xray ")) return false
+        val token = line.removePrefix("Xray ").substringBefore(' ').trim()
+        return token.isNotBlank() && token.firstOrNull()?.isDigit() == true
     }
 
     private fun discoverExecutable(): Path? {
@@ -167,11 +173,7 @@ private class JvmHostXrayPreparedConnection(
         }
 
         val launched = try {
-            ProcessBuilder(
-                executable.toString(),
-                "run",
-                "-c", config.toString(),
-            )
+            ProcessBuilder(executable.toString(), "run", "-c", config.toString())
                 .directory(config.parent.toFile())
                 .redirectErrorStream(true)
                 .start()
@@ -259,7 +261,7 @@ private class JvmHostXrayPreparedConnection(
         thread(name = "pvnetwork-xray-config-test-output", isDaemon = true) {
             try {
                 candidate.inputStream.bufferedReader(StandardCharsets.UTF_8).useLines { lines ->
-                    lines.forEach { _ -> /* drain only; never retain secret-bearing diagnostics */ }
+                    lines.forEach { _ -> /* drain without retaining potentially sensitive diagnostics */ }
                 }
             } finally {
                 drained.countDown()
@@ -327,7 +329,7 @@ private class JvmHostXrayPreparedConnection(
 
     private fun isReadyLine(line: String): Boolean {
         val normalized = line.lowercase()
-        return "started" in normalized && ("xray" in normalized || "core:" in normalized)
+        return "started" in normalized && "xray" in normalized
     }
 
     private fun terminate(candidate: Process?) {
@@ -395,7 +397,6 @@ private class JvmHostXrayPreparedConnection(
         writeJsonString(writer, network)
         writer.write(",\"security\":")
         writeJsonString(writer, security)
-
         when (security) {
             "tls" -> writeTlsSettings(writer)
             "reality" -> writeRealitySettings(writer)
@@ -430,13 +431,16 @@ private class JvmHostXrayPreparedConnection(
             "raw" -> Unit
             "websocket" -> {
                 writer.write(",\"wsSettings\":{")
-                val fields = mutableListOf<Pair<String, String>>()
-                profile.extensions["xray.path"]?.takeIf(String::isNotBlank)?.let { fields += "path" to it }
-                if (fields.isNotEmpty()) writeFields(writer, fields)
-                profile.extensions["xray.host-header"]?.takeIf(String::isNotBlank)?.let { host ->
-                    if (fields.isNotEmpty()) writer.write(",")
+                var wrote = false
+                profile.extensions["xray.path"]?.takeIf(String::isNotBlank)?.let {
+                    writer.write("\"path\":")
+                    writeJsonString(writer, it)
+                    wrote = true
+                }
+                profile.extensions["xray.host-header"]?.takeIf(String::isNotBlank)?.let {
+                    if (wrote) writer.write(",")
                     writer.write("\"headers\":{\"Host\":")
-                    writeJsonString(writer, host)
+                    writeJsonString(writer, it)
                     writer.write("}")
                 }
                 writer.write("}")
@@ -452,7 +456,7 @@ private class JvmHostXrayPreparedConnection(
             "xhttp" -> {
                 writer.write(",\"xhttpSettings\":{")
                 val fields = mutableListOf<Pair<String, String>>()
-                profile.extensions["xray.host-header"]?.let { fields += "host" to it }
+                profile.extensions["xray.host-header"]?.takeIf(String::isNotBlank)?.let { fields += "host" to it }
                 profile.extensions["xray.path"]?.takeIf(String::isNotBlank)?.let { fields += "path" to it }
                 fields += "mode" to "auto"
                 writeFields(writer, fields)
