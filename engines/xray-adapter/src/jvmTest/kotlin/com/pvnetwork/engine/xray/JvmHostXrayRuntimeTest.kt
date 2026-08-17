@@ -2,7 +2,10 @@ package com.pvnetwork.engine.xray
 
 import com.pvnetwork.core.connection.ConnectionSnapshot
 import com.pvnetwork.core.connection.ConnectionState
+import com.pvnetwork.core.profile.Endpoint
+import com.pvnetwork.core.profile.PVProfile
 import com.pvnetwork.core.profile.ProfileId
+import com.pvnetwork.core.profile.ProfileOrigin
 import com.pvnetwork.core.profile.SecretRef
 import com.pvnetwork.core.security.SecretPurpose
 import com.pvnetwork.core.security.SecretStore
@@ -33,7 +36,7 @@ class JvmHostXrayRuntimeTest {
             val factory = JvmHostXrayRuntimeFactory(fixture.executable, socksListenPort = 19080)
             val adapter = XrayAdapter(factory)
 
-            assertEquals(setOf(XrayAdapter.VLESS_CAPABILITY), factory.runtimeDescriptor.availableCapabilities)
+            assertEquals(XrayAdapter.XRAY_PROTOCOLS, factory.runtimeDescriptor.availableCapabilities)
             assertTrue(factory.runtimeDescriptor.upstreamVersion?.contains("26.7.28") == true)
             assertTrue(adapter.validate(imported.canonicalProfile).isValid)
 
@@ -45,7 +48,7 @@ class JvmHostXrayRuntimeTest {
                 if (snapshot.state == ConnectionState.CONNECTED) connected.countDown()
             }
 
-            assertTrue(connected.await(5, TimeUnit.SECONDS), "fake Xray runtime did not reach engine-ready CONNECTED")
+            assertTrue(connected.await(5, TimeUnit.SECONDS))
             val validatedConfig = fixture.awaitPath(fixture.validationMarker)
             val runtimeConfig = fixture.awaitPath(fixture.runMarker)
             assertEquals(validatedConfig, runtimeConfig)
@@ -97,21 +100,19 @@ class JvmHostXrayRuntimeTest {
             val prepared = XrayAdapter(JvmHostXrayRuntimeFactory(fixture.executable, 19081))
                 .prepare(imported.canonicalProfile, store)
             val states = CopyOnWriteArrayList<ConnectionSnapshot>()
-
             prepared.start { states += it }
-
             assertEquals(ConnectionState.ERROR, prepared.snapshot().state)
             assertTrue(states.any { it.reasonCode == "XRAY_CONFIG_VALIDATION_FAILED" })
             val configPath = fixture.awaitPath(fixture.validationMarker)
-            assertFalse(Files.exists(configPath), "failed validation must remove transient Xray config")
-            assertFalse(Files.exists(fixture.runMarker), "long-lived Xray process must not launch after config-test failure")
+            assertFalse(Files.exists(configPath))
+            assertFalse(Files.exists(fixture.runMarker))
         } finally {
             fixture.close()
         }
     }
 
     @Test
-    fun missingIdentityFailsClosedWithoutInvokingXrayConfigTest() {
+    fun missingCredentialFailsClosedWithoutInvokingXrayConfigTest() {
         val fixture = FakeXrayFixture.create()
         try {
             val store = MemorySecretStore()
@@ -123,11 +124,9 @@ class JvmHostXrayRuntimeTest {
                 .prepare(imported.canonicalProfile, store)
             assertTrue(store.delete(imported.config.identityRef))
             val states = CopyOnWriteArrayList<ConnectionSnapshot>()
-
             prepared.start { states += it }
-
             assertEquals(ConnectionState.ERROR, prepared.snapshot().state)
-            assertTrue(states.any { it.reasonCode == "XRAY_IDENTITY_SECRET_UNAVAILABLE" })
+            assertTrue(states.any { it.reasonCode == "XRAY_CREDENTIAL_SECRET_UNAVAILABLE" })
             assertFalse(Files.exists(fixture.validationMarker))
             assertFalse(Files.exists(fixture.runMarker))
         } finally {
@@ -136,7 +135,38 @@ class JvmHostXrayRuntimeTest {
     }
 
     @Test
-    fun executableProbeMustIdentifyVersionLineBeforeAdvertisingVless() {
+    fun modernProtocolValidationIsFailClosed() {
+        val fixture = FakeXrayFixture.create()
+        try {
+            val store = MemorySecretStore()
+            val factory = JvmHostXrayRuntimeFactory(fixture.executable, 19085)
+            val adapter = XrayAdapter(factory)
+            val vmessRef = store.put(SecretPurpose.TOKEN, "55555555-5555-4555-8555-555555555555".toCharArray())
+            val vmess = PVProfile(
+                id = ProfileId("vmess-validation"),
+                displayName = "vmess",
+                protocolId = XrayAdapter.VMESS_CAPABILITY,
+                endpoint = Endpoint("127.0.0.1", 443),
+                secretRefs = mapOf(XrayAdapter.VMESS_IDENTITY_SECRET_ROLE to vmessRef),
+                extensions = mapOf(
+                    "xray.application-protocol" to "vmess",
+                    "xray.security" to "none",
+                    "xray.transport" to "raw",
+                    "xray.vmess-security" to "auto",
+                ),
+                origin = ProfileOrigin.MANUAL,
+            )
+            assertTrue(adapter.validate(vmess).isValid)
+            val invalid = vmess.copy(extensions = vmess.extensions + ("xray.vmess-security" to "legacy-unknown"))
+            assertFalse(adapter.validate(invalid).isValid)
+            assertTrue(adapter.validate(invalid).issues.any { it.code == "XRAY_VMESS_SECURITY_UNSUPPORTED" })
+        } finally {
+            fixture.close()
+        }
+    }
+
+    @Test
+    fun executableProbeMustIdentifyVersionLineBeforeAdvertisingCapabilities() {
         val directory = Files.createTempDirectory("pvnetwork-xray-bad-probe-")
         try {
             val executable = directory.resolve("xray")
@@ -161,8 +191,7 @@ class JvmHostXrayRuntimeTest {
             val invalidProfile = imported.canonicalProfile.copy(
                 extensions = imported.canonicalProfile.extensions + ("xray.security" to "none"),
             )
-            val validation = XrayAdapter(JvmHostXrayRuntimeFactory(fixture.executable, 19084))
-                .validate(invalidProfile)
+            val validation = XrayAdapter(JvmHostXrayRuntimeFactory(fixture.executable, 19084)).validate(invalidProfile)
             assertFalse(validation.isValid)
             assertTrue(validation.issues.any { it.code == "XRAY_VISION_SECURITY_INCOMPATIBLE" })
         } finally {
@@ -173,18 +202,14 @@ class JvmHostXrayRuntimeTest {
     private class MemorySecretStore : SecretStore {
         private val values = linkedMapOf<String, CharArray>()
         private var nextId = 1
-
         override fun put(purpose: SecretPurpose, secret: CharArray): SecretRef =
             SecretRef("secret://jvm-xray-test/${nextId++}").also { values[it.value] = secret.copyOf() }
-
         override fun <T> withSecret(ref: SecretRef, block: (CharArray) -> T): T? {
             val stored = values[ref.value] ?: return null
             val copy = stored.copyOf()
             return try { block(copy) } finally { copy.clearSecret() }
         }
-
-        override fun delete(ref: SecretRef): Boolean =
-            values.remove(ref.value)?.let { it.clearSecret(); true } ?: false
+        override fun delete(ref: SecretRef): Boolean = values.remove(ref.value)?.let { it.clearSecret(); true } ?: false
     }
 
     private class FakeXrayFixture(
@@ -219,9 +244,7 @@ if [ "${'$'}{1:-}" = "version" ]; then
   echo "Xray 26.7.28 (Xray, Penetrates Everything.) PVNetwork fake"
   exit 0
 fi
-if [ "${'$'}{1:-}" != "run" ]; then
-  exit 20
-fi
+if [ "${'$'}{1:-}" != "run" ]; then exit 20; fi
 shift
 config=""
 test_mode=0
@@ -232,9 +255,7 @@ while [ "${'$'}#" -gt 0 ]; do
     *) shift ;;
   esac
 done
-if [ -z "${'$'}config" ] || [ ! -f "${'$'}config" ]; then
-  exit 21
-fi
+if [ -z "${'$'}config" ] || [ ! -f "${'$'}config" ]; then exit 21; fi
 if [ "${'$'}test_mode" -eq 1 ]; then
   printf '%s' "${'$'}config" > ${shellSingleQuote(validationMarker.toString())}
   exit $validationExit
@@ -253,12 +274,9 @@ while :; do sleep 1; done
 
     companion object {
         private fun shellSingleQuote(value: String): String = "'" + value.replace("'", "'\\''") + "'"
-
         private fun deleteTree(path: Path) {
             if (!Files.exists(path)) return
-            Files.walk(path).use { stream ->
-                stream.sorted(Comparator.reverseOrder()).forEach { Files.deleteIfExists(it) }
-            }
+            Files.walk(path).use { it.sorted(Comparator.reverseOrder()).forEach(Files::deleteIfExists) }
         }
     }
 }
