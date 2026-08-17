@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-17T21:14:42Z",
-  "heartbeat_at_utc": "2026-08-17T21:41:00Z",
+  "heartbeat_at_utc": "2026-08-17T21:52:00Z",
   "task": "M3 modern proxy wave: extend the verified host-supplied Xray boundary to selected modern protocols and require real data-path evidence before promotion.",
-  "note": "M2 is PASS with GitHub Actions run 32072138649 proving the selected Xray VLESS runtime path. The bundled/imported Xray production gate remains a separate blocker. Active work is M3 inventory and implementation for Xray-owned modern protocols first, followed by exact upstream selection for remaining capabilities."
+  "note": "GitHub Actions run 32072905125 is green after adding real VLESS, VMess and Shadowsocks data-path coverage. Active work is recording those receipts, adding Trojan TLS interoperability, and completing the separate maintained-core gate for Hysteria2/TUIC/AnyTLS."
 }
