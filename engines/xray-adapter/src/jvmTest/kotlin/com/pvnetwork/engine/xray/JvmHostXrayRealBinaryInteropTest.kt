@@ -132,10 +132,11 @@ class JvmHostXrayRealBinaryInteropTest {
             }
             readExactly(input, 2)
 
-            assertTrue(origin.awaitConnection(), "VLESS server did not establish the target TCP connection")
             val payload = marker.toByteArray(StandardCharsets.US_ASCII)
             output.write(payload)
             output.flush()
+            assertTrue(origin.awaitConnection(), "VLESS server did not establish the target TCP connection after payload arrival")
+            assertTrue(origin.awaitPayload(), "local TCP origin did not receive the proxied payload")
 
             val expected = "echo:$marker".toByteArray(StandardCharsets.US_ASCII)
             val response = ByteArray(expected.size)
