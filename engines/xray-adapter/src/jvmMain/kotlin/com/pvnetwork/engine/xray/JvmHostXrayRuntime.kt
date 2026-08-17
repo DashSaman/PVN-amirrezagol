@@ -21,12 +21,12 @@ import java.util.concurrent.atomic.AtomicReference
 import kotlin.concurrent.thread
 
 /**
- * POSIX desktop runtime for an Xray executable supplied by the host.
+ * POSIX/JVM runtime for a host-supplied Xray executable.
  *
- * The product does not download or bundle Xray here. The exact executable is
- * probed directly, transient configuration is mode 0600 in a mode 0700 directory,
- * secrets are resolved only through SecretStore, Xray validates its own config,
- * and only then is the long-lived process started without a shell.
+ * PVNetwork neither downloads nor bundles Xray here. The executable is probed
+ * directly, reusable protocol credentials are resolved through SecretStore,
+ * transient configuration is private, Xray validates its own generated config,
+ * and the long-lived process is started directly without a shell.
  */
 class JvmHostXrayRuntimeFactory(
     executable: Path? = null,
@@ -42,21 +42,30 @@ class JvmHostXrayRuntimeFactory(
     override val runtimeDescriptor = XrayRuntimeDescriptor(
         implementationId = IMPLEMENTATION_ID,
         upstreamVersion = probe.versionLine,
-        availableCapabilities = if (probe.usable) setOf(XrayAdapter.VLESS_CAPABILITY) else emptySet(),
+        availableCapabilities = if (probe.usable) XrayAdapter.XRAY_PROTOCOLS else emptySet(),
     )
 
     override fun prepare(profile: PVProfile, secretStore: SecretStore): PreparedConnection {
         val executablePath = selectedExecutable
         check(probe.usable && executablePath != null) { "host-supplied Xray runtime is unavailable" }
-        val identityRef = profile.secretRefs[IDENTITY_SECRET_ROLE]
-            ?: error("VLESS protected identity reference is missing")
+        val secretRole = credentialRole(profile.protocolId)
+        val credentialRef = profile.secretRefs[secretRole]
+            ?: error("protected ${profile.protocolId} credential reference is missing")
         return JvmHostXrayPreparedConnection(
             executable = executablePath,
             profile = profile,
-            identityRef = identityRef,
+            credentialRef = credentialRef,
             secretStore = secretStore,
             socksListenPort = socksListenPort,
         )
+    }
+
+    private fun credentialRole(protocolId: String): String = when (protocolId) {
+        XrayAdapter.VLESS_CAPABILITY -> XrayAdapter.VLESS_IDENTITY_SECRET_ROLE
+        XrayAdapter.VMESS_CAPABILITY -> XrayAdapter.VMESS_IDENTITY_SECRET_ROLE
+        XrayAdapter.TROJAN_CAPABILITY -> XrayAdapter.TROJAN_PASSWORD_SECRET_ROLE
+        XrayAdapter.SHADOWSOCKS_CAPABILITY -> XrayAdapter.SHADOWSOCKS_PASSWORD_SECRET_ROLE
+        else -> error("unsupported Xray protocol: $protocolId")
     }
 
     private data class Probe(val usable: Boolean, val versionLine: String?)
@@ -127,7 +136,6 @@ class JvmHostXrayRuntimeFactory(
     companion object {
         const val IMPLEMENTATION_ID = "host-xray-process-posix"
         const val DEFAULT_SOCKS_PORT = 10808
-        internal const val IDENTITY_SECRET_ROLE = "xray.vless.identity"
         private const val PROBE_TIMEOUT_SECONDS = 3L
         private const val PROBE_KILL_TIMEOUT_SECONDS = 1L
         private const val MAX_VERSION_LINE_LENGTH = 192
@@ -137,7 +145,7 @@ class JvmHostXrayRuntimeFactory(
 private class JvmHostXrayPreparedConnection(
     private val executable: Path,
     private val profile: PVProfile,
-    private val identityRef: SecretRef,
+    private val credentialRef: SecretRef,
     private val secretStore: SecretStore,
     private val socksListenPort: Int,
 ) : PreparedConnection {
@@ -157,8 +165,8 @@ private class JvmHostXrayPreparedConnection(
 
         val config = try {
             createProtectedRuntimeConfig()
-        } catch (_: MissingIdentitySecret) {
-            fail("XRAY_IDENTITY_SECRET_UNAVAILABLE", onState)
+        } catch (_: MissingCredentialSecret) {
+            fail("XRAY_CREDENTIAL_SECRET_UNAVAILABLE", onState)
             return
         } catch (_: Throwable) {
             cleanupRuntimeDirectory()
@@ -206,7 +214,6 @@ private class JvmHostXrayPreparedConnection(
             currentProcess = process
             currentValidation = validationProcess
         }
-
         terminate(currentValidation)
         terminate(currentProcess)
         cleanupRuntimeDirectory()
@@ -234,25 +241,20 @@ private class JvmHostXrayPreparedConnection(
         runtimeDirectory = directory
         val config = directory.resolve("config.json")
         Files.createFile(config, PosixFilePermissions.asFileAttribute(FILE_PERMISSIONS))
-        val found = secretStore.withSecret(identityRef) { identity ->
+        val found = secretStore.withSecret(credentialRef) { credential ->
             Files.newBufferedWriter(config, StandardCharsets.UTF_8).use { writer ->
-                writeConfig(writer, identity)
+                writeConfig(writer, credential)
             }
         }
         if (found == null) {
             cleanupRuntimeDirectory()
-            throw MissingIdentitySecret()
+            throw MissingCredentialSecret()
         }
         return config
     }
 
     private fun validateConfig(config: Path): Boolean = runCatching {
-        val candidate = ProcessBuilder(
-            executable.toString(),
-            "run",
-            "-test",
-            "-c", config.toString(),
-        )
+        val candidate = ProcessBuilder(executable.toString(), "run", "-test", "-c", config.toString())
             .directory(config.parent.toFile())
             .redirectErrorStream(true)
             .start()
@@ -261,7 +263,7 @@ private class JvmHostXrayPreparedConnection(
         thread(name = "pvnetwork-xray-config-test-output", isDaemon = true) {
             try {
                 candidate.inputStream.bufferedReader(StandardCharsets.UTF_8).useLines { lines ->
-                    lines.forEach { _ -> /* drain without retaining potentially sensitive diagnostics */ }
+                    lines.forEach { _ -> }
                 }
             } finally {
                 drained.countDown()
@@ -311,9 +313,7 @@ private class JvmHostXrayPreparedConnection(
     private fun startReadinessDeadline(launched: Process, onState: (ConnectionSnapshot) -> Unit) {
         thread(name = "pvnetwork-xray-readiness-deadline", isDaemon = true) {
             Thread.sleep(READINESS_TIMEOUT_MILLIS)
-            val timedOut = synchronized(lock) {
-                process === launched && machine.state == ConnectionState.CONNECTING
-            }
+            val timedOut = synchronized(lock) { process === launched && machine.state == ConnectionState.CONNECTING }
             if (timedOut) {
                 terminate(launched)
                 cleanupRuntimeDirectory()
@@ -350,18 +350,12 @@ private class JvmHostXrayPreparedConnection(
         }
     }
 
-    private fun emit(
-        state: ConnectionState,
-        onState: (ConnectionSnapshot) -> Unit,
-        reasonCode: String? = null,
-    ) {
+    private fun emit(state: ConnectionState, onState: (ConnectionSnapshot) -> Unit, reasonCode: String? = null) {
         onState(ConnectionSnapshot(state, XrayAdapter.ADAPTER_ID, reasonCode))
     }
 
     private fun cleanupRuntimeDirectory() {
-        val directory = synchronized(lock) {
-            runtimeDirectory.also { runtimeDirectory = null }
-        } ?: return
+        val directory = synchronized(lock) { runtimeDirectory.also { runtimeDirectory = null } } ?: return
         runCatching {
             Files.walk(directory).use { paths ->
                 paths.sorted(Comparator.reverseOrder()).forEach { Files.deleteIfExists(it) }
@@ -369,7 +363,7 @@ private class JvmHostXrayPreparedConnection(
         }
     }
 
-    private fun writeConfig(writer: Writer, identity: CharArray) {
+    private fun writeConfig(writer: Writer, credential: CharArray) {
         val security = profile.extensions["xray.security"] ?: error("missing xray.security")
         val transport = profile.extensions["xray.transport"] ?: error("missing xray.transport")
         val network = when (transport) {
@@ -380,11 +374,39 @@ private class JvmHostXrayPreparedConnection(
             "mkcp" -> "kcp"
             else -> error("unsupported Xray transport: $transport")
         }
-        require(security in setOf("none", "tls", "reality")) { "unsupported Xray security: $security" }
 
         writer.write("{\"log\":{\"loglevel\":\"info\"},")
         writer.write("\"inbounds\":[{\"tag\":\"pvnetwork-socks\",\"listen\":\"127.0.0.1\",\"port\":$socksListenPort,\"protocol\":\"socks\",\"settings\":{\"udp\":true}}],")
-        writer.write("\"outbounds\":[{\"tag\":\"pvnetwork-proxy\",\"protocol\":\"vless\",\"settings\":{\"vnext\":[{\"address\":")
+        writer.write("\"outbounds\":[{\"tag\":\"pvnetwork-proxy\",\"protocol\":")
+        writeJsonString(writer, profile.protocolId)
+        writer.write(",\"settings\":")
+        writeProtocolSettings(writer, credential)
+        writer.write(",\"streamSettings\":{\"network\":")
+        writeJsonString(writer, network)
+        writer.write(",\"security\":")
+        writeJsonString(writer, security)
+        when (security) {
+            "tls" -> writeTlsSettings(writer)
+            "reality" -> writeRealitySettings(writer)
+            "none" -> Unit
+            else -> error("unsupported Xray security: $security")
+        }
+        writeTransportSettings(writer, transport)
+        writer.write("}},{\"tag\":\"direct\",\"protocol\":\"freedom\"}]}")
+    }
+
+    private fun writeProtocolSettings(writer: Writer, credential: CharArray) {
+        when (profile.protocolId) {
+            XrayAdapter.VLESS_CAPABILITY -> writeVlessSettings(writer, credential)
+            XrayAdapter.VMESS_CAPABILITY -> writeVmessSettings(writer, credential)
+            XrayAdapter.TROJAN_CAPABILITY -> writeTrojanSettings(writer, credential)
+            XrayAdapter.SHADOWSOCKS_CAPABILITY -> writeShadowsocksSettings(writer, credential)
+            else -> error("unsupported Xray protocol: ${profile.protocolId}")
+        }
+    }
+
+    private fun writeVlessSettings(writer: Writer, identity: CharArray) {
+        writer.write("{\"vnext\":[{\"address\":")
         writeJsonString(writer, profile.endpoint.host)
         writer.write(",\"port\":${profile.endpoint.port},\"users\":[{\"id\":")
         writeJsonString(writer, identity)
@@ -393,16 +415,37 @@ private class JvmHostXrayPreparedConnection(
             writer.write(",\"flow\":")
             writeJsonString(writer, it)
         }
-        writer.write("}]}]},\"streamSettings\":{\"network\":")
-        writeJsonString(writer, network)
+        writer.write("}]}]}")
+    }
+
+    private fun writeVmessSettings(writer: Writer, identity: CharArray) {
+        val accountSecurity = profile.extensions["xray.vmess-security"] ?: "auto"
+        writer.write("{\"vnext\":[{\"address\":")
+        writeJsonString(writer, profile.endpoint.host)
+        writer.write(",\"port\":${profile.endpoint.port},\"users\":[{\"id\":")
+        writeJsonString(writer, identity)
         writer.write(",\"security\":")
-        writeJsonString(writer, security)
-        when (security) {
-            "tls" -> writeTlsSettings(writer)
-            "reality" -> writeRealitySettings(writer)
-        }
-        writeTransportSettings(writer, transport)
-        writer.write("}},{\"tag\":\"direct\",\"protocol\":\"freedom\"}]}")
+        writeJsonString(writer, accountSecurity)
+        writer.write("}]}]}")
+    }
+
+    private fun writeTrojanSettings(writer: Writer, password: CharArray) {
+        writer.write("{\"servers\":[{\"address\":")
+        writeJsonString(writer, profile.endpoint.host)
+        writer.write(",\"port\":${profile.endpoint.port},\"password\":")
+        writeJsonString(writer, password)
+        writer.write("}]}")
+    }
+
+    private fun writeShadowsocksSettings(writer: Writer, password: CharArray) {
+        val method = profile.extensions["xray.shadowsocks-method"] ?: error("missing xray.shadowsocks-method")
+        writer.write("{\"servers\":[{\"address\":")
+        writeJsonString(writer, profile.endpoint.host)
+        writer.write(",\"port\":${profile.endpoint.port},\"method\":")
+        writeJsonString(writer, method)
+        writer.write(",\"password\":")
+        writeJsonString(writer, password)
+        writer.write("}]}")
     }
 
     private fun writeTlsSettings(writer: Writer) {
@@ -454,11 +497,11 @@ private class JvmHostXrayPreparedConnection(
                 writer.write("}")
             }
             "xhttp" -> {
-                writer.write(",\"xhttpSettings\":{")
                 val fields = mutableListOf<Pair<String, String>>()
                 profile.extensions["xray.host-header"]?.takeIf(String::isNotBlank)?.let { fields += "host" to it }
                 profile.extensions["xray.path"]?.takeIf(String::isNotBlank)?.let { fields += "path" to it }
                 fields += "mode" to "auto"
+                writer.write(",\"xhttpSettings\":{")
                 writeFields(writer, fields)
                 writer.write("}")
             }
@@ -500,7 +543,7 @@ private class JvmHostXrayPreparedConnection(
         }
     }
 
-    private class MissingIdentitySecret : IllegalStateException()
+    private class MissingCredentialSecret : IllegalStateException()
 
     companion object {
         private const val CONFIG_TEST_TIMEOUT_SECONDS = 5L
