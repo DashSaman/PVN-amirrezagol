@@ -82,7 +82,12 @@ class JvmHostXrayRealBinaryInteropTest {
             assertTrue(connected.await(10, TimeUnit.SECONDS), "PVNetwork Xray runtime did not report engine readiness")
             waitForIpv4TcpListener(socksPort)
 
-            val response = roundTripThroughSocks5(socksPort, origin.port, LocalEchoOrigin.MARKER)
+            val response = roundTripThroughSocks5(
+                socksPort = socksPort,
+                originPort = origin.port,
+                marker = LocalEchoOrigin.MARKER,
+                origin = origin,
+            )
             assertEquals("echo:${LocalEchoOrigin.MARKER}", response, "known payload did not traverse the real VLESS path bidirectionally")
             assertTrue(origin.awaitPayload(), "local TCP origin did not receive the proxied payload")
             assertEquals(ConnectionState.CONNECTED, prepared.snapshot().state)
@@ -94,7 +99,12 @@ class JvmHostXrayRealBinaryInteropTest {
         }
     }
 
-    private fun roundTripThroughSocks5(socksPort: Int, originPort: Int, marker: String): String {
+    private fun roundTripThroughSocks5(
+        socksPort: Int,
+        originPort: Int,
+        marker: String,
+        origin: LocalEchoOrigin,
+    ): String {
         Socket().use { socket ->
             socket.soTimeout = 10_000
             socket.connect(InetSocketAddress(ipv4Loopback, socksPort), 5_000)
