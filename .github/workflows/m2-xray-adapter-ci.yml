@@ -1,4 +1,4 @@
-name: M2 Xray Adapter CI
+name: M2-M3 Xray Adapter CI
 
 on:
   push:
@@ -25,7 +25,7 @@ permissions:
 
 jobs:
   adapter:
-    name: Xray VLESS adapter/share-link contracts
+    name: Xray modern-protocol adapter/runtime contracts
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -40,11 +40,11 @@ jobs:
         uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
         with:
           gradle-version: "9.5.0"
-      - name: Test Xray adapter slice
+      - name: Test Xray adapter/runtime slice
         run: gradle --no-daemon :engines:xray-adapter:jvmTest --stacktrace
 
-  real-vless-jvm:
-    name: Real Xray VLESS JVM data path
+  real-xray-jvm:
+    name: Real Xray modern-protocol JVM data paths
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -76,7 +76,27 @@ jobs:
           chmod +x "$xray_bin"
           "$xray_bin" version
           echo "PVNETWORK_XRAY_TEST_EXECUTABLE=$xray_bin" >> "$GITHUB_ENV"
-      - name: Prove real VLESS data path through product runtime
+      - name: Create trusted CI-only Trojan TLS material
+        shell: bash
+        run: |
+          set -euo pipefail
+          tls="$RUNNER_TEMP/pvnetwork-xray-trojan-tls"
+          mkdir -p "$tls"
+          openssl req -x509 -newkey rsa:2048 -nodes \
+            -keyout "$tls/ca.key" -out "$tls/ca.crt" -days 1 \
+            -subj "/CN=PVNetwork M3 CI CA"
+          openssl req -newkey rsa:2048 -nodes \
+            -keyout "$tls/server.key" -out "$tls/server.csr" \
+            -subj "/CN=localhost"
+          printf 'subjectAltName=DNS:localhost,IP:127.0.0.1\nextendedKeyUsage=serverAuth\n' > "$tls/server.ext"
+          openssl x509 -req -in "$tls/server.csr" \
+            -CA "$tls/ca.crt" -CAkey "$tls/ca.key" -CAcreateserial \
+            -out "$tls/server.crt" -days 1 -sha256 -extfile "$tls/server.ext"
+          sudo cp "$tls/ca.crt" /usr/local/share/ca-certificates/pvnetwork-m3-ci.crt
+          sudo update-ca-certificates >/dev/null
+          echo "PVNETWORK_XRAY_TEST_TLS_CERT=$tls/server.crt" >> "$GITHUB_ENV"
+          echo "PVNETWORK_XRAY_TEST_TLS_KEY=$tls/server.key" >> "$GITHUB_ENV"
+      - name: Prove real Xray protocol data paths through product runtime
         run: >-
           gradle --no-daemon :engines:xray-adapter:jvmTest
           --tests '*JvmHostXrayRealBinaryInteropTest'
