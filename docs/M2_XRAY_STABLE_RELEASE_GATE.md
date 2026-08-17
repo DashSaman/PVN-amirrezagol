@@ -2,7 +2,8 @@
 
 Status: **BLOCKED for bundled/imported production Xray runtime; host-supplied managed-subprocess work may continue**
 
-Date: 2026-08-16
+Date: 2026-08-16  
+CI fixture digest reconciled: 2026-08-18
 
 ## Decision
 
@@ -36,9 +37,11 @@ The newest inspected patched-line candidate is recorded for **CI-only fixture us
 - commit: `5ca6f4b7d4dc20a881d4330e498892697627ec0c`
 - tree: `a6ef5707377e4305bd991427eca71fc6eadeff61`
 - Linux x86_64 asset: `Xray-linux-64.zip`
-- asset SHA-256: `8195d909fcedffd282ac65a37e51fd50b1b1c4dad3ffa54333cc4590e5dd2a40`
+- asset SHA-256: `8195d909f1109b8f3d99eefe401a3c451d7bf4af71f24d3815420f77e5dd2a40`
 - snapshot license: Mozilla Public License 2.0
 - snapshot module: `github.com/xtls/xray-core`, Go 1.26 with a non-trivial direct and transitive dependency surface recorded by upstream `go.mod`.
+
+The CI-fixture checksum above was reconciled on 2026-08-18 against the official GitHub release asset metadata for `Xray-linux-64.zip`; an earlier transcription in this document was incorrect and must not be reused.
 
 A `go.mod` snapshot is dependency inventory evidence, **not** a vulnerability-clearance claim. Before any future bundled production approval, PVNetwork must run and retain an explicit SBOM/dependency and vulnerability review for the selected release.
 
