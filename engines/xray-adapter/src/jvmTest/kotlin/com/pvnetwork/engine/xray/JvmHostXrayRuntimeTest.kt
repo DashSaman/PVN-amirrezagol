@@ -136,7 +136,7 @@ class JvmHostXrayRuntimeTest {
     }
 
     @Test
-    fun executableProbeMustIdentifyXrayBeforeAdvertisingVless() {
+    fun executableProbeMustIdentifyVersionLineBeforeAdvertisingVless() {
         val directory = Files.createTempDirectory("pvnetwork-xray-bad-probe-")
         try {
             val executable = directory.resolve("xray")
@@ -150,18 +150,21 @@ class JvmHostXrayRuntimeTest {
     }
 
     @Test
-    fun visionFailsClosedOnNonDirectTransport() {
+    fun visionRequiresTlsOrRealitySecurity() {
         val fixture = FakeXrayFixture.create()
         try {
             val store = MemorySecretStore()
             val imported = VlessShareLinkImporter(store).import(
                 "vless://44444444-4444-4444-8444-444444444444@example.invalid:443?security=reality&type=xhttp&flow=xtls-rprx-vision&pbk=public&fp=chrome&sni=example.invalid&path=%2Fx",
-                ProfileId("xray-invalid-vision"),
+                ProfileId("xray-invalid-vision-security"),
+            )
+            val invalidProfile = imported.canonicalProfile.copy(
+                extensions = imported.canonicalProfile.extensions + ("xray.security" to "none"),
             )
             val validation = XrayAdapter(JvmHostXrayRuntimeFactory(fixture.executable, 19084))
-                .validate(imported.canonicalProfile)
+                .validate(invalidProfile)
             assertFalse(validation.isValid)
-            assertTrue(validation.issues.any { it.code == "XRAY_VISION_TRANSPORT_INCOMPATIBLE" })
+            assertTrue(validation.issues.any { it.code == "XRAY_VISION_SECURITY_INCOMPATIBLE" })
         } finally {
             fixture.close()
         }
