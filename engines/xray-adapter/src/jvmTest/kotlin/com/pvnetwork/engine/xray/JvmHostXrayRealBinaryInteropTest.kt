@@ -7,6 +7,7 @@ import com.pvnetwork.core.security.SecretPurpose
 import com.pvnetwork.core.security.SecretStore
 import com.pvnetwork.core.security.clearSecret
 import java.io.BufferedInputStream
+import java.io.ByteArrayOutputStream
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.ServerSocket
@@ -126,8 +127,22 @@ class JvmHostXrayRealBinaryInteropTest {
                     .toByteArray(StandardCharsets.US_ASCII),
             )
             output.flush()
-            return input.readBytes().toString(StandardCharsets.UTF_8)
+            return readUntilMarker(input, LocalHttpOrigin.MARKER)
         }
+    }
+
+    private fun readUntilMarker(input: BufferedInputStream, marker: String): String {
+        val buffer = ByteArray(1024)
+        val collected = ByteArrayOutputStream()
+        repeat(64) {
+            val read = input.read(buffer)
+            check(read > 0) { "unexpected EOF before HTTP payload marker" }
+            collected.write(buffer, 0, read)
+            val value = collected.toString(StandardCharsets.UTF_8)
+            if (value.contains(marker)) return value
+            check(collected.size() <= 64 * 1024) { "HTTP response exceeded bounded interoperability buffer" }
+        }
+        error("HTTP payload marker was not observed through the real VLESS data path")
     }
 
     private fun readExactly(input: BufferedInputStream, count: Int) {
