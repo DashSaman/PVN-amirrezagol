@@ -2,8 +2,8 @@
   "schema_version": 1,
   "status": "ACTIVE",
   "actor": "interactive-chat",
-  "started_at_utc": "2026-08-16T11:28:12Z",
-  "heartbeat_at_utc": "2026-08-16T11:28:12Z",
-  "task": "M2 Xray host-supplied JVM managed-subprocess runtime: implement a narrow fail-closed product runtime without bundling or downloading Xray.",
-  "note": "The bundled/imported stable Xray production release gate is blocked and recorded in docs/M2_XRAY_STABLE_RELEASE_GATE.md. Independent runtime engineering continues with an external executable only; a patched prerelease may be used later as an exact-checksum CI-only fixture, never as an implicit production pin."
+  "started_at_utc": "2026-08-17T21:14:42Z",
+  "heartbeat_at_utc": "2026-08-17T21:14:42Z",
+  "task": "M2 Xray host-supplied JVM managed-subprocess runtime: implement, test, and obtain real CI runtime-path evidence without bundling or dynamically downloading Xray.",
+  "note": "Research V1/V2 remain complete. The bundled/imported stable Xray production gate remains independently blocked pending an acceptable non-prerelease patched release; current foreground work uses only a host-supplied executable and an exact-checksum CI-only fixture where permitted."
 }
