@@ -32,6 +32,7 @@ class JvmHostXrayRealBinaryInteropTest {
 
     @Test
     fun realVlessRawDataPath() = runProtocolCase(
+        caseName = "vless-raw",
         protocol = XrayAdapter.VLESS_CAPABILITY,
         credential = "a1b2c3d4-1111-4111-8111-1234567890ab",
         secretRole = XrayAdapter.VLESS_IDENTITY_SECRET_ROLE,
@@ -41,6 +42,7 @@ class JvmHostXrayRealBinaryInteropTest {
 
     @Test
     fun realVmessRawDataPath() = runProtocolCase(
+        caseName = "vmess-raw",
         protocol = XrayAdapter.VMESS_CAPABILITY,
         credential = "b1b2c3d4-2222-4222-8222-1234567890ab",
         secretRole = XrayAdapter.VMESS_IDENTITY_SECRET_ROLE,
@@ -50,6 +52,7 @@ class JvmHostXrayRealBinaryInteropTest {
 
     @Test
     fun realShadowsocksRawDataPath() = runProtocolCase(
+        caseName = "shadowsocks-raw-aes128gcm",
         protocol = XrayAdapter.SHADOWSOCKS_CAPABILITY,
         credential = "pvnetwork-m3-aead-password",
         secretRole = XrayAdapter.SHADOWSOCKS_PASSWORD_SECRET_ROLE,
@@ -62,6 +65,7 @@ class JvmHostXrayRealBinaryInteropTest {
         val cert = System.getenv("PVNETWORK_XRAY_TEST_TLS_CERT")?.takeIf(String::isNotBlank) ?: return
         val key = System.getenv("PVNETWORK_XRAY_TEST_TLS_KEY")?.takeIf(String::isNotBlank) ?: return
         runProtocolCase(
+            caseName = "trojan-tls",
             protocol = XrayAdapter.TROJAN_CAPABILITY,
             credential = "pvnetwork-m3-trojan-password",
             secretRole = XrayAdapter.TROJAN_PASSWORD_SECRET_ROLE,
@@ -72,23 +76,61 @@ class JvmHostXrayRealBinaryInteropTest {
         )
     }
 
+    @Test
+    fun realVlessVisionTlsDataPath() {
+        val cert = System.getenv("PVNETWORK_XRAY_TEST_TLS_CERT")?.takeIf(String::isNotBlank) ?: return
+        val key = System.getenv("PVNETWORK_XRAY_TEST_TLS_KEY")?.takeIf(String::isNotBlank) ?: return
+        runProtocolCase(
+            caseName = "vless-vision-tls",
+            protocol = XrayAdapter.VLESS_CAPABILITY,
+            credential = "c1b2c3d4-3333-4333-8333-1234567890ab",
+            secretRole = XrayAdapter.VLESS_IDENTITY_SECRET_ROLE,
+            extraExtensions = mapOf(
+                "xray.security" to "tls",
+                "xray.server-name" to "localhost",
+                "xray.flow" to "xtls-rprx-vision",
+            ),
+            serverSecurity = "tls",
+            serverSecuritySettings = "\"tlsSettings\":{\"certificates\":[{\"certificateFile\":${json(cert)},\"keyFile\":${json(key)}}]}",
+            serverSettings = { credential -> "{\"clients\":[{\"id\":\"$credential\",\"flow\":\"xtls-rprx-vision\"}],\"decryption\":\"none\"}" },
+        )
+    }
+
+    @Test
+    fun realVlessXhttpDataPath() = runProtocolCase(
+        caseName = "vless-xhttp",
+        protocol = XrayAdapter.VLESS_CAPABILITY,
+        credential = "d1b2c3d4-4444-4444-8444-1234567890ab",
+        secretRole = XrayAdapter.VLESS_IDENTITY_SECRET_ROLE,
+        extraExtensions = mapOf(
+            "xray.transport" to "xhttp",
+            "xray.path" to "/pvnetwork-m3-xhttp",
+        ),
+        serverNetwork = "xhttp",
+        serverTransportSettings = "\"xhttpSettings\":{\"path\":\"/pvnetwork-m3-xhttp\"}",
+        serverSettings = { credential -> "{\"clients\":[{\"id\":\"$credential\"}],\"decryption\":\"none\"}" },
+    )
+
     private fun runProtocolCase(
+        caseName: String,
         protocol: String,
         credential: String,
         secretRole: String,
         extraExtensions: Map<String, String>,
         serverSecurity: String = "none",
         serverSecuritySettings: String? = null,
+        serverNetwork: String = "raw",
+        serverTransportSettings: String? = null,
         serverSettings: (String) -> String,
     ) {
         val executableValue = System.getenv("PVNETWORK_XRAY_TEST_EXECUTABLE")?.takeIf(String::isNotBlank) ?: return
         val executable = Path.of(executableValue).toAbsolutePath().normalize()
         assertTrue(Files.isRegularFile(executable) && Files.isExecutable(executable))
 
-        val origin = LocalEchoOrigin(loopback, "$MARKER_PREFIX-$protocol")
+        val origin = LocalEchoOrigin(loopback, "$MARKER_PREFIX-$caseName")
         val serverPort = reservePort()
         val socksPort = reservePort()
-        val serverDirectory = Files.createTempDirectory("pvnetwork-xray-$protocol-server-")
+        val serverDirectory = Files.createTempDirectory("pvnetwork-xray-$caseName-server-")
         val serverConfig = serverDirectory.resolve("server.json")
         var serverProcess: Process? = null
         var prepared: PreparedConnection? = null
@@ -97,25 +139,33 @@ class JvmHostXrayRealBinaryInteropTest {
             origin.start()
             Files.writeString(
                 serverConfig,
-                serverConfigJson(protocol, serverSettings(credential), serverPort, serverSecurity, serverSecuritySettings),
+                serverConfigJson(
+                    protocol = protocol,
+                    settings = serverSettings(credential),
+                    port = serverPort,
+                    security = serverSecurity,
+                    securitySettings = serverSecuritySettings,
+                    network = serverNetwork,
+                    transportSettings = serverTransportSettings,
+                ),
                 StandardCharsets.UTF_8,
             )
             val validation = ProcessBuilder(executable.toString(), "run", "-test", "-c", serverConfig.toString())
                 .redirectErrorStream(true).start()
-            drain(validation, "pvnetwork-xray-$protocol-server-config-test")
-            assertTrue(validation.waitFor(10, TimeUnit.SECONDS), "real Xray $protocol server config validation timed out")
-            assertEquals(0, validation.exitValue(), "real Xray rejected the $protocol server config")
+            drain(validation, "pvnetwork-xray-$caseName-server-config-test")
+            assertTrue(validation.waitFor(10, TimeUnit.SECONDS), "real Xray $caseName server config validation timed out")
+            assertEquals(0, validation.exitValue(), "real Xray rejected the $caseName server config")
 
             serverProcess = ProcessBuilder(executable.toString(), "run", "-c", serverConfig.toString())
                 .redirectErrorStream(true).start()
-            drain(serverProcess, "pvnetwork-xray-$protocol-server-output")
+            drain(serverProcess, "pvnetwork-xray-$caseName-server-output")
             waitForListener(serverPort)
 
             val secretStore = MemorySecretStore()
             val credentialRef = secretStore.putText(credential, SecretPurpose.TOKEN)
             val profile = PVProfile(
-                id = ProfileId("xray-real-$protocol"),
-                displayName = "Real $protocol CI",
+                id = ProfileId("xray-real-$caseName"),
+                displayName = "Real $caseName CI",
                 protocolId = protocol,
                 endpoint = Endpoint("127.0.0.1", serverPort),
                 secretRefs = mapOf(secretRole to credentialRef),
@@ -133,7 +183,7 @@ class JvmHostXrayRealBinaryInteropTest {
             prepared = adapter.prepare(profile, secretStore)
             val connected = CountDownLatch(1)
             prepared.start { if (it.state == ConnectionState.CONNECTED) connected.countDown() }
-            assertTrue(connected.await(10, TimeUnit.SECONDS), "PVNetwork $protocol runtime did not report readiness")
+            assertTrue(connected.await(10, TimeUnit.SECONDS), "PVNetwork $caseName runtime did not report readiness")
             waitForListener(socksPort)
 
             val response = roundTripThroughSocks5(socksPort, origin.port, origin.marker, origin)
@@ -185,9 +235,12 @@ class JvmHostXrayRealBinaryInteropTest {
         port: Int,
         security: String,
         securitySettings: String?,
+        network: String,
+        transportSettings: String?,
     ): String {
         val securityBlock = if (securitySettings == null) "" else ",$securitySettings"
-        return "{\"log\":{\"loglevel\":\"info\"},\"inbounds\":[{\"listen\":\"127.0.0.1\",\"port\":$port,\"protocol\":\"$protocol\",\"settings\":$settings,\"streamSettings\":{\"network\":\"raw\",\"security\":\"$security\"$securityBlock}}],\"outbounds\":[{\"protocol\":\"freedom\",\"tag\":\"direct\",\"settings\":{\"finalRules\":[{\"action\":\"allow\"}]}}]}"
+        val transportBlock = if (transportSettings == null) "" else ",$transportSettings"
+        return "{\"log\":{\"loglevel\":\"info\"},\"inbounds\":[{\"listen\":\"127.0.0.1\",\"port\":$port,\"protocol\":\"$protocol\",\"settings\":$settings,\"streamSettings\":{\"network\":\"$network\",\"security\":\"$security\"$securityBlock$transportBlock}}],\"outbounds\":[{\"protocol\":\"freedom\",\"tag\":\"direct\",\"settings\":{\"finalRules\":[{\"action\":\"allow\"}]}}]}"
     }
 
     private fun json(value: String): String = buildString {
