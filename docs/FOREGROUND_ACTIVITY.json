@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-17T21:14:42Z",
-  "heartbeat_at_utc": "2026-08-17T21:52:00Z",
-  "task": "M3 modern proxy wave: extend the verified host-supplied Xray boundary to selected modern protocols and require real data-path evidence before promotion.",
-  "note": "GitHub Actions run 32072905125 is green after adding real VLESS, VMess and Shadowsocks data-path coverage. Active work is recording those receipts, adding Trojan TLS interoperability, and completing the separate maintained-core gate for Hysteria2/TUIC/AnyTLS."
+  "heartbeat_at_utc": "2026-08-26T15:38:10Z",
+  "task": "M3 modern proxy wave: close real Xray REALITY/XHTTP/Vision interoperability evidence and gate a host-supplied Mihomo v1.19.30 runtime for Hysteria2/TUIC/AnyTLS with exact release, license, security, and real-data-path evidence.",
+  "note": "Live main is at 0f44a233711ae8cf424bd45a8787c7fa7a613b60 before this heartbeat. XHTTP and Vision/TLS real-path tests are committed but still need retained CI results. REALITY and the Mihomo runtime/evidence gate remain active work; no unsupported capability is being promoted from config generation alone."
 }
