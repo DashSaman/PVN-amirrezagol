@@ -26,7 +26,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-/** Exact-checksum external-Xray CI evidence. No fixture is bundled or promoted. */
+/** Exact-checksum external-Xray M3 interoperability evidence. No fixture is bundled or promoted. */
 class JvmHostXrayRealBinaryInteropTest {
     private val loopback = InetAddress.getByName("127.0.0.1")
 
