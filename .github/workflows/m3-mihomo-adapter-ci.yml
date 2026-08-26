@@ -9,6 +9,7 @@ on:
       - "gradle.properties"
       - "core/**"
       - "engines/mihomo-adapter/**"
+      - "engines/openconnect-adapter/**"
       - ".github/workflows/m3-mihomo-adapter-ci.yml"
   pull_request:
     paths:
@@ -17,6 +18,7 @@ on:
       - "gradle.properties"
       - "core/**"
       - "engines/mihomo-adapter/**"
+      - "engines/openconnect-adapter/**"
       - ".github/workflows/m3-mihomo-adapter-ci.yml"
   workflow_dispatch:
 
@@ -43,6 +45,30 @@ jobs:
       - name: Test Mihomo adapter/runtime slice
         run: gradle --no-daemon :engines:mihomo-adapter:jvmTest --stacktrace
 
+  openconnect-adapter:
+    name: OpenConnect adapter/runtime contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up JDK 21
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Set up Gradle 9.5.0
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        with:
+          gradle-version: "9.5.0"
+      - name: Install host OpenConnect fixture
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends openconnect
+          openconnect --version
+      - name: Test OpenConnect adapter/runtime slice
+        run: gradle --no-daemon :engines:openconnect-adapter:jvmTest --stacktrace
+
   exact-cross-core-interop:
     name: Exact Mihomo v1.19.30 / sing-box v1.13.19 real data path
     runs-on: ubuntu-24.04
@@ -65,9 +91,7 @@ jobs:
           set -euo pipefail
           archive="$RUNNER_TEMP/mihomo-linux-amd64-v1.19.30.gz"
           bin="$RUNNER_TEMP/mihomo-v1.19.30"
-          curl -fL --retry 3 --retry-delay 2 \
-            -o "$archive" \
-            "https://github.com/MetaCubeX/mihomo/releases/download/v1.19.30/mihomo-linux-amd64-v1.19.30.gz"
+          curl -fL --retry 3 --retry-delay 2             -o "$archive"             "https://github.com/MetaCubeX/mihomo/releases/download/v1.19.30/mihomo-linux-amd64-v1.19.30.gz"
           echo "cf06ce2c7d1421bdbda14ee4a5b6046672dc35ebf8eecd8e77504ec3c0ed9a84  $archive" | sha256sum -c -
           gzip -dc "$archive" > "$bin"
           chmod +x "$bin"
@@ -79,9 +103,7 @@ jobs:
           set -euo pipefail
           archive="$RUNNER_TEMP/sing-box-1.13.19-linux-amd64.tar.gz"
           root="$RUNNER_TEMP/sing-box-1.13.19-linux-amd64"
-          curl -fL --retry 3 --retry-delay 2 \
-            -o "$archive" \
-            "https://github.com/SagerNet/sing-box/releases/download/v1.13.19/sing-box-1.13.19-linux-amd64.tar.gz"
+          curl -fL --retry 3 --retry-delay 2             -o "$archive"             "https://github.com/SagerNet/sing-box/releases/download/v1.13.19/sing-box-1.13.19-linux-amd64.tar.gz"
           echo "ef88a9e577d474210867bd708933d042e9b70106529df2656182c9db90106aa1  $archive" | sha256sum -c -
           tar -xzf "$archive" -C "$RUNNER_TEMP"
           bin="$root/sing-box"
@@ -94,21 +116,14 @@ jobs:
           set -euo pipefail
           tls="$RUNNER_TEMP/pvnetwork-mihomo-m3-tls"
           mkdir -p "$tls"
-          openssl req -x509 -newkey rsa:2048 -nodes -sha256 -days 1 \
-            -subj "/CN=PVNetwork M3 CI CA" \
-            -keyout "$tls/ca.key" -out "$tls/ca.crt"
-          openssl req -new -newkey rsa:2048 -nodes -sha256 \
-            -subj "/CN=localhost" \
-            -keyout "$tls/server.key" -out "$tls/server.csr"
+          openssl req -x509 -newkey rsa:2048 -nodes -sha256 -days 1             -subj "/CN=PVNetwork M3 CI CA"             -keyout "$tls/ca.key" -out "$tls/ca.crt"
+          openssl req -new -newkey rsa:2048 -nodes -sha256             -subj "/CN=localhost"             -keyout "$tls/server.key" -out "$tls/server.csr"
           cat > "$tls/server.ext" <<'EOF'
           subjectAltName=DNS:localhost,IP:127.0.0.1
           extendedKeyUsage=serverAuth
           keyUsage=digitalSignature,keyEncipherment
           EOF
-          openssl x509 -req -sha256 -days 1 \
-            -in "$tls/server.csr" \
-            -CA "$tls/ca.crt" -CAkey "$tls/ca.key" -CAcreateserial \
-            -extfile "$tls/server.ext" -out "$tls/server.crt"
+          openssl x509 -req -sha256 -days 1             -in "$tls/server.csr"             -CA "$tls/ca.crt" -CAkey "$tls/ca.key" -CAcreateserial             -extfile "$tls/server.ext" -out "$tls/server.crt"
           sudo cp "$tls/ca.crt" /usr/local/share/ca-certificates/pvnetwork-mihomo-m3-ci.crt
           sudo update-ca-certificates
           echo "PVNETWORK_MIHOMO_TEST_TLS_CERT=$tls/server.crt" >> "$GITHUB_ENV"
@@ -127,8 +142,4 @@ jobs:
         if: always()
         shell: bash
         run: |
-          rm -rf "$RUNNER_TEMP/pvnetwork-mihomo-m3-tls" \
-                 "$RUNNER_TEMP/sing-box-1.13.19-linux-amd64" \
-                 "$RUNNER_TEMP/sing-box-1.13.19-linux-amd64.tar.gz" \
-                 "$RUNNER_TEMP/mihomo-linux-amd64-v1.19.30.gz" \
-                 "$RUNNER_TEMP/mihomo-v1.19.30"
+          rm -rf "$RUNNER_TEMP/pvnetwork-mihomo-m3-tls"                  "$RUNNER_TEMP/sing-box-1.13.19-linux-amd64"                  "$RUNNER_TEMP/sing-box-1.13.19-linux-amd64.tar.gz"                  "$RUNNER_TEMP/mihomo-linux-amd64-v1.19.30.gz"                  "$RUNNER_TEMP/mihomo-v1.19.30"
