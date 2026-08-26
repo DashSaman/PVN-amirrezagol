@@ -68,6 +68,7 @@ class JvmHostMihomoRealBinaryInteropTest {
             extraExtensions = mapOf(
                 "mihomo.sni" to "localhost",
                 "mihomo.tuic.uuid" to uuid,
+                "mihomo.tuic.congestion-controller" to "cubic",
             ),
             serverInbound = { port, cert, key, credential ->
                 "{\"type\":\"tuic\",\"tag\":\"server\",\"listen\":\"127.0.0.1\",\"listen_port\":$port," +
