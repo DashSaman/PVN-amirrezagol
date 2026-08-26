@@ -30,3 +30,6 @@ project(":engines:openvpn-adapter").projectDir = file("engines/openvpn-adapter")
 
 include(":engines:xray-adapter")
 project(":engines:xray-adapter").projectDir = file("engines/xray-adapter")
+
+include(":engines:mihomo-adapter")
+project(":engines:mihomo-adapter").projectDir = file("engines/mihomo-adapter")
