@@ -3,7 +3,7 @@
   "status": "ACTIVE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-17T21:14:42Z",
-  "heartbeat_at_utc": "2026-08-26T15:38:10Z",
-  "task": "M3 modern proxy wave: close real Xray REALITY/XHTTP/Vision interoperability evidence and gate a host-supplied Mihomo v1.19.30 runtime for Hysteria2/TUIC/AnyTLS with exact release, license, security, and real-data-path evidence.",
-  "note": "Live main is at 0f44a233711ae8cf424bd45a8787c7fa7a613b60 before this heartbeat. XHTTP and Vision/TLS real-path tests are committed but still need retained CI results. REALITY and the Mihomo runtime/evidence gate remain active work; no unsupported capability is being promoted from config generation alone."
+  "heartbeat_at_utc": "2026-08-26T16:10:43Z",
+  "task": "M3 modern proxy wave: close retained Xray REALITY/XHTTP/Vision/Trojan interoperability evidence and prove host-supplied Mihomo v1.19.30 Hysteria2/TUIC/AnyTLS through an independently pinned sing-box v1.13.19 server and real echo data path.",
+  "note": "Before this heartbeat main carried 52b15abcf02e8aeb85bd17b5d992006c3bc6a2ed. Mihomo exact-binary smoke evidence is PASS in run 32986857940 at b39186e9ab4a960c847e5d46378fc6900172d727. Cross-core Hysteria2/TUIC/AnyTLS tests plus exact sing-box fixture workflow are committed on main but are not promoted until a descendant CI run executes and passes. No insecure TLS bypass, user secret, or product-bundled fixture is used."
 }
