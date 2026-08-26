@@ -1,0 +1,80 @@
+name: M3 Mihomo Adapter CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "build.gradle.kts"
+      - "settings.gradle.kts"
+      - "gradle.properties"
+      - "core/**"
+      - "engines/mihomo-adapter/**"
+      - ".github/workflows/m3-mihomo-adapter-ci.yml"
+  pull_request:
+    paths:
+      - "build.gradle.kts"
+      - "settings.gradle.kts"
+      - "gradle.properties"
+      - "core/**"
+      - "engines/mihomo-adapter/**"
+      - ".github/workflows/m3-mihomo-adapter-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  adapter:
+    name: Mihomo adapter/runtime contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up JDK 21
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Set up Gradle 9.5.0
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        with:
+          gradle-version: "9.5.0"
+      - name: Test Mihomo adapter/runtime slice
+        run: gradle --no-daemon :engines:mihomo-adapter:jvmTest --stacktrace
+
+  exact-mihomo-jvm:
+    name: Exact Mihomo v1.19.30 JVM config/runtime smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up JDK 21
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Set up Gradle 9.5.0
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        with:
+          gradle-version: "9.5.0"
+      - name: Install exact-checksum CI-only Mihomo fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/mihomo-linux-amd64-v1.19.30.gz"
+          bin="$RUNNER_TEMP/mihomo-v1.19.30"
+          curl -fL --retry 3 --retry-delay 2 \
+            -o "$archive" \
+            "https://github.com/MetaCubeX/mihomo/releases/download/v1.19.30/mihomo-linux-amd64-v1.19.30.gz"
+          echo "cf06ce2c7d1421bdbda14ee4a5b6046672dc35ebf8eecd8e77504ec3c0ed9a84  $archive" | sha256sum -c -
+          gzip -dc "$archive" > "$bin"
+          chmod +x "$bin"
+          "$bin" -v
+          echo "PVNETWORK_MIHOMO_TEST_EXECUTABLE=$bin" >> "$GITHUB_ENV"
+      - name: Validate selected configs and host runtime with exact Mihomo
+        run: >-
+          gradle --no-daemon :engines:mihomo-adapter:jvmTest
+          --tests '*JvmHostMihomoRuntimeExactBinaryTest'
+          --stacktrace
