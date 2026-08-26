@@ -33,3 +33,6 @@ project(":engines:xray-adapter").projectDir = file("engines/xray-adapter")
 
 include(":engines:mihomo-adapter")
 project(":engines:mihomo-adapter").projectDir = file("engines/mihomo-adapter")
+
+include(":engines:openconnect-adapter")
+project(":engines:openconnect-adapter").projectDir = file("engines/openconnect-adapter")
