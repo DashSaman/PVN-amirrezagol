@@ -137,7 +137,7 @@ class JvmHostMihomoRealBinaryInteropTest {
             serverProcess = ProcessBuilder(singBox.toString(), "run", "-c", serverConfig.toString())
                 .redirectErrorStream(true).start()
             drain(serverProcess, "pvnetwork-sing-box-$caseName-server-output")
-            assertFalse(serverProcess.waitFor(400, TimeUnit.MILLISECONDS), "sing-box $caseName server exited during startup")
+            assertFalse(serverProcess.waitFor(1_500, TimeUnit.MILLISECONDS), "sing-box $caseName server exited during startup")
 
             val secretStore = MemorySecretStore()
             val credentialRef = secretStore.putText(credential, SecretPurpose.TOKEN)
