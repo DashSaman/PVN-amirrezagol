@@ -16,7 +16,7 @@ Study the strongest current client applications and reusable upstream components
 - macOS
 - Linux
 
-Primary named targets from the owner:
+Primary named targets:
 
 - Karing
 - V2Box
@@ -24,7 +24,7 @@ Primary named targets from the owner:
 - Happ
 - NPV/NV Tunnel / NapsternetV
 
-Additional high-value references included because they materially improve the cross-platform design decision:
+Additional high-value references:
 
 - Hiddify
 - AmneziaVPN
@@ -37,42 +37,46 @@ Additional high-value references included because they materially improve the cr
 
 ## Files
 
-- `CLIENT_SOURCE_REUSE_MATRIX.md` — canonical source/repository status, license, source availability, useful subsystems, direct-reuse decision, and risks.
-- `CROSS_PLATFORM_ARCHITECTURE_RECOMMENDATION.md` — recommended clean-room product architecture for PVNetwork based on the survey.
+- `CLIENT_SOURCE_REUSE_MATRIX.md` — canonical source/repository status, licenses, reusable subsystems, direct-reuse decisions and risks.
+- `CROSS_PLATFORM_ARCHITECTURE_RECOMMENDATION.md` — recommendation aligned to the actual current PVNetwork implementation.
 - `AGENT_HANDOFF.md` — exact continuation point for a later design/implementation agent.
 
 ## Core conclusion
 
 The future PVNetwork application should **not** be a fork of Karing, Hiddify, v2rayNG, Amnezia or another mature client.
 
-The preferred direction is:
+After inspecting the actual repository, the preferred direction is:
 
 ```text
-PVNetwork-owned Flutter UI/product shell
-        -> PVNetwork canonical profile/subscription/routing model
+PVNetwork-owned Kotlin Multiplatform / Compose product shell
+        -> PVNetwork canonical profile/subscription/routing/DNS model
         -> stable EngineAdapter / PlatformAdapter contracts
         -> audited upstream engines and OS VPN APIs
 ```
 
-Why:
+The reason is not toolkit preference: PVNetwork already has a Kotlin Multiplatform `core:foundation`, common product domains under `commonMain`, a Compose Desktop shell and separate WireGuard/OpenVPN/Xray/Mihomo/OpenConnect adapters. That work should be preserved.
 
-1. Karing demonstrates that Flutter can successfully cover Windows, Android, Linux, iOS, macOS and tvOS while presenting a single product UX, but Karing itself is GPL and carries a branding restriction.
-2. Hiddify is also a strong Flutter architecture reference, but its repository adds explicit non-commercial, fork, attribution, release and naming/UI conditions. It is therefore unsuitable as a direct code base for an independent commercial PVNetwork application without written permission.
-3. v2rayNG is an excellent Android/Xray lifecycle and import reference but is Android-specific and GPL-3.0.
-4. AmneziaVPN is a strong multi-platform native-integration reference using C++/Qt/QML, but its client is GPL-3.0 and would impose a very different UI/toolchain choice.
-5. Happ's public repositories currently expose release/readme material rather than the application source tree, so Happ is a UX/behavior reference, not a code-reuse source.
-6. No authoritative open-source repository for the commercial V2Box application was verified. Repositories named `v2box` must not automatically be treated as V2Box app source.
-7. No authoritative source tree for NPV Tunnel/NapsternetV was verified. Binary mirrors and reverse-engineering/config-decryption repositories are not acceptable upstream source for PVNetwork.
-8. The independent `imanheidary/v2box` Flutter plugin is technically interesting because its own glue code is MIT-licensed and exposes a cross-platform dual-core Xray/sing-box abstraction. It is **not affiliated with the official V2Box app** and must receive a normal dependency/security/maintenance audit before adoption. The licenses of Xray/sing-box and any generated/bundled artifacts remain separate obligations.
+Flutter remains a **secondary experimental UI option**, because Karing, Hiddify and FlClash prove its viability in this category. If a future spike demonstrates a concrete advantage, Flutter should sit above PVNetwork-owned contracts rather than replace the network/domain architecture.
+
+## Key findings
+
+1. **Karing** is the strongest whole-product cross-platform UX/architecture reference, but its source is GPL v3-or-later and carries a naming/association condition. Treat it as clean-room reference unless PVNetwork intentionally adopts the applicable GPL obligations.
+2. **Hiddify** is a strong Flutter/core-boundary reference, but its current repository license adds non-commercial, fork, attribution, release and naming/UI conditions. Treat it as reference-only for an independent commercial product unless written permission/legal approval says otherwise.
+3. **v2rayNG** is an excellent Android/Xray lifecycle and import reference but is Android-specific and GPL-3.0.
+4. **v2rayN** is a strong desktop multi-core/process/system-proxy reference and is GPL-3.0.
+5. **AmneziaVPN** is a strong multi-platform native/service/privilege reference using C++/Qt/QML and is GPL-3.0.
+6. **Happ** public repositories inspected in this snapshot are release/readme oriented rather than a reusable full application source tree; use Happ as UX/behavior reference.
+7. No authoritative public source tree for the **official V2Box end-user application** was verified. Same-name repositories must not automatically be treated as its source.
+8. No authoritative app source tree for **NPV Tunnel/NapsternetV** was verified. Binary mirrors and reverse-engineering/config-decryption repositories are not acceptable implementation provenance.
+9. The independent `imanheidary/v2box` project is an **MIT-licensed Flutter/plugin glue candidate**, but it is not official V2Box. Its own code may be eligible for a bounded audit; Xray/sing-box/native artifacts retain separate licenses.
+10. **Xray-core (MPL-2.0)** is the most immediately relevant reusable upstream to the existing PVNetwork architecture because an Xray adapter/runtime boundary already exists in the repository.
 
 ## Reuse vocabulary
 
-This folder uses four distinct decisions:
-
-- **DIRECT-CANDIDATE** — code may be technically and license-wise suitable for reuse after dependency/security audit and preservation of notices. This is not automatic approval.
-- **GPL-ONLY** — source is useful, but copying it into PVNetwork would require a GPL-compatible distribution strategy; use clean-room concepts instead if PVNetwork is not intended to be GPL.
-- **REFERENCE-ONLY** — use public behavior, architecture concepts, protocols/specifications and UI lessons; do not copy source/assets.
-- **NO-SOURCE** — an authoritative source tree was not verified; do not treat mirrors, binaries, decompilations or unrelated same-name repositories as source.
+- **DIRECT-CANDIDATE** — source may be suitable for bounded reuse after exact revision, dependency, security, platform and license audit. This is not automatic approval.
+- **GPL-ONLY** — source can be studied, but direct copying requires an intentionally GPL-compatible distribution strategy and all associated obligations.
+- **REFERENCE-ONLY** — use public behavior, architecture concepts and interoperability lessons; independently implement PVNetwork-owned code and do not copy source/assets.
+- **NO-SOURCE** — no authoritative reusable source tree was verified; do not substitute mirrors, binaries, decompilations or unrelated same-name repositories.
 
 ## Legal / provenance boundary
 
@@ -80,28 +84,27 @@ This is an engineering license screen, not final legal advice.
 
 Before shipping any third-party code:
 
-- pin the exact revision/tag;
+- pin the exact revision/tag and hashes;
 - capture the exact license at that revision;
 - audit transitive/native dependencies separately;
 - preserve required copyright/license notices;
 - verify commercial use and redistribution terms;
-- verify App Store / Google Play / Microsoft Store compatibility;
+- verify App Store / Google Play / Microsoft Store/distribution compatibility;
 - generate an SBOM;
-- run security and supply-chain checks.
+- run security and supply-chain checks;
+- ensure the dependency is behind PVNetwork-owned interfaces and has a replacement path.
 
 Public GitHub visibility does **not** mean source is safe to copy.
 
 ## Primary upstream evidence
 
 - Karing: https://github.com/KaringX/karing
-- Karing license: https://github.com/KaringX/karing/blob/main/LICENSE.md
 - Hiddify: https://github.com/hiddify/hiddify-app
-- Hiddify license: https://github.com/hiddify/hiddify-app/blob/main/LICENSE.md
 - v2rayNG: https://github.com/2dust/v2rayNG
+- v2rayN: https://github.com/2dust/v2rayN
 - AmneziaVPN client: https://github.com/amnezia-vpn/amnezia-client
 - Happ organization: https://github.com/Happ-proxy
 - NekoBox for Android: https://github.com/MatsuriDayo/NekoBoxForAndroid
-- v2rayN: https://github.com/2dust/v2rayN
 - FlClash: https://github.com/chen08209/FlClash
 - Clash Verge Rev: https://github.com/clash-verge-rev/clash-verge-rev
 - independent MIT Flutter dual-core plugin: https://github.com/imanheidary/v2box
@@ -115,16 +118,17 @@ Three different things can appear in searches and must not be conflated:
 
 1. **V2Box the end-user application** — no authoritative public source tree was verified in this research snapshot.
 2. **SagerNet/v2box** — an archived Go migration/library project from SagerNet; it is not the V2Box GUI application's source.
-3. **imanheidary/v2box** — an independent 2026 Flutter VPN/core plugin under MIT; useful as a candidate integration library, but it is not official V2Box source.
+3. **imanheidary/v2box** — an independent 2026 Flutter VPN/core plugin under MIT; potentially useful in a Flutter-specific experiment, but not official V2Box source.
 
 ## Relationship to existing PVNetwork architecture
 
-This research reinforces, rather than replaces, `docs/ARCHITECTURE.md`:
+This research reinforces, rather than replaces, `docs/ARCHITECTURE.md` and the current repository structure:
 
 - UI must remain engine-independent.
 - configuration must normalize into a PVNetwork-owned canonical profile model.
 - routing/DNS are shared product subsystems.
 - platform differences remain behind platform adapters.
 - no protocol cryptography should be reimplemented in the product layer.
+- the existing KMP/common domain and tested engine adapters should be preserved while mobile/TV targets are added incrementally.
 
-The new recommendation is that **Flutter is the leading UI/product-shell candidate** because multiple successful current clients use it across desktop/mobile, while the network engine boundary should remain independent of Flutter and independent of any single proxy core.
+See `CROSS_PLATFORM_ARCHITECTURE_RECOMMENDATION.md` for the implementation-order recommendation and platform matrix.
