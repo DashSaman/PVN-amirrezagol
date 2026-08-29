@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "status": "ACTIVE",
+  "status": "IDLE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-29T14:24:00Z",
-  "heartbeat_at_utc": "2026-08-29T14:24:00Z",
+  "heartbeat_at_utc": "2026-08-29T14:40:00Z",
   "task": "Client/source reuse research for future PVNetwork cross-platform application: Karing, Hiddify, v2rayNG, Amnezia, Happ, V2Box, NPV/NV Tunnel, NekoBox and selected adjacent open-source clients.",
-  "note": "This is a separate competitor/client architecture and source-reuse research slice. It does not reopen or alter the completed 93-entry protocol research trackers and does not claim implementation, device certification, Store readiness, or production readiness. License compatibility must be evaluated before copying any third-party source."
+  "note": "Completed and committed the dedicated app research set under app/: source/provenance/license matrix, architecture recommendation aligned to the existing KMP/Compose + engine-adapter implementation, and durable agent handoff. Added docs/CHECKPOINT_2026-08-29_CLIENT_SOURCE_RESEARCH.md. No third-party dependency was adopted and no implementation/device/Store/production readiness is claimed."
 }
