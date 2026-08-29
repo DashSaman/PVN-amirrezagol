@@ -1,10 +1,10 @@
 # PVNetwork Cross-Platform Client Research
 
-Status: **research/reference complete for the client-source survey and public-mobile readiness baseline defined on 2026-08-29; no new client implementation is claimed by this folder.**
+Status: **research/reference complete for the client-source survey and public-mobile readiness baseline defined on 2026-08-29; public-app master requirements and execution plan are now defined, but no new mobile implementation is claimed by this folder.**
 
 Research snapshot: 2026-08-29
 
-This folder records the evidence needed to design a future PVNetwork cross-platform VPN/proxy client without blindly forking a competitor application.
+This folder records the evidence and product requirements needed to design and build a future PVNetwork cross-platform VPN/proxy client without blindly forking a competitor application.
 
 ## Goal
 
@@ -37,12 +37,20 @@ Additional high-value references:
 
 ## Files
 
+### Public app execution set — read these first for implementation
+
+- `PUBLIC_APP_MASTER_REQUIREMENTS.md` — authoritative product/engineering/Store/quality specification for the public consumer app: architecture, Android/iOS lifecycle, UX, account/entitlement, billing, backend, routing/DNS, security/privacy, QA, CI/CD, release gates, incident response, milestone DoD and no-fake-completion rules.
+- `PUBLIC_APP_AGENT_HANDOFF.md` — exact resume context and next action for any future agent continuing the public app.
+- `PRODUCTION_READINESS_GAP_ANALYSIS.md` — gap analysis for a professional public Android/iOS release: organization/store blockers, `VpnService`/Network Extension, API/SDK requirements, privacy, billing, account deletion, backend/control plane, consumer UX, security, device QA, release engineering and prioritized execution gates.
+- `docs/superpowers/plans/2026-08-29-public-mobile-client.md` — 20-task executable implementation plan with file boundaries, tests, acceptance conditions and sequencing from launch decisions through Android/iOS vertical slices to RC/Store dry run.
+
+### Client/source research set
+
 - `CLIENT_SOURCE_REUSE_MATRIX.md` — canonical source/repository status, licenses, reusable subsystems, direct-reuse decisions and risks.
 - `KARING_DEEP_SOURCE_ANALYSIS.md` — deep Karing app/core/ruleset inspection: protocols, transports, Naive implementation, GeoIP/GeoSite/ACL, Iran preset, routing fields/actions, DNS, TLS and reuse boundaries.
 - `KARING_PLATFORM_IMPLEMENTATION_ANALYSIS.md` — OS-by-OS Karing implementation analysis covering Android/Android TV, iOS/iPadOS, tvOS, macOS, Windows and Linux: native shells, VPN/service boundaries, permissions/entitlements, lifecycle, packaging, missing/generated core artifacts, security observations and PVNetwork design lessons.
-- `PRODUCTION_READINESS_GAP_ANALYSIS.md` — gap analysis for a professional public Android/iOS release: organization/store blockers, `VpnService`/Network Extension, API/SDK requirements, privacy, billing, account deletion, backend/control plane, consumer UX, security, device QA, release engineering and prioritized P0-P6 execution gates.
 - `CROSS_PLATFORM_ARCHITECTURE_RECOMMENDATION.md` — recommendation aligned to the actual current PVNetwork implementation.
-- `AGENT_HANDOFF.md` — exact continuation point for a later design/implementation agent.
+- `AGENT_HANDOFF.md` — research-focused source-reuse handoff. For public application implementation, prefer `PUBLIC_APP_AGENT_HANDOFF.md`.
 
 ## Core conclusion
 
@@ -52,7 +60,7 @@ After inspecting the actual repository, the preferred direction is:
 
 ```text
 PVNetwork-owned Kotlin Multiplatform / Compose product shell
-        -> PVNetwork canonical profile/subscription/routing/DNS model
+        -> PVNetwork canonical account/profile/subscription/routing/DNS model
         -> stable EngineAdapter / PlatformAdapter contracts
         -> audited upstream engines and OS VPN APIs
 ```
@@ -61,7 +69,13 @@ The reason is not toolkit preference: PVNetwork already has a Kotlin Multiplatfo
 
 Flutter remains a **secondary experimental UI option**, because Karing, Hiddify and FlClash prove its viability in this category. If a future spike demonstrates a concrete advantage, Flutter should sit above PVNetwork-owned contracts rather than replace the network/domain architecture.
 
-The public-mobile readiness audit adds an important project priority: **the next distance-to-market bottleneck is mobile/product/store engineering, not another broad protocol-count wave.** The current repository still has no Android/iOS app module, KMP currently targets JVM only, device verification is zero, and Store/privacy/billing/release infrastructure is not implemented. See `PRODUCTION_READINESS_GAP_ANALYSIS.md`.
+The public-mobile readiness audit adds an important project priority: **the next distance-to-market bottleneck is mobile/product/store engineering, not another broad protocol-count wave.** The current inspected repository state still has no Android/iOS app module, KMP currently targets JVM only, device verification is zero, and Store/privacy/billing/release infrastructure is not implemented. See `PRODUCTION_READINESS_GAP_ANALYSIS.md` and `PUBLIC_APP_MASTER_REQUIREMENTS.md`.
+
+## Public-app quality bar
+
+The intended product is for ordinary public users, not a developer demo. A release candidate must not have known Blocker/Critical defects in security, privacy, billing/entitlement, connection truth, lifecycle, crash/ANR or data integrity. Mobile support must be real-device and exact-capability evidence based. Compilation, parser success, emulator success or one engine process starting is not sufficient proof.
+
+The canonical public-app milestones are defined in `PUBLIC_APP_MASTER_REQUIREMENTS.md` from M-P0 (decisions locked) through M-P8 (production verified).
 
 ## Key findings
 
@@ -78,6 +92,7 @@ The public-mobile readiness audit adds an important project priority: **the next
 11. Deeper Karing inspection confirms that its capability comes from a three-layer stack: Flutter app + a Karing-maintained sing-box fork + Karing rulesets. The core source verifies Naive, AnyTLS, VLESS/VMess/Trojan, Shadowsocks/ShadowTLS, Hysteria/Hysteria2/TUIC, WireGuard, SSH/Tor and extensive routing/DNS/TLS features; see `KARING_DEEP_SOURCE_ANALYSIS.md`.
 12. Per-platform source inspection shows Karing does not make Flutter own the tunnel lifecycle: Android delegates to an external `vpn_service`, Apple targets delegate packet/system extensions to `LibVpnCore`, Windows injects a separate release core directory, and Linux packages a separate `karingService`; tvOS additionally uses a dedicated native SwiftUI shell with LAN/QR provisioning. See `KARING_PLATFORM_IMPLEMENTATION_ANALYSIS.md`.
 13. Current Store rules make organization identity a release gate for VPN apps: Apple VPN apps must be offered by organization-enrolled developers, and Google Play requires organization accounts for apps approved to use `VpnService` under its current/upcoming Play Console requirements. Public release planning therefore starts with publisher/legal identity, privacy posture and billing/account design in parallel with mobile implementation.
+14. The correct next implementation strategy is a complete Android vertical slice first, then the equivalent iOS Packet Tunnel slice, before broad consumer feature expansion or another protocol-count campaign.
 
 ## Reuse vocabulary
 
@@ -136,9 +151,10 @@ This research reinforces, rather than replaces, `docs/ARCHITECTURE.md` and the c
 
 - UI must remain engine-independent.
 - configuration must normalize into a PVNetwork-owned canonical profile model.
+- account/entitlement and local tunnel state must remain separate domains.
 - routing/DNS are shared product subsystems.
 - platform differences remain behind platform adapters.
 - no protocol cryptography should be reimplemented in the product layer.
 - the existing KMP/common domain and tested engine adapters should be preserved while mobile/TV targets are added incrementally.
 
-See `CROSS_PLATFORM_ARCHITECTURE_RECOMMENDATION.md` for the implementation-order recommendation and platform matrix, and `PRODUCTION_READINESS_GAP_ANALYSIS.md` for the current distance-to-Store execution gates.
+For implementation, start with `PUBLIC_APP_AGENT_HANDOFF.md`, `PUBLIC_APP_MASTER_REQUIREMENTS.md` and `docs/superpowers/plans/2026-08-29-public-mobile-client.md`.
