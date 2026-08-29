@@ -4,9 +4,11 @@ Date: **2026-08-29**
 
 Repository: `DashSaman/PVN-amirrezagol`
 
-Status: **CLIENT-SOURCE-RESEARCH COMPLETE FOR CURRENT SCOPE; IMPLEMENTATION NOT STARTED BY THIS SLICE.**
+Status: **CLIENT-SOURCE-RESEARCH COMPLETE FOR CURRENT SCOPE.**
 
-## Read first
+> **Important for future implementation agents:** this file is now the research/source-reuse handoff. For building the public consumer application, read `app/PUBLIC_APP_AGENT_HANDOFF.md` first, then `app/PUBLIC_APP_MASTER_REQUIREMENTS.md` and `docs/superpowers/plans/2026-08-29-public-mobile-client.md`. Those newer files supersede the older implementation-order notes in this research handoff.
+
+## Read first for research/source-reuse questions
 
 1. `app/README.md`
 2. `app/KARING_DEEP_SOURCE_ANALYSIS.md`
@@ -162,34 +164,20 @@ From v2rayN / Clash Verge Rev:
 - do not implement protocol cryptography from scratch.
 - do not infer production support from parser tests.
 
-## Exact next engineering decision
+## Public-app implementation pointer
 
-Before new cross-platform implementation work, perform a short **design gate** against the existing implementation:
+The older design-gate notes from this file have been superseded by the detailed public-app execution set:
 
-1. confirm KMP/Compose Multiplatform remains the default product path;
-2. define exact target order (recommended: desktop preservation -> Android -> iOS -> Android TV -> Apple TV where feasible);
-3. formalize the missing platform adapter contracts;
-4. formalize a shared tunnel state machine and platform-service install/version model;
-5. decide which engine capabilities are required for the first mobile vertical slice;
-6. select a first real mobile E2E test protocol already supported in repository adapters.
+- `app/PUBLIC_APP_AGENT_HANDOFF.md`
+- `app/PUBLIC_APP_MASTER_REQUIREMENTS.md`
+- `docs/superpowers/plans/2026-08-29-public-mobile-client.md`
+- `docs/CHECKPOINT_2026-08-29_PUBLIC_APP_MASTER_SPEC.md`
 
-## First recommended implementation spike after design approval
+Unless later repository evidence says otherwise, implementation begins with Task 1 in the plan: create `app/PUBLIC_APP_DECISIONS.md`, then proceed through shared mobile contracts, Android real-device vertical slice, iOS Packet Tunnel real-device vertical slice, product/backend/privacy/release work.
 
-**Android KMP/Compose vertical slice**, not a competitor fork:
+## Completion boundary for this research handoff
 
-- add Android target/app shell without moving canonical models out of `core:foundation`;
-- implement the minimum Android `VpnService`/platform boundary needed for one existing engine path;
-- reuse current adapter contracts;
-- prove connect/data path/disconnect/cleanup on a real or controlled Android target;
-- keep service state independent from Activity/UI lifetime;
-- only then add Quick Settings/automation and expand subscription/routing scope;
-- only after the phone flow is stable, add TV-specific focus/QR provisioning behavior.
-
-A separate Flutter experiment may inspect `imanheidary/v2box` MIT glue if useful, but it must be isolated and compared against KMP rather than silently replacing the architecture.
-
-## Completion boundary for this handoff
-
-Completed in this research slice:
+Completed:
 
 - client/source inventory;
 - source provenance classification;
@@ -197,15 +185,15 @@ Completed in this research slice:
 - direct-reuse vs clean-room reference classification;
 - V2Box naming/provenance disambiguation;
 - deep Karing core/ruleset/protocol/routing research;
-- deep Karing OS-by-OS implementation research for Android/Android TV, iOS, tvOS, macOS, Windows and Linux;
+- deep Karing OS-by-OS implementation research;
 - Karing public-build-chain/core/service completeness analysis;
 - architecture recommendation aligned to the actual PVNetwork repository;
-- durable future-agent handoff.
+- durable research handoff.
 
-Not completed/claimed:
+Not claimed by this research handoff:
 
 - adoption of a third-party dependency;
-- mobile implementation;
+- Android/iOS implementation;
 - device tests;
 - Store validation;
 - production readiness;
