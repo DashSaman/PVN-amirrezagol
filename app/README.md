@@ -1,6 +1,6 @@
 # PVNetwork Cross-Platform Client Research
 
-Status: **research/reference complete for the client-source survey defined on 2026-08-29; no new client implementation is claimed by this folder.**
+Status: **research/reference complete for the client-source survey and public-mobile readiness baseline defined on 2026-08-29; no new client implementation is claimed by this folder.**
 
 Research snapshot: 2026-08-29
 
@@ -40,6 +40,7 @@ Additional high-value references:
 - `CLIENT_SOURCE_REUSE_MATRIX.md` — canonical source/repository status, licenses, reusable subsystems, direct-reuse decisions and risks.
 - `KARING_DEEP_SOURCE_ANALYSIS.md` — deep Karing app/core/ruleset inspection: protocols, transports, Naive implementation, GeoIP/GeoSite/ACL, Iran preset, routing fields/actions, DNS, TLS and reuse boundaries.
 - `KARING_PLATFORM_IMPLEMENTATION_ANALYSIS.md` — OS-by-OS Karing implementation analysis covering Android/Android TV, iOS/iPadOS, tvOS, macOS, Windows and Linux: native shells, VPN/service boundaries, permissions/entitlements, lifecycle, packaging, missing/generated core artifacts, security observations and PVNetwork design lessons.
+- `PRODUCTION_READINESS_GAP_ANALYSIS.md` — gap analysis for a professional public Android/iOS release: organization/store blockers, `VpnService`/Network Extension, API/SDK requirements, privacy, billing, account deletion, backend/control plane, consumer UX, security, device QA, release engineering and prioritized P0-P6 execution gates.
 - `CROSS_PLATFORM_ARCHITECTURE_RECOMMENDATION.md` — recommendation aligned to the actual current PVNetwork implementation.
 - `AGENT_HANDOFF.md` — exact continuation point for a later design/implementation agent.
 
@@ -60,6 +61,8 @@ The reason is not toolkit preference: PVNetwork already has a Kotlin Multiplatfo
 
 Flutter remains a **secondary experimental UI option**, because Karing, Hiddify and FlClash prove its viability in this category. If a future spike demonstrates a concrete advantage, Flutter should sit above PVNetwork-owned contracts rather than replace the network/domain architecture.
 
+The public-mobile readiness audit adds an important project priority: **the next distance-to-market bottleneck is mobile/product/store engineering, not another broad protocol-count wave.** The current repository still has no Android/iOS app module, KMP currently targets JVM only, device verification is zero, and Store/privacy/billing/release infrastructure is not implemented. See `PRODUCTION_READINESS_GAP_ANALYSIS.md`.
+
 ## Key findings
 
 1. **Karing** is the strongest whole-product cross-platform UX/architecture reference, but its source is GPL v3-or-later and carries a naming/association condition. Treat it as clean-room reference unless PVNetwork intentionally adopts the applicable GPL obligations.
@@ -74,6 +77,7 @@ Flutter remains a **secondary experimental UI option**, because Karing, Hiddify 
 10. **Xray-core (MPL-2.0)** is the most immediately relevant reusable upstream to the existing PVNetwork architecture because an Xray adapter/runtime boundary already exists in the repository.
 11. Deeper Karing inspection confirms that its capability comes from a three-layer stack: Flutter app + a Karing-maintained sing-box fork + Karing rulesets. The core source verifies Naive, AnyTLS, VLESS/VMess/Trojan, Shadowsocks/ShadowTLS, Hysteria/Hysteria2/TUIC, WireGuard, SSH/Tor and extensive routing/DNS/TLS features; see `KARING_DEEP_SOURCE_ANALYSIS.md`.
 12. Per-platform source inspection shows Karing does not make Flutter own the tunnel lifecycle: Android delegates to an external `vpn_service`, Apple targets delegate packet/system extensions to `LibVpnCore`, Windows injects a separate release core directory, and Linux packages a separate `karingService`; tvOS additionally uses a dedicated native SwiftUI shell with LAN/QR provisioning. See `KARING_PLATFORM_IMPLEMENTATION_ANALYSIS.md`.
+13. Current Store rules make organization identity a release gate for VPN apps: Apple VPN apps must be offered by organization-enrolled developers, and Google Play requires organization accounts for apps approved to use `VpnService` under its current/upcoming Play Console requirements. Public release planning therefore starts with publisher/legal identity, privacy posture and billing/account design in parallel with mobile implementation.
 
 ## Reuse vocabulary
 
@@ -137,4 +141,4 @@ This research reinforces, rather than replaces, `docs/ARCHITECTURE.md` and the c
 - no protocol cryptography should be reimplemented in the product layer.
 - the existing KMP/common domain and tested engine adapters should be preserved while mobile/TV targets are added incrementally.
 
-See `CROSS_PLATFORM_ARCHITECTURE_RECOMMENDATION.md` for the implementation-order recommendation and platform matrix.
+See `CROSS_PLATFORM_ARCHITECTURE_RECOMMENDATION.md` for the implementation-order recommendation and platform matrix, and `PRODUCTION_READINESS_GAP_ANALYSIS.md` for the current distance-to-Store execution gates.
