@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "status": "ACTIVE",
+  "status": "IDLE",
   "actor": "interactive-chat",
   "started_at_utc": "2026-08-29T16:03:00Z",
-  "heartbeat_at_utc": "2026-08-29T16:03:00Z",
+  "heartbeat_at_utc": "2026-08-29T16:16:00Z",
   "task": "Production-readiness gap analysis for a public PVNetwork Android/iOS VPN client targeting Google Play and Apple App Store.",
-  "note": "Assess current repository implementation against current Google Play and Apple App Store VPN, privacy, billing, SDK, review, quality, security and operational requirements; persist blockers and phased requirements under app/. No mobile implementation or Store readiness is claimed by this activity."
+  "note": "Completed and committed app/PRODUCTION_READINESS_GAP_ANALYSIS.md, updated app/README.md, and added docs/CHECKPOINT_2026-08-29_PUBLIC_APP_READINESS.md. Analysis covers organization publisher requirements, Google VpnService policy/declaration, Apple VPN/Network Extension rules, Android API 36 and native 64-bit/16KB gates, Xcode/iOS 26 SDK submission requirements, privacy/data safety/manifests, billing/account deletion, consumer UX, backend, security, device QA, CI/CD and P0-P6 release gates. No mobile implementation, device verification, Store approval or production readiness is claimed."
 }
