@@ -38,6 +38,7 @@ Additional high-value references:
 ## Files
 
 - `CLIENT_SOURCE_REUSE_MATRIX.md` — canonical source/repository status, licenses, reusable subsystems, direct-reuse decisions and risks.
+- `KARING_DEEP_SOURCE_ANALYSIS.md` — deep Karing app/core/ruleset inspection: protocols, transports, Naive implementation, GeoIP/GeoSite/ACL, Iran preset, routing fields/actions, DNS, TLS and reuse boundaries.
 - `CROSS_PLATFORM_ARCHITECTURE_RECOMMENDATION.md` — recommendation aligned to the actual current PVNetwork implementation.
 - `AGENT_HANDOFF.md` — exact continuation point for a later design/implementation agent.
 
@@ -70,6 +71,7 @@ Flutter remains a **secondary experimental UI option**, because Karing, Hiddify 
 8. No authoritative app source tree for **NPV Tunnel/NapsternetV** was verified. Binary mirrors and reverse-engineering/config-decryption repositories are not acceptable implementation provenance.
 9. The independent `imanheidary/v2box` project is an **MIT-licensed Flutter/plugin glue candidate**, but it is not official V2Box. Its own code may be eligible for a bounded audit; Xray/sing-box/native artifacts retain separate licenses.
 10. **Xray-core (MPL-2.0)** is the most immediately relevant reusable upstream to the existing PVNetwork architecture because an Xray adapter/runtime boundary already exists in the repository.
+11. Deeper Karing inspection confirms that its capability comes from a three-layer stack: Flutter app + a Karing-maintained sing-box fork + Karing rulesets. The core source verifies Naive, AnyTLS, VLESS/VMess/Trojan, Shadowsocks/ShadowTLS, Hysteria/Hysteria2/TUIC, WireGuard, SSH/Tor and extensive routing/DNS/TLS features; see `KARING_DEEP_SOURCE_ANALYSIS.md`.
 
 ## Reuse vocabulary
 
@@ -99,6 +101,8 @@ Public GitHub visibility does **not** mean source is safe to copy.
 ## Primary upstream evidence
 
 - Karing: https://github.com/KaringX/karing
+- Karing sing-box fork: https://github.com/KaringX/sing-box
+- Karing rulesets: https://github.com/KaringX/karing-ruleset
 - Hiddify: https://github.com/hiddify/hiddify-app
 - v2rayNG: https://github.com/2dust/v2rayNG
 - v2rayN: https://github.com/2dust/v2rayN
@@ -108,7 +112,7 @@ Public GitHub visibility does **not** mean source is safe to copy.
 - FlClash: https://github.com/chen08209/FlClash
 - Clash Verge Rev: https://github.com/clash-verge-rev/clash-verge-rev
 - independent MIT Flutter dual-core plugin: https://github.com/imanheidary/v2box
-- sing-box: https://github.com/SagerNet/sing-box
+- upstream sing-box: https://github.com/SagerNet/sing-box
 - Xray-core: https://github.com/XTLS/Xray-core
 - Mihomo: https://github.com/MetaCubeX/mihomo
 
