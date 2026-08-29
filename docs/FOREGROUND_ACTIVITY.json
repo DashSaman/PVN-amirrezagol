@@ -2,8 +2,8 @@
   "schema_version": 1,
   "status": "ACTIVE",
   "actor": "interactive-chat",
-  "started_at_utc": "2026-08-17T21:14:42Z",
-  "heartbeat_at_utc": "2026-08-26T16:10:43Z",
-  "task": "M3 modern proxy wave: close retained Xray REALITY/XHTTP/Vision/Trojan interoperability evidence and prove host-supplied Mihomo v1.19.30 Hysteria2/TUIC/AnyTLS through an independently pinned sing-box v1.13.19 server and real echo data path.",
-  "note": "Before this heartbeat main carried 52b15abcf02e8aeb85bd17b5d992006c3bc6a2ed. Mihomo exact-binary smoke evidence is PASS in run 32986857940 at b39186e9ab4a960c847e5d46378fc6900172d727. Cross-core Hysteria2/TUIC/AnyTLS tests plus exact sing-box fixture workflow are committed on main but are not promoted until a descendant CI run executes and passes. No insecure TLS bypass, user secret, or product-bundled fixture is used."
+  "started_at_utc": "2026-08-29T14:24:00Z",
+  "heartbeat_at_utc": "2026-08-29T14:24:00Z",
+  "task": "Client/source reuse research for future PVNetwork cross-platform application: Karing, Hiddify, v2rayNG, Amnezia, Happ, V2Box, NPV/NV Tunnel, NekoBox and selected adjacent open-source clients.",
+  "note": "This is a separate competitor/client architecture and source-reuse research slice. It does not reopen or alter the completed 93-entry protocol research trackers and does not claim implementation, device certification, Store readiness, or production readiness. License compatibility must be evaluated before copying any third-party source."
 }
