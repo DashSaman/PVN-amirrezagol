@@ -68,6 +68,7 @@ class JvmHostMihomoRealBinaryInteropTest {
             extraExtensions = mapOf(
                 "mihomo.sni" to "localhost",
                 "mihomo.tuic.uuid" to uuid,
+                "mihomo.tuic.congestion-controller" to "cubic",
             ),
             serverInbound = { port, cert, key, credential ->
                 "{\"type\":\"tuic\",\"tag\":\"server\",\"listen\":\"127.0.0.1\",\"listen_port\":$port," +
@@ -118,6 +119,7 @@ class JvmHostMihomoRealBinaryInteropTest {
         val serverConfig = serverDirectory.resolve("server.json")
         var serverProcess: Process? = null
         var prepared: PreparedConnection? = null
+        val serverLog = mutableListOf<String>()
 
         try {
             origin.start()
@@ -136,8 +138,8 @@ class JvmHostMihomoRealBinaryInteropTest {
 
             serverProcess = ProcessBuilder(singBox.toString(), "run", "-c", serverConfig.toString())
                 .redirectErrorStream(true).start()
-            drain(serverProcess, "pvnetwork-sing-box-$caseName-server-output")
-            assertFalse(serverProcess.waitFor(400, TimeUnit.MILLISECONDS), "sing-box $caseName server exited during startup")
+            drain(serverProcess, "pvnetwork-sing-box-$caseName-server-output", serverLog)
+            assertFalse(serverProcess.waitFor(1_500, TimeUnit.MILLISECONDS), "sing-box $caseName server exited during startup")
 
             val secretStore = MemorySecretStore()
             val credentialRef = secretStore.putText(credential, SecretPurpose.TOKEN)
@@ -160,7 +162,7 @@ class JvmHostMihomoRealBinaryInteropTest {
             assertTrue(connected.await(10, TimeUnit.SECONDS), "PVNetwork $caseName Mihomo runtime did not report local readiness")
             waitForTcpListener(socksPort)
 
-            val response = roundTripThroughSocks5(socksPort, origin.port, origin.marker, origin)
+            val response = roundTripThroughSocks5(socksPort, origin.port, origin.marker, origin, serverLog)
             assertEquals("echo:${origin.marker}", response)
             assertTrue(origin.awaitPayload(), "origin did not receive the proxied $caseName payload")
             assertEquals(ConnectionState.CONNECTED, prepared.snapshot().state)
@@ -172,7 +174,7 @@ class JvmHostMihomoRealBinaryInteropTest {
         }
     }
 
-    private fun roundTripThroughSocks5(socksPort: Int, originPort: Int, marker: String, origin: LocalEchoOrigin): String {
+    private fun roundTripThroughSocks5(socksPort: Int, originPort: Int, marker: String, origin: LocalEchoOrigin, serverLog: List<String>): String {
         Socket().use { socket ->
             socket.soTimeout = 15_000
             socket.connect(InetSocketAddress(loopback, socksPort), 5_000)
@@ -194,7 +196,7 @@ class JvmHostMihomoRealBinaryInteropTest {
             }
             readExactly(input, 2)
             output.write(marker.toByteArray(StandardCharsets.US_ASCII)); output.flush()
-            assertTrue(origin.awaitConnection(), "target connection was not established for $marker")
+            assertTrue(origin.awaitConnection(), "target connection was not established for $marker; sing-box=${synchronized(serverLog) { serverLog.takeLast(20).joinToString(" | ") }}")
             assertTrue(origin.awaitPayload(), "target did not receive $marker")
             val expected = "echo:$marker".toByteArray(StandardCharsets.US_ASCII)
             val response = ByteArray(expected.size)
@@ -256,9 +258,13 @@ class JvmHostMihomoRealBinaryInteropTest {
 
     private fun reserveUdpPort(): Int = DatagramSocket(0, loopback).use { it.localPort }
 
-    private fun drain(process: Process, name: String) {
+    private fun drain(process: Process, name: String, sink: MutableList<String>? = null) {
         thread(name = name, isDaemon = true) {
-            runCatching { process.inputStream.bufferedReader().useLines { lines -> lines.forEach { _ -> } } }
+            runCatching {
+                process.inputStream.bufferedReader().useLines { lines ->
+                    lines.forEach { line -> sink?.let { synchronized(it) { it += line.take(1_024) } } }
+                }
+            }
         }
     }
 

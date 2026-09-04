@@ -22,6 +22,14 @@ class OpenConnectAdapterTest {
     }
 
     @Test
+    fun advertisesOnlyCapabilitiesConfirmedByTheRuntime() {
+        val selected = adapter(protocols = setOf(OpenConnectAdapter.ANYCONNECT_PROTOCOL, "pulse"))
+
+        assertEquals(setOf("openconnect"), selected.descriptor.capabilities.map { it.value }.toSet())
+        assertEquals("OpenConnect version v9.12", selected.descriptor.upstreamVersion)
+    }
+
+    @Test
     fun rejectsKnownButUnimplementedUpstreamProtocols() {
         val validation = adapter().validate(profile(
             extensions = baseExtensions() + (OpenConnectAdapter.PROTOCOL_EXTENSION to "pulse"),
