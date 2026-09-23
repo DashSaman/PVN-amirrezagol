@@ -318,7 +318,10 @@ private fun Sidebar(
         ) {
             Image(painterResource("pvnetwork_logo.png"), null, Modifier.size(38.dp))
             Column {
-                Text("PVNetwork", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = Ink)
+                Column {
+                    Text("PVNetwork", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = Ink)
+                    Text("v0.2.1", fontSize = 10.sp, color = GoldSoft)
+                }
                 Text(
                     if (controller.coreStatus.available) "Xray ${controller.coreStatus.version ?: ""}" else copy.coreMissing,
                     fontSize = 10.sp, color = InkMuted, maxLines = 1,
