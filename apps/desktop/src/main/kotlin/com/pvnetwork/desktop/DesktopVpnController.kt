@@ -10,11 +10,13 @@ import com.pvnetwork.core.diagnostics.DiagnosticEvent
 import com.pvnetwork.core.diagnostics.DiagnosticSeverity
 import com.pvnetwork.core.profile.PVProfile
 import com.pvnetwork.core.profile.ProfileId
+import com.pvnetwork.core.security.SecretStore
 import com.pvnetwork.engine.xray.JvmHostXrayRuntimeFactory
-import com.pvnetwork.engine.xray.VlessShareLinkException
-import com.pvnetwork.engine.xray.VlessShareLinkImporter
+import com.pvnetwork.engine.xray.ShareLinkParser
 import com.pvnetwork.engine.xray.XrayAdapter
 import java.nio.file.Path
+import java.util.UUID
+import java.util.concurrent.Executors
 
 data class CoreStatus(
     val available: Boolean,
@@ -23,32 +25,52 @@ data class CoreStatus(
 )
 
 sealed interface ImportOutcome {
-    data class Success(val profile: PVProfile, val warnings: Int) : ImportOutcome
+    data class Success(val profiles: List<PVProfile>, val warnings: Int, val failedLines: Int) : ImportOutcome
     data class Failure(val reason: String) : ImportOutcome
 }
 
+sealed interface SubscriptionOutcome {
+    data class Success(val added: Int, val failedLines: Int) : SubscriptionOutcome
+    data class Failure(val reason: String) : SubscriptionOutcome
+}
+
+/** latency display state per profile id: null = untested, "…" = testing, "ms" value or "timeout". */
+data class LatencyCell(val testing: Boolean = false, val millis: Long? = null, val timeout: Boolean = false)
+
 /**
  * Desktop orchestration: canonical import -> adapter validation -> real
- * host-supplied engine runtime -> optional system-proxy wiring. Connection
- * truth comes exclusively from the runtime state machine callbacks.
+ * host-supplied engine runtime -> system-proxy wiring. Connection truth
+ * comes exclusively from the runtime state machine callbacks.
  */
 class DesktopVpnController(
     private val secrets: DesktopSecretStore,
     private val repository: ProfileRepository,
     private val proxy: SystemProxyController,
+    private val subscriptions: SubscriptionRepository = SubscriptionRepository(Path.of(System.getProperty("user.home"), ".pvnetwork", "subscriptions.txt")),
     private val useSystemProxy: Boolean = true,
     private val socksPort: Int = JvmHostXrayRuntimeFactory.DEFAULT_SOCKS_PORT,
 ) {
     private var connection: PreparedConnection? = null
+    private val backgroundExecutor = Executors.newCachedThreadPool { runnable ->
+        Thread(runnable, "pvnetwork-background").apply { isDaemon = true }
+    }
+
+    private val fetcher = SubscriptionFetcher { link, id ->
+        ShareLinkParser.parse(link, id, secrets)?.profile
+    }
 
     var profilesState by mutableStateOf(repository.profiles())
+        private set
+    var subscriptionsState by mutableStateOf(subscriptions.all())
         private set
     var selectedProfileId by mutableStateOf<ProfileId?>(null)
     var connectionState by mutableStateOf(ConnectionSnapshot(ConnectionState.DISCONNECTED))
         private set
-    var coreStatus by mutableStateOf<CoreStatus>(CoreStatus(false, null, ""))
+    var coreStatus by mutableStateOf(CoreStatus(false, null, ""))
         private set
     var diagnostics by mutableStateOf<List<DiagnosticEvent>>(emptyList())
+        private set
+    var latencies by mutableStateOf<Map<String, LatencyCell>>(emptyMap())
         private set
 
     private val adapter: XrayAdapter
@@ -69,28 +91,110 @@ class DesktopVpnController(
         if (proxy.supported && useSystemProxy) proxy.installShutdownRestore()
     }
 
-    fun importShareLink(link: String): ImportOutcome {
-        val trimmed = link.trim()
-        if (trimmed.isEmpty()) return ImportOutcome.Failure("empty input")
-        return try {
+    fun importShareLinks(text: String): ImportOutcome {
+        val lines = text.lines().map(String::trim).filter(String::isNotBlank)
+        if (lines.isEmpty()) return ImportOutcome.Failure("empty input")
+        val imported = mutableListOf<PVProfile>()
+        var warnings = 0
+        var failed = 0
+        lines.forEach { line ->
             val id = repository.nextId()
-            val imported = VlessShareLinkImporter(secrets).import(trimmed, id)
-            repository.add(imported.canonicalProfile)
-            profilesState = repository.profiles()
-            if (selectedProfileId == null) selectedProfileId = id
-            ImportOutcome.Success(imported.canonicalProfile, imported.warnings.size)
-        } catch (failure: VlessShareLinkException) {
-            ImportOutcome.Failure(failure.message ?: "invalid VLESS share link")
-        } catch (failure: Throwable) {
-            ImportOutcome.Failure(failure.message ?: "import failed")
+            val result = try {
+                ShareLinkParser.parse(line, id, secrets)
+            } catch (_: Throwable) {
+                null
+            }
+            if (result == null) {
+                failed++
+            } else {
+                repository.add(result.profile)
+                imported += result.profile
+                warnings += result.warnings.size
+            }
         }
+        profilesState = repository.profiles()
+        if (imported.isEmpty()) return ImportOutcome.Failure("no parsable vless/vmess/trojan/ss link found")
+        if (selectedProfileId == null) selectedProfileId = imported.first().id
+        return ImportOutcome.Success(imported, warnings, failed)
+    }
+
+    fun addSubscription(rawUrl: String, name: String?): SubscriptionOutcome {
+        val url = rawUrl.trim()
+        val subscription = Subscription(
+            id = UUID.randomUUID().toString(),
+            name = name?.trim()?.takeIf(String::isNotBlank) ?: "اشتراک ${subscriptions.all().size + 1}",
+            url = url,
+        )
+        return run {
+            val outcome = refreshInto(subscription)
+            if (outcome is SubscriptionOutcome.Success) {
+                subscriptions.upsert(subscription.copy(lastUpdateEpochMillis = System.currentTimeMillis(), lastStatus = "OK (${outcome.added})"))
+                subscriptionsState = subscriptions.all()
+                outcome
+            } else {
+                val reason = (outcome as SubscriptionOutcome.Failure).reason
+                subscriptions.upsert(subscription.copy(lastStatus = "خطا: $reason"))
+                subscriptionsState = subscriptions.all()
+                outcome
+            }
+        }
+    }
+
+    fun updateSubscription(id: String): SubscriptionOutcome {
+        val existing = subscriptions.find(id) ?: return SubscriptionOutcome.Failure("subscription not found")
+        return when (val outcome = refreshInto(existing)) {
+            is SubscriptionOutcome.Success -> {
+                subscriptions.upsert(
+                    existing.copy(lastUpdateEpochMillis = System.currentTimeMillis(), lastStatus = "OK (${outcome.added})"),
+                )
+                subscriptionsState = subscriptions.all()
+                outcome
+            }
+            is SubscriptionOutcome.Failure -> {
+                subscriptions.upsert(existing.copy(lastStatus = "خطا: ${outcome.reason}"))
+                subscriptionsState = subscriptions.all()
+                outcome
+            }
+        }
+    }
+
+    fun updateAllSubscriptions(): Int {
+        var ok = 0
+        subscriptions.all().forEach { sub ->
+            if (updateSubscription(sub.id) is SubscriptionOutcome.Success) ok++
+        }
+        return ok
+    }
+
+    fun removeSubscription(id: String) {
+        val removedProfiles = repository.removeWhere { repository.subscriptionIdOf(it) == id }
+        removedProfiles.forEach { profile -> profile.secretRefs.values.forEach(secrets::delete) }
+        profilesState = repository.profiles()
+        subscriptions.remove(id)
+        subscriptionsState = subscriptions.all()
+        if (selectedProfileId?.let { repository.find(it) } == null) selectedProfileId = profilesState.firstOrNull()?.id
+    }
+
+    private fun refreshInto(subscription: Subscription): SubscriptionOutcome = try {
+        val (profiles, failed) = fetcher.fetch(subscription.url)
+        val old = repository.removeWhere { repository.subscriptionIdOf(it) == subscription.id }
+        old.forEach { profile -> profile.secretRefs.values.forEach(secrets::delete) }
+        repository.addAll(profiles, subscription.id)
+        profilesState = repository.profiles()
+        if (selectedProfileId?.let { repository.find(it) } == null) {
+            selectedProfileId = profilesState.firstOrNull()?.id
+        }
+        SubscriptionOutcome.Success(profiles.size, failed)
+    } catch (failure: Throwable) {
+        SubscriptionOutcome.Failure(failure.message ?: "subscription fetch failed")
     }
 
     fun deleteProfile(id: ProfileId) {
         if (connectionState.state !in setOf(ConnectionState.DISCONNECTED, ConnectionState.ERROR)) return
-        if (selectedProfileId == id) selectedProfileId = null
+        repository.find(id)?.secretRefs?.values?.forEach(secrets::delete)
         repository.remove(id)
         profilesState = repository.profiles()
+        if (selectedProfileId == id) selectedProfileId = profilesState.firstOrNull()?.id
     }
 
     fun select(id: ProfileId) {
@@ -98,6 +202,9 @@ class DesktopVpnController(
             selectedProfileId = id
         }
     }
+
+    fun subscriptionNameOf(profile: PVProfile): String? =
+        repository.subscriptionIdOf(profile)?.let { subscriptions.find(it)?.name }
 
     val httpPort: Int get() = if (socksPort == 65535) 65534 else socksPort + 1
 
@@ -130,6 +237,24 @@ class DesktopVpnController(
         current.stop { snapshot -> connectionState = snapshot }
         connection = null
         restoreProxyIfActive()
+    }
+
+    fun testLatency(profile: PVProfile) {
+        latencies = latencies + (profile.id.value to LatencyCell(testing = true))
+        backgroundExecutor.execute {
+            val millis = LatencyTester.tcpPingMillis(profile)
+            latencies = latencies + (
+                profile.id.value to LatencyCell(
+                    testing = false,
+                    millis = millis,
+                    timeout = millis == null,
+                )
+                )
+        }
+    }
+
+    fun testAllLatency() {
+        profilesState.forEach(::testLatency)
     }
 
     private fun onEngineState(snapshot: ConnectionSnapshot) {
