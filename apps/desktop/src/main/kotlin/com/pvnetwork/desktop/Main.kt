@@ -220,6 +220,7 @@ fun PVNetworkDesktopApp() {
     val copy = navCopy(persian)
     val layoutDirection = if (persian) LayoutDirection.Rtl else LayoutDirection.Ltr
 
+    val startupFailure = remember { mutableStateOf<String?>(null) }
     val controller = remember {
         val dataDir = DesktopVpnController.defaultDataDirectory()
         try {
@@ -228,7 +229,16 @@ fun PVNetworkDesktopApp() {
                 repository = ProfileRepository(dataDir.resolve("profiles.txt")),
                 proxy = SystemProxyController(),
             )
-        } catch (_: Throwable) {
+        } catch (failure: Throwable) {
+            val reason = "${failure.javaClass.simpleName}: ${failure.message ?: "unknown"}"
+            startupFailure.value = reason
+            runCatching {
+                java.nio.file.Files.createDirectories(dataDir)
+                java.nio.file.Files.write(
+                    dataDir.resolve("desktop-error.log"),
+                    reason.toByteArray(),
+                )
+            }
             null
         }
     }
@@ -252,7 +262,12 @@ fun PVNetworkDesktopApp() {
             Surface(Modifier.fillMaxSize()) {
                 if (controller == null) {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(copy.storageUnavailable, color = MaterialTheme.colors.error)
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(copy.storageUnavailable, color = MaterialTheme.colors.error)
+                            startupFailure.value?.let {
+                                Text(it, fontSize = 12.sp, color = GoldSoft)
+                            }
+                        }
                     }
                     return@Surface
                 }
@@ -320,7 +335,7 @@ private fun Sidebar(
             Column {
                 Column {
                     Text("PVNetwork", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = Ink)
-                    Text("v0.2.1", fontSize = 10.sp, color = GoldSoft)
+                    Text("v0.2.2", fontSize = 10.sp, color = GoldSoft)
                 }
                 Text(
                     if (controller.coreStatus.available) "Xray ${controller.coreStatus.version ?: ""}" else copy.coreMissing,
