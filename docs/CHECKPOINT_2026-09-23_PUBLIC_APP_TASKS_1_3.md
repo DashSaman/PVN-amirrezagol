@@ -93,3 +93,20 @@ in CI; all other existing modules unchanged and green in their gates.
 Real data-path receipts unchanged from `docs/PROJECT_STATE.md` (WireGuard
 kernel CI, OpenVPN system runtime CI, Xray VLESS RAW CI). No mobile/device
 connectivity yet.
+
+---
+
+## Addendum (same day, slice 2): first usable applications shipped
+
+- Windows client usable end-to-end: import → connect → auto system proxy;
+  6/6 real-binary interop tests PASS on Windows (VLESS RAW/Vision+TLS,
+  VMess, Trojan, Shadowsocks, XHTTP) with Xray v26.7.28.
+- Android debug APK builds and bundles Xray (MPL-2.0) + hev-socks5-tunnel
+  (MIT); device verification pending.
+- CI: m4-public-apps-ci green on 1b1e309 (desktop tests+distributable,
+  android APK artifact); m1 smoke green with SKIKO software rendering.
+- Plan Tasks 4-5 still open; Task 4 remains the next planned unit.
+- Local artifacts: release/PVNetwork-Windows-x64.zip (sha256 44741914a96a
+  f0eefb617d5eca5f43f724fabd62640705f383a4f1d8fd508ca6),
+  release/PVNetwork-Android-arm64-debug.apk (sha256 4fea519440ab967f2d9d
+  9eb395a47f63a473170473f32df399e5095726ab4ed6).
