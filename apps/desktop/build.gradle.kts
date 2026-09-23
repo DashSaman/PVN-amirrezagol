@@ -21,8 +21,11 @@ kotlin {
 
 dependencies {
     implementation(project(":core:foundation"))
+    implementation(project(":engines:xray-adapter"))
     implementation(compose.desktop.currentOs)
     implementation(compose.material)
+    implementation("net.java.dev.jna:jna:5.19.1")
+    implementation("net.java.dev.jna:jna-platform:5.19.1")
     testImplementation(kotlin("test"))
 }
 

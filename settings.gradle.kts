@@ -22,6 +22,9 @@ project(":core:foundation").projectDir = file("core/foundation")
 include(":apps:desktop")
 project(":apps:desktop").projectDir = file("apps/desktop")
 
+include(":apps:android")
+project(":apps:android").projectDir = file("apps/android")
+
 include(":engines:wireguard-adapter")
 project(":engines:wireguard-adapter").projectDir = file("engines/wireguard-adapter")
 

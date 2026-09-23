@@ -93,3 +93,21 @@ The next implementation work must inventory existing product adapters/runtime bo
 - Do not import or bundle third-party cores before exact source/release/license/SBOM/platform gates.
 - Do not log or persist reusable secrets in plaintext.
 - Real connection/data-path evidence is required before promoting a selected M3 capability to interoperability-verified status.
+
+## 2026-09-23 (slice 2): first usable Windows + Android applications
+
+- Public-app plan Tasks 4-5 remain open by plan order; per direct owner
+  request the first real applications shipped ahead of them using existing
+  committed contracts.
+- **Windows client** (`apps/desktop`): real VLESS import, DPAPI secret
+  store, host-supplied Xray runtime with Windows support, auto system
+  proxy set/restore, fa/en RTL UI. Local evidence: desktop tests PASS and
+  **6/6 real-binary interop tests PASS on Windows** with Xray v26.7.28
+  (see `docs/M-P2_PUBLIC_APPS_VALIDATION.md`).
+- **Android client** (`apps/android`): real VpnService data path
+  (TUN -> hev-socks5-tunnel JNI (MIT, built from pinned tag) -> bundled
+  Xray-core (MPL-2.0, sha256-pinned build-time fetch) -> outbound),
+  Keystore-encrypted secrets, fa/en UI; debug APK builds (26.4 MB).
+  **Not yet device-verified** — honest limit recorded.
+- CI: `m4-public-apps-ci.yml` (desktop tests+distributable, Android APK
+  artifact).

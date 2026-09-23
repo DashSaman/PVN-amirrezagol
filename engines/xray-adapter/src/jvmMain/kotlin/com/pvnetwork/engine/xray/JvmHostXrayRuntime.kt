@@ -8,7 +8,6 @@ import com.pvnetwork.core.profile.PVProfile
 import com.pvnetwork.core.profile.SecretRef
 import com.pvnetwork.core.security.SecretStore
 import java.io.File
-import java.io.Writer
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
@@ -38,7 +37,6 @@ class JvmHostXrayRuntimeFactory(
 
     private val selectedExecutable = executable?.toAbsolutePath()?.normalize() ?: discoverExecutable()
     private val probe = selectedExecutable?.let(::probeExecutable) ?: Probe(false, null)
-
     override val runtimeDescriptor = XrayRuntimeDescriptor(
         implementationId = IMPLEMENTATION_ID,
         upstreamVersion = probe.versionLine,
@@ -56,7 +54,10 @@ class JvmHostXrayRuntimeFactory(
             profile = profile,
             credentialRef = credentialRef,
             secretStore = secretStore,
-            socksListenPort = socksListenPort,
+            inboundPorts = XrayClientConfig.InboundPorts(
+                socksPort = socksListenPort,
+                httpPort = if (socksListenPort == 65535) 65534 else socksListenPort + 1,
+            ),
         )
     }
 
@@ -71,7 +72,8 @@ class JvmHostXrayRuntimeFactory(
     private data class Probe(val usable: Boolean, val versionLine: String?)
 
     private fun probeExecutable(path: Path): Probe {
-        if (!isSupportedHost() || !supportsPosixPermissions()) return Probe(false, null)
+        if (!isSupportedHost()) return Probe(false, null)
+        if (!isWindowsHost() && !supportsPosixPermissions()) return Probe(false, null)
         if (!Files.isRegularFile(path) || !Files.isExecutable(path)) return Probe(false, null)
         return runCatching {
             val process = ProcessBuilder(path.toString(), "version")
@@ -114,28 +116,45 @@ class JvmHostXrayRuntimeFactory(
 
     private fun discoverExecutable(): Path? {
         if (!isSupportedHost()) return null
+        val isWindows = isWindowsHost()
+        val executableName = if (isWindows) "xray.exe" else "xray"
         val candidates = buildList {
+            System.getenv(EXECUTABLE_ENV)?.takeIf(String::isNotBlank)?.let {
+                add(Path.of(it).resolve(executableName))
+                add(Path.of(it))
+            }
             System.getenv("PATH")
                 ?.split(File.pathSeparatorChar)
                 ?.filter(String::isNotBlank)
-                ?.forEach { add(Path.of(it).resolve("xray")) }
-            add(Path.of("/usr/local/bin/xray"))
-            add(Path.of("/usr/bin/xray"))
+                ?.forEach { add(Path.of(it).resolve(executableName)) }
+            if (isWindows) {
+                System.getenv("LOCALAPPDATA")?.takeIf(String::isNotBlank)?.let {
+                    add(Path.of(it).resolve("pvnetwork").resolve("core").resolve("xray.exe"))
+                }
+                add(Path.of("").toAbsolutePath().resolve("core").resolve("xray.exe"))
+            } else {
+                add(Path.of("/usr/local/bin/xray"))
+                add(Path.of("/usr/bin/xray"))
+            }
         }
         return candidates.firstOrNull { Files.isRegularFile(it) && Files.isExecutable(it) }
     }
 
     private fun isSupportedHost(): Boolean {
         val os = System.getProperty("os.name").orEmpty().lowercase()
-        return os.contains("linux") || os.contains("mac") || os.contains("darwin")
+        return os.contains("linux") || os.contains("mac") || os.contains("darwin") || os.contains("windows")
     }
+
+    private fun isWindowsHost(): Boolean =
+        System.getProperty("os.name").orEmpty().lowercase().contains("windows")
 
     private fun supportsPosixPermissions(): Boolean =
         java.nio.file.FileSystems.getDefault().supportedFileAttributeViews().contains("posix")
 
     companion object {
-        const val IMPLEMENTATION_ID = "host-xray-process-posix"
+        const val IMPLEMENTATION_ID = "host-xray-process"
         const val DEFAULT_SOCKS_PORT = 10808
+        const val EXECUTABLE_ENV = "PVNETWORK_XRAY_EXECUTABLE"
         private const val PROBE_TIMEOUT_SECONDS = 3L
         private const val PROBE_KILL_TIMEOUT_SECONDS = 1L
         private const val MAX_VERSION_LINE_LENGTH = 192
@@ -147,7 +166,7 @@ private class JvmHostXrayPreparedConnection(
     private val profile: PVProfile,
     private val credentialRef: SecretRef,
     private val secretStore: SecretStore,
-    private val socksListenPort: Int,
+    private val inboundPorts: XrayClientConfig.InboundPorts,
 ) : PreparedConnection {
     private val lock = Any()
     private var machine = ConnectionStateMachine()
@@ -231,19 +250,25 @@ private class JvmHostXrayPreparedConnection(
     }
 
     private fun createProtectedRuntimeConfig(): Path {
-        check(java.nio.file.FileSystems.getDefault().supportedFileAttributeViews().contains("posix")) {
-            "POSIX permissions are required for the host Xray runtime"
+        val posix = java.nio.file.FileSystems.getDefault().supportedFileAttributeViews().contains("posix")
+        val directory = if (posix) {
+            Files.createTempDirectory(
+                "pvnetwork-xray-",
+                PosixFilePermissions.asFileAttribute(DIRECTORY_PERMISSIONS),
+            )
+        } else {
+            // Windows: the per-user temp directory is ACL-isolated per account.
+            Files.createTempDirectory("pvnetwork-xray-")
         }
-        val directory = Files.createTempDirectory(
-            "pvnetwork-xray-",
-            PosixFilePermissions.asFileAttribute(DIRECTORY_PERMISSIONS),
-        )
         runtimeDirectory = directory
-        val config = directory.resolve("config.json")
-        Files.createFile(config, PosixFilePermissions.asFileAttribute(FILE_PERMISSIONS))
+        val config = if (posix) {
+            Files.createFile(directory.resolve("config.json"), PosixFilePermissions.asFileAttribute(FILE_PERMISSIONS))
+        } else {
+            Files.createFile(directory.resolve("config.json"))
+        }
         val found = secretStore.withSecret(credentialRef) { credential ->
             Files.newBufferedWriter(config, StandardCharsets.UTF_8).use { writer ->
-                writeConfig(writer, credential)
+                writer.write(XrayClientConfig.build(profile, credential, inboundPorts))
             }
         }
         if (found == null) {
@@ -360,186 +385,6 @@ private class JvmHostXrayPreparedConnection(
             Files.walk(directory).use { paths ->
                 paths.sorted(Comparator.reverseOrder()).forEach { Files.deleteIfExists(it) }
             }
-        }
-    }
-
-    private fun writeConfig(writer: Writer, credential: CharArray) {
-        val security = profile.extensions["xray.security"] ?: error("missing xray.security")
-        val transport = profile.extensions["xray.transport"] ?: error("missing xray.transport")
-        val network = when (transport) {
-            "raw" -> "raw"
-            "websocket" -> "ws"
-            "grpc" -> "grpc"
-            "xhttp" -> "xhttp"
-            "mkcp" -> "kcp"
-            else -> error("unsupported Xray transport: $transport")
-        }
-
-        writer.write("{\"log\":{\"loglevel\":\"info\"},")
-        writer.write("\"inbounds\":[{\"tag\":\"pvnetwork-socks\",\"listen\":\"127.0.0.1\",\"port\":$socksListenPort,\"protocol\":\"socks\",\"settings\":{\"udp\":true}}],")
-        writer.write("\"outbounds\":[{\"tag\":\"pvnetwork-proxy\",\"protocol\":")
-        writeJsonString(writer, profile.protocolId)
-        writer.write(",\"settings\":")
-        writeProtocolSettings(writer, credential)
-        writer.write(",\"streamSettings\":{\"network\":")
-        writeJsonString(writer, network)
-        writer.write(",\"security\":")
-        writeJsonString(writer, security)
-        when (security) {
-            "tls" -> writeTlsSettings(writer)
-            "reality" -> writeRealitySettings(writer)
-            "none" -> Unit
-            else -> error("unsupported Xray security: $security")
-        }
-        writeTransportSettings(writer, transport)
-        writer.write("}},{\"tag\":\"direct\",\"protocol\":\"freedom\"}]}")
-    }
-
-    private fun writeProtocolSettings(writer: Writer, credential: CharArray) {
-        when (profile.protocolId) {
-            XrayAdapter.VLESS_CAPABILITY -> writeVlessSettings(writer, credential)
-            XrayAdapter.VMESS_CAPABILITY -> writeVmessSettings(writer, credential)
-            XrayAdapter.TROJAN_CAPABILITY -> writeTrojanSettings(writer, credential)
-            XrayAdapter.SHADOWSOCKS_CAPABILITY -> writeShadowsocksSettings(writer, credential)
-            else -> error("unsupported Xray protocol: ${profile.protocolId}")
-        }
-    }
-
-    private fun writeVlessSettings(writer: Writer, identity: CharArray) {
-        writer.write("{\"vnext\":[{\"address\":")
-        writeJsonString(writer, profile.endpoint.host)
-        writer.write(",\"port\":${profile.endpoint.port},\"users\":[{\"id\":")
-        writeJsonString(writer, identity)
-        writer.write(",\"encryption\":\"none\"")
-        profile.extensions["xray.flow"]?.takeIf(String::isNotBlank)?.let {
-            writer.write(",\"flow\":")
-            writeJsonString(writer, it)
-        }
-        writer.write("}]}]}")
-    }
-
-    private fun writeVmessSettings(writer: Writer, identity: CharArray) {
-        val accountSecurity = profile.extensions["xray.vmess-security"] ?: "auto"
-        writer.write("{\"vnext\":[{\"address\":")
-        writeJsonString(writer, profile.endpoint.host)
-        writer.write(",\"port\":${profile.endpoint.port},\"users\":[{\"id\":")
-        writeJsonString(writer, identity)
-        writer.write(",\"security\":")
-        writeJsonString(writer, accountSecurity)
-        writer.write("}]}]}")
-    }
-
-    private fun writeTrojanSettings(writer: Writer, password: CharArray) {
-        writer.write("{\"servers\":[{\"address\":")
-        writeJsonString(writer, profile.endpoint.host)
-        writer.write(",\"port\":${profile.endpoint.port},\"password\":")
-        writeJsonString(writer, password)
-        writer.write("}]}")
-    }
-
-    private fun writeShadowsocksSettings(writer: Writer, password: CharArray) {
-        val method = profile.extensions["xray.shadowsocks-method"] ?: error("missing xray.shadowsocks-method")
-        writer.write("{\"servers\":[{\"address\":")
-        writeJsonString(writer, profile.endpoint.host)
-        writer.write(",\"port\":${profile.endpoint.port},\"method\":")
-        writeJsonString(writer, method)
-        writer.write(",\"password\":")
-        writeJsonString(writer, password)
-        writer.write("}]}")
-    }
-
-    private fun writeTlsSettings(writer: Writer) {
-        val fields = mutableListOf<Pair<String, String>>()
-        profile.extensions["xray.server-name"]?.takeIf(String::isNotBlank)?.let { fields += "serverName" to it }
-        profile.extensions["xray.fingerprint"]?.takeIf(String::isNotBlank)?.let { fields += "fingerprint" to it }
-        writer.write(",\"tlsSettings\":{")
-        writeFields(writer, fields)
-        writer.write("}")
-    }
-
-    private fun writeRealitySettings(writer: Writer) {
-        val publicKey = profile.extensions["xray.reality-public-key"]?.takeIf(String::isNotBlank)
-            ?: error("REALITY public key is required")
-        val fields = mutableListOf("publicKey" to publicKey)
-        profile.extensions["xray.server-name"]?.takeIf(String::isNotBlank)?.let { fields += "serverName" to it }
-        profile.extensions["xray.fingerprint"]?.takeIf(String::isNotBlank)?.let { fields += "fingerprint" to it }
-        profile.extensions["xray.reality-short-id"]?.let { fields += "shortId" to it }
-        writer.write(",\"realitySettings\":{")
-        writeFields(writer, fields)
-        writer.write("}")
-    }
-
-    private fun writeTransportSettings(writer: Writer, transport: String) {
-        when (transport) {
-            "raw" -> Unit
-            "websocket" -> {
-                writer.write(",\"wsSettings\":{")
-                var wrote = false
-                profile.extensions["xray.path"]?.takeIf(String::isNotBlank)?.let {
-                    writer.write("\"path\":")
-                    writeJsonString(writer, it)
-                    wrote = true
-                }
-                profile.extensions["xray.host-header"]?.takeIf(String::isNotBlank)?.let {
-                    if (wrote) writer.write(",")
-                    writer.write("\"headers\":{\"Host\":")
-                    writeJsonString(writer, it)
-                    writer.write("}")
-                }
-                writer.write("}")
-            }
-            "grpc" -> {
-                writer.write(",\"grpcSettings\":{")
-                profile.extensions["xray.service-name"]?.takeIf(String::isNotBlank)?.let {
-                    writer.write("\"serviceName\":")
-                    writeJsonString(writer, it)
-                }
-                writer.write("}")
-            }
-            "xhttp" -> {
-                val fields = mutableListOf<Pair<String, String>>()
-                profile.extensions["xray.host-header"]?.takeIf(String::isNotBlank)?.let { fields += "host" to it }
-                profile.extensions["xray.path"]?.takeIf(String::isNotBlank)?.let { fields += "path" to it }
-                fields += "mode" to "auto"
-                writer.write(",\"xhttpSettings\":{")
-                writeFields(writer, fields)
-                writer.write("}")
-            }
-            "mkcp" -> writer.write(",\"kcpSettings\":{}")
-        }
-    }
-
-    private fun writeFields(writer: Writer, fields: List<Pair<String, String>>) {
-        fields.forEachIndexed { index, (name, value) ->
-            if (index > 0) writer.write(",")
-            writeJsonString(writer, name)
-            writer.write(":")
-            writeJsonString(writer, value)
-        }
-    }
-
-    private fun writeJsonString(writer: Writer, value: String) {
-        writer.write("\"")
-        value.forEach { writeJsonChar(writer, it) }
-        writer.write("\"")
-    }
-
-    private fun writeJsonString(writer: Writer, value: CharArray) {
-        writer.write("\"")
-        value.forEach { writeJsonChar(writer, it) }
-        writer.write("\"")
-    }
-
-    private fun writeJsonChar(writer: Writer, c: Char) {
-        when (c) {
-            '\\' -> writer.write("\\\\")
-            '"' -> writer.write("\\\"")
-            '\b' -> writer.write("\\b")
-            '\u000C' -> writer.write("\\f")
-            '\n' -> writer.write("\\n")
-            '\r' -> writer.write("\\r")
-            '\t' -> writer.write("\\t")
-            else -> if (c.code < 0x20) writer.write("\\u%04x".format(c.code)) else writer.write(c.code)
         }
     }
 
