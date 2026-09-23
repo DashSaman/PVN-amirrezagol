@@ -1,49 +1,47 @@
 # AGENTS Latest Resume Pointer
 
-This file is an additional deterministic recovery pointer for long-running PVNetwork research.
+This file is an additional deterministic recovery pointer for long-running
+PVNetwork work.
 
-Always also read `AGENTS.md`, `AGENT_EXECUTION_CONTRACT.md`, `docs/AGENT_RUN_STATE.json`, recent Git history and the actual repository tree.
+Always also read `AGENTS.md`, `AGENT_EXECUTION_CONTRACT.md`,
+`docs/AGENT_RUN_STATE.json`, recent Git history and the actual repository
+tree. Repository evidence wins over this pointer if newer commits exist.
 
-## Latest completed shared-family handoff
+## Current campaign (since 2026-09-23)
 
-`AGENTS_HANDOFF_2026-08-14_HYSTERIA_V1.md`
+The research campaign (V1 93/93 + V2 93/93) is COMPLETE and CLOSED.
 
-## Original-v1 families already handoff-ready in this campaign segment
+The active work is **public-app implementation** per
+`docs/superpowers/plans/2026-08-29-public-mobile-client.md`:
 
-- OpenConnect / Enterprise compatibility — handoff-ready, not implemented
-- Xray / modern proxy — handoff-ready, not implemented
-- WireGuard / AmneziaWG — handoff-ready, not implemented
-- OpenVPN — handoff-ready, not implemented
-- SoftEther / EtherIP family — handoff-ready, not implemented
-- Hysteria / Hysteria2 — handoff-ready, not implemented
-
-No family-level research state means product support/certification.
-
-## Current next work unit
-
-**IKE/IPsec original-v1 closure**
-
-Priority entries:
-
-- 004 IKEv2/IPsec
-- 005 IKEv1/IPsec
-- 006 IPsec ESP
-- 007 IPsec AH
-- 008 L2TP/IPsec relationship
-- related vendor/native platform compatibility where it materially affects engine selection.
+- Task 1 (launch decisions): **DONE 2026-09-23** → `app/PUBLIC_APP_DECISIONS.md`.
+- Task 2 (mobile-capable shared foundation): **DONE 2026-09-23** → Android
+  (AGP 9.3.3 KMP library plugin) + `iosArm64`/`iosSimulatorArm64` targets on
+  `core/foundation`, evidence in
+  `docs/M-P1_FOUNDATION_MOBILE_TARGETS_VALIDATION.md`.
+- Task 3 (canonical account/entitlement models): **DONE 2026-09-23** →
+  `com.pvnetwork.core.account` / `com.pvnetwork.core.entitlement` with
+  contract tests green on JVM + Android host target.
+- State reconciliation snapshot: `app/CURRENT_STATE_2026-09-23.md`.
+- Pre-existing red CI items discovered meanwhile are registered in
+  `docs/BROKEN_CI_REGISTER.md` (Xray REALITY interop, Mihomo TUIC v5
+  interop — both open, both pre-dating 2026-09-23 work).
 
 ## Exact next action
 
-1. inspect existing strongSwan/IPsec research and numbered entries;
-2. pin current strongSwan source/release/license;
-3. map `charon`, `libstrongswan`, plugins, client/front-end/platform integration;
-4. distinguish IKE negotiation/authentication from ESP/AH data plane;
-5. compare strongSwan reuse against native Windows/Apple/Android IKE/IPsec capabilities;
-6. map dependencies/security/advisories/tests;
-7. make per-entry support/reuse decisions;
-8. checkpoint and continue the next unfinished original-v1 family;
-9. do not start mass `COMPLETE-REFERENCE-v2` until original v1 gates across the 93-entry campaign reach intended state.
+**Task 4** of the public-app plan: formalize `PlatformVpnService` and the
+connection coordinator in `core/foundation` (files and TDD steps specified
+in the plan). Verify with the same local multi-target command set recorded
+in `docs/M-P1_FOUNDATION_MOBILE_TARGETS_VALIDATION.md`.
 
-## Important later work
+Read `app/PUBLIC_APP_AGENT_HANDOFF.md` first; it remains the authoritative
+public-app handoff.
 
-After original v1, execute `research/FULL_PROTOCOL_REFERENCE_CONTRACT.md` for all applicable entries, including server installers/panels, server/client install matrices, exhaustive UI menus, cryptography, wire/data flow, ports/handshake and deployment topologies.
+## Historical (superseded)
+
+The original pointer below predates research completion and is kept only as
+history. Do not resume from it.
+
+- Original-v1 IKE/IPsec closure and family lists were fully completed and
+  validated during the research campaign (V1/V2 93/93, strict validator
+  PASS, GitHub Actions run 31873037675).
