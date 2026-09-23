@@ -53,5 +53,5 @@ jobs:
           set -euo pipefail
           command -v xvfb-run
           LOG="${RUNNER_TEMP}/pvnetwork-desktop-launch.log"
-          PVNETWORK_UI_SMOKE=1 timeout 90s xvfb-run -a gradle --no-daemon :apps:desktop:run --stacktrace | tee "$LOG"
+          PVNETWORK_UI_SMOKE=1 SKIKO_RENDER_API=SOFTWARE timeout 90s xvfb-run -a gradle --no-daemon :apps:desktop:run --stacktrace | tee "$LOG"
           grep -F "PVNetwork desktop launch smoke: PASS" "$LOG"
