@@ -1,6 +1,20 @@
 # PVNetwork Project State
 
-Last synchronized: 2026-08-18
+Last synchronized: 2026-09-23
+
+## 2026-09-23 public-app execution update
+
+- Phase A state reconciliation recorded: `app/CURRENT_STATE_2026-09-23.md`.
+- Public-app plan Task 1 executed: `app/PUBLIC_APP_DECISIONS.md` locks
+  engineering decisions (Android `minSdk 26` / compile 36, application ID
+  `com.pvnetwork.client`, first-launch engine scope Xray VLESS+REALITY +
+  WireGuard with NaiveProxy queued as first-class P1 engine work) and marks
+  owner-side blockers `BLOCKED_EXTERNAL`.
+- Public-app plan Task 2 executed: `core/foundation` now compiles for
+  Android (AGP 9.3.3 KMP library plugin) and iOS (`iosArm64`,
+  `iosSimulatorArm64`); common tests also run against the Android target.
+  Local evidence: `docs/M-P1_FOUNDATION_MOBILE_TARGETS_VALIDATION.md`.
+- `m0-foundation-ci.yml` gained a `foundation-mobile-targets` job.
 
 ## Repository truth
 
@@ -17,7 +31,11 @@ Last synchronized: 2026-08-18
 - M0 application foundation: PASS.
 - M1 first desktop client shell: PASS.
 - M2 core networking wave 1: **PASS**.
-- M3 modern proxy wave: **IN PROGRESS**.
+- M3 modern proxy wave: mihomo adapter + OpenConnect adapter landed with CI
+  gates (2026-08-26); further M3 scope paused in favor of the public-app
+  execution plan below.
+- Public-app plan (2026-08-29): Tasks 1–2 **PASS** (evidence-backed);
+  Task 3 is next in dependency order.
 
 ## M2 evidence established
 
@@ -61,8 +79,8 @@ The next implementation work must inventory existing product adapters/runtime bo
 ## Product evidence state
 
 - RESEARCHED: V1 93/93 and V2 93/93.
-- IMPLEMENTED: M0, M1, M2 selected WireGuard/OpenVPN/Xray runtime scopes.
-- BUILT/TESTED: scoped M0/M1/M2 CI gates PASS.
+- IMPLEMENTED: M0, M1, M2 selected WireGuard/OpenVPN/Xray runtime scopes; mihomo + OpenConnect adapters (JVM-scoped); public-app Tasks 1–2 (decisions + mobile-capable shared foundation).
+- BUILT/TESTED: scoped M0/M1/M2 CI gates PASS; 2026-09-23 local full-target verification of `core/foundation` (JVM tests, Android compile + host tests + AAR, iOS Kotlin/Native compile) BUILD SUCCESSFUL; `foundation-mobile-targets` CI job added (verify green on next push).
 - INTEROPERABILITY VERIFIED: WireGuard Linux kernel isolated CI; OpenVPN system-package and actual PVNetwork JVM runtime path; Xray host-supplied JVM VLESS RAW/no-security real data path.
 - DEVICE VERIFIED: none.
 - PRODUCTION READY: no.
