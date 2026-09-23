@@ -72,6 +72,9 @@ class DesktopVpnController(
         private set
     var latencies by mutableStateOf<Map<String, LatencyCell>>(emptyMap())
         private set
+    var connectedSinceMillis by mutableStateOf<Long?>(null)
+        private set
+    var useSystemProxyState by mutableStateOf(useSystemProxy)
 
     private val adapter: XrayAdapter
     private val factory: JvmHostXrayRuntimeFactory
@@ -261,6 +264,7 @@ class DesktopVpnController(
         connectionState = snapshot
         when (snapshot.state) {
             ConnectionState.CONNECTED -> {
+                connectedSinceMillis = System.currentTimeMillis()
                 record("DESKTOP_ENGINE_CONNECTED", "socks=127.0.0.1:$socksPort http=127.0.0.1:$httpPort")
                 if (proxy.supported && useSystemProxy) {
                     val ok = proxy.enable("127.0.0.1", httpPort)
@@ -271,6 +275,7 @@ class DesktopVpnController(
                 }
             }
             ConnectionState.ERROR, ConnectionState.DISCONNECTED -> {
+                connectedSinceMillis = null
                 val reason = snapshot.reasonCode
                 if (reason != null) record(reason, "engine reported ${snapshot.state}")
                 restoreProxyIfActive()
