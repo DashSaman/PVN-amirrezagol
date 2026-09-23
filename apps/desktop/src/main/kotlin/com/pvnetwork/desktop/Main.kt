@@ -199,6 +199,7 @@ fun main() = application {
         onCloseRequest = exit,
         title = "PVNetwork",
         icon = painterResource("pvnetwork_logo.png"),
+        state = androidx.compose.ui.window.rememberWindowState(width = 1240.dp, height = 800.dp),
     ) {
         if (smokeMode) {
             LaunchedEffect(Unit) {
@@ -335,7 +336,7 @@ private fun Sidebar(
             Column {
                 Column {
                     Text("PVNetwork", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = Ink)
-                    Text("v0.2.2", fontSize = 10.sp, color = GoldSoft)
+                    Text("v0.3.0", fontSize = 10.sp, color = GoldSoft)
                 }
                 Text(
                     if (controller.coreStatus.available) "Xray ${controller.coreStatus.version ?: ""}" else copy.coreMissing,
@@ -372,28 +373,100 @@ private fun Sidebar(
 private fun NavItem(label: String, selected: Boolean, online: Boolean = false, onClick: () -> Unit) {
     Row(
         Modifier.fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-            .background(if (selected) CardBgHover else Color.Transparent)
+            .clip(RoundedCornerShape(12.dp))
+            .background(if (selected) Gold.copy(alpha = 0.12f) else Color.Transparent)
             .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 11.dp),
+            .padding(horizontal = 12.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Box(
-            Modifier.size(8.dp).background(
-                when {
-                    online -> Green
-                    selected -> Gold
-                    else -> Color(0xFF3A4054)
-                }, CircleShape,
-            ),
-        )
+        val tint = when {
+            online -> Green
+            selected -> Gold
+            else -> InkMuted.copy(alpha = 0.6f)
+        }
+        NavIcon(kind = label, tint = tint)
         Text(
             label,
             fontSize = 14.sp,
-            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
             color = if (selected) Ink else InkMuted,
         )
+    }
+}
+
+@Composable
+private fun NavIcon(kind: String, tint: Color) {
+    Canvas(Modifier.size(20.dp)) {
+        val w = size.width
+        val h = size.height
+        val stroke = Stroke(width = w * 0.09f, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+        when (kind) {
+            "Ø§ØªØµØ§Ù„", "Connect" -> {
+                drawCircle(color = tint, radius = w * 0.38f, style = stroke)
+                drawLine(tint, androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.16f), androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.5f), stroke.width)
+            }
+            "Ø³Ø±ÙˆØ±Ù‡Ø§", "Servers" -> {
+                drawRoundRect(tint, size = androidx.compose.ui.geometry.Size(w * 0.9f, h * 0.24f), topLeft = androidx.compose.ui.geometry.Offset(w * 0.05f, h * 0.08f), cornerRadius = androidx.compose.ui.geometry.CornerRadius(w * 0.08f), style = stroke)
+                drawRoundRect(tint, size = androidx.compose.ui.geometry.Size(w * 0.9f, h * 0.24f), topLeft = androidx.compose.ui.geometry.Offset(w * 0.05f, h * 0.38f), cornerRadius = androidx.compose.ui.geometry.CornerRadius(w * 0.08f), style = stroke)
+                drawRoundRect(tint, size = androidx.compose.ui.geometry.Size(w * 0.9f, h * 0.24f), topLeft = androidx.compose.ui.geometry.Offset(w * 0.05f, h * 0.68f), cornerRadius = androidx.compose.ui.geometry.CornerRadius(w * 0.08f), style = stroke)
+            }
+            "Ø§Ø´ØªØ±Ø§Ú©â€ŒÙ‡Ø§", "Subscriptions" -> {
+                drawCircle(tint, radius = w * 0.22f, center = androidx.compose.ui.geometry.Offset(w * 0.3f, h * 0.32f), style = stroke)
+                drawCircle(tint, radius = w * 0.22f, center = androidx.compose.ui.geometry.Offset(w * 0.7f, h * 0.68f), style = stroke)
+                drawLine(tint, androidx.compose.ui.geometry.Offset(w * 0.42f, h * 0.44f), androidx.compose.ui.geometry.Offset(w * 0.58f, h * 0.56f), stroke.width)
+            }
+            "Ú¯Ø²Ø§Ø±Ø´", "Diagnostics" -> {
+                drawLine(tint, androidx.compose.ui.geometry.Offset(w * 0.06f, h * 0.5f), androidx.compose.ui.geometry.Offset(w * 0.32f, h * 0.5f), stroke.width)
+                drawLine(tint, androidx.compose.ui.geometry.Offset(w * 0.32f, h * 0.5f), androidx.compose.ui.geometry.Offset(w * 0.44f, h * 0.2f), stroke.width)
+                drawLine(tint, androidx.compose.ui.geometry.Offset(w * 0.44f, h * 0.2f), androidx.compose.ui.geometry.Offset(w * 0.58f, h * 0.8f), stroke.width)
+                drawLine(tint, androidx.compose.ui.geometry.Offset(w * 0.58f, h * 0.8f), androidx.compose.ui.geometry.Offset(w * 0.7f, h * 0.5f), stroke.width)
+                drawLine(tint, androidx.compose.ui.geometry.Offset(w * 0.7f, h * 0.5f), androidx.compose.ui.geometry.Offset(w * 0.94f, h * 0.5f), stroke.width)
+            }
+            else -> {
+                drawCircle(tint, radius = w * 0.36f, center = androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.5f), style = stroke)
+                drawCircle(tint, radius = w * 0.13f, center = androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.5f))
+                drawLine(tint, androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.04f), androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.18f), stroke.width)
+                drawLine(tint, androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.82f), androidx.compose.ui.geometry.Offset(w * 0.5f, h * 0.96f), stroke.width)
+                drawLine(tint, androidx.compose.ui.geometry.Offset(w * 0.04f, h * 0.5f), androidx.compose.ui.geometry.Offset(w * 0.18f, h * 0.5f), stroke.width)
+                drawLine(tint, androidx.compose.ui.geometry.Offset(w * 0.82f, h * 0.5f), androidx.compose.ui.geometry.Offset(w * 0.96f, h * 0.5f), stroke.width)
+            }
+        }
+    }
+}
+
+@Composable
+private fun SignalBars(millis: Long?, testing: Boolean, timeout: Boolean) {
+    Canvas(Modifier.size(16.dp).padding(end = 2.dp)) {
+        val w = size.width
+        val h = size.height
+        val levels = when {
+            testing || millis == null && !timeout -> 0
+            timeout -> 1
+            millis == null -> 0
+            millis < 200 -> 4
+            millis < 500 -> 3
+            millis < 1000 -> 2
+            else -> 1
+        }
+        val color = when {
+            timeout -> Red
+            millis == null -> InkMuted.copy(alpha = 0.4f)
+            millis < 300 -> Green
+            millis < 1000 -> Amber
+            else -> Red
+        }
+        val bars = 4
+        for (i in 0 until bars) {
+            val barH = h * (0.32f + 0.22f * i)
+            val top = h - barH
+            drawRoundRect(
+                color = if (i < levels || (levels == 0 && millis == null && !timeout && !testing)) color.copy(alpha = 0.25f) else if (i < levels) color else color.copy(alpha = 0.22f),
+                topLeft = androidx.compose.ui.geometry.Offset(w * 0.06f + i * w * 0.25f, top),
+                size = androidx.compose.ui.geometry.Size(w * 0.17f, barH),
+                cornerRadius = androidx.compose.ui.geometry.CornerRadius(w * 0.05f),
+            )
+        }
     }
 }
 
@@ -494,28 +567,45 @@ private fun ConnectOrb(
         contentAlignment = Alignment.Center,
     ) {
         Canvas(Modifier.size(230.dp)) {
-            val stroke = Stroke(width = 16f)
+            val stroke = Stroke(width = 14f)
+            val glowColor = if (connected) Green else ringColor
+            drawCircle(color = glowColor.copy(alpha = 0.10f), radius = size.minDimension / 2 - 4f)
+            drawCircle(color = glowColor.copy(alpha = 0.05f), radius = size.minDimension / 2 + 8f)
             drawCircle(
-                color = ringColor.copy(alpha = if (busy) ringAlpha else 0.25f),
+                color = ringColor.copy(alpha = if (busy) ringAlpha else 0.32f),
                 radius = size.minDimension / 2 - 24f,
                 style = stroke,
             )
             drawCircle(
-                color = if (connected) Green.copy(alpha = 0.85f) else ringColor.copy(alpha = 0.14f),
-                radius = size.minDimension / 2 - 46f,
+                color = if (connected) Green.copy(alpha = 0.9f) else ringColor.copy(alpha = 0.16f),
+                radius = size.minDimension / 2 - 48f,
+            )
+            val c = size.minDimension / 2
+            val r = size.minDimension * 0.16f
+            val glyph = if (connected) Color(0xFF0B2010) else Ink.copy(alpha = 0.9f)
+            drawArc(
+                color = glyph,
+                startAngle = -215f,
+                sweepAngle = 250f,
+                useCenter = false,
+                topLeft = androidx.compose.ui.geometry.Offset(c - r, c - r - size.minDimension * 0.10f),
+                size = androidx.compose.ui.geometry.Size(r * 2, r * 2),
+                style = Stroke(width = size.minDimension * 0.028f, cap = androidx.compose.ui.graphics.StrokeCap.Round),
+            )
+            drawLine(
+                glyph,
+                androidx.compose.ui.geometry.Offset(c, c - size.minDimension * 0.16f),
+                androidx.compose.ui.geometry.Offset(c, c + size.minDimension * 0.04f),
+                size.minDimension * 0.028f,
             )
         }
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                label,
-                fontSize = 19.sp,
-                fontWeight = FontWeight.Bold,
-                color = if (connected) Color(0xFF0B2010) else Ink,
-            )
-            if (connected || busy) {
-                Text(if (connected) "●" else "◌", fontSize = 20.sp, color = if (connected) Color(0xFF0B2010) else GoldSoft)
-            }
-        }
+        Text(
+            label,
+            fontSize = 19.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(top = 56.dp),
+            color = if (connected) Color(0xFF0B2010) else Ink,
+        )
     }
 }
 
@@ -594,10 +684,13 @@ private fun ServerCard(profile: PVProfile, controller: DesktopVpnController, cop
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(controller.subscriptionNameOf(profile) ?: copy.manual, fontSize = 10.sp, color = InkMuted)
-                if (cell?.testing == true) {
-                    CircularProgressIndicator(Modifier.size(14.dp), strokeWidth = 2.dp)
-                } else {
-                    LatencyText(cell, copy)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    if (cell?.testing == true) {
+                        CircularProgressIndicator(Modifier.size(14.dp), strokeWidth = 2.dp)
+                    } else {
+                        SignalBars(millis = cell?.millis, testing = false, timeout = cell?.timeout == true)
+                        LatencyText(cell, copy)
+                    }
                 }
             }
             OutlinedButton(
