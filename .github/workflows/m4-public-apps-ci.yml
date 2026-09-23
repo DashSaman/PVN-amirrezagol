@@ -79,7 +79,7 @@ jobs:
           fi
 
       - name: Assemble debug APK (fetches pinned Xray core, bundles hev tun2socks)
-        run: gradle --no-daemon :apps:android:assembleDebug --stacktrace
+        run: gradle --no-daemon -Dorg.gradle.jvmargs=-Xmx4g :apps:android:assembleDebug --stacktrace
 
       - name: Upload debug APK
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
