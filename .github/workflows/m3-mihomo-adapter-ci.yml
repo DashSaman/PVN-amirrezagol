@@ -137,7 +137,7 @@ jobs:
         run: >-
           gradle --no-daemon :engines:mihomo-adapter:jvmTest
           --tests '*JvmHostMihomoRealBinaryInteropTest'
-          --stacktrace
+          --stacktrace --info
       - name: Remove ephemeral CI fixtures
         if: always()
         shell: bash
