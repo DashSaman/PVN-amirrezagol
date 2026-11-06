@@ -953,7 +953,7 @@ The cases below are **PROPOSED tests, not executed application results**. Chat 0
 
 These are instructions to implementers. This PR changes none of these target files. Existing source packages use **com/pvnetwork**; older plan examples that omit “com” must not create a parallel package tree. Preserve domain contracts and data migrations. Future proprietary UI/business implementation belongs in the owner's approved private product repository; Chat 02/07 determine any required public corresponding-source separation. [R01]
 
-### 14.1 Five highest-leverage implementation tasks
+### 14.1 Five highest-priority implementation tasks
 
 1. **UX-01 — make one reliable presentation boundary:** extend the existing connection snapshot with typed stage/coverage/active identity and bind observable state; remove UI-owned busy/success inference and raw failure text.
 2. **UX-02 — build the guest-first shell and shared tokens:** four routes, persistent language/theme/mode, true RTL and original gold/charcoal components; migrate Android and desktop hardcoded strings/colors.
@@ -1021,11 +1021,13 @@ Run new UI/instrumentation scenarios with the harness selected by Chat 06 on its
 
 **DONE (this workstream):** pinned source/coordination inspection; screen and navigation map; textual wireframe specifications; user flows; state/recovery contracts; original design tokens and component inventory; Persian/English starter strings; measurable acceptance cases and file-level implementer tickets.
 
+**Documentation verification, 2026-11-06:** 43 screen IDs, 14 flow IDs, 32 component IDs, 165 bilingual string keys, 41 acceptance IDs and 10 ticket IDs checked for uniqueness; translation placeholders match; Markdown table columns/code fences and all 33 reference definitions resolve structurally; 18 pinned repository source paths verified; all 56 specified opaque color pairs pass their thresholds. Independent source and UX/accessibility findings were incorporated. These checks validate the specification and arithmetic, not an implemented product.
+
 **OPEN:** implementation, migration, rendered screens, accessibility traversal, application tests, real devices, API/billing integration, Store and production validation. All §13 tests are future acceptance gates. Research completion and this specification do not close them.
 
 **BLOCKED for affected features only:** live commerce until approved payment/backend contracts; final public identity/policy endpoints until verified; platform/engine features until exact capability/device receipts. The guest-client design and its implementation preparation can continue independently.
 
-**PR:** the independent pull request for prep/2026-11-06/04-product-ux is linked in the final delivery and will be recorded here after creation. No merge is authorized by this task.
+**PR:** [#7 — specify PVNetwork product UX (Chat 04)](https://github.com/DashSaman/PVN-amirrezagol/pull/7), from prep/2026-11-06/04-product-ux into main. This PR adds only this document. No merge is authorized by this task.
 
 
 ## 16. Evidence links
