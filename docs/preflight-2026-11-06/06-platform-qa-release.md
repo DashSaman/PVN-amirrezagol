@@ -52,17 +52,19 @@ The release body still names `PVNetwork-Windows-x64.zip` and `PVNetwork-Android-
 
 | Slice | Retained run | Actual scope/result |
 |---|---|---|
-| Foundation | [35868899915](https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35868899915), source prefix `2f7ae227` | JVM and mobile-target jobs successful. Apple compilation tasks were **FROM-CACHE**; no Xcode linkage, extension or device test |
-| Desktop shell | [35897687630](https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35897687630), baseline SHA | Linux Xvfb launch smoke log reports success |
-| Public apps | [35897687631](https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35897687631), baseline SHA | Android debug build; desktop tests/package run on **Ubuntu**, not Windows |
+| Foundation | [35868899915](https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35868899915), source prefix `2f7ae227` | JVM and mobile-target jobs successful. `:core:foundation:testAndroidHostTest` and Apple compilation tasks were **FROM-CACHE**; no fresh execution of that Android host task, Xcode linkage, extension or device test |
+| Desktop shell | [35897687630](https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35897687630), baseline SHA | Linux `createDistributable` and Xvfb launch smoke logs report success; this is the retained Linux app-image packaging receipt |
+| Public apps | [35897687631](https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35897687631), baseline SHA | Android debug build and desktop tests on **Ubuntu**, not Windows. `packageDistributionForCurrentOS` was **UP-TO-DATE**, with no packaging subtasks in the retained log; it does not establish that M4 produced a desktop package |
 | WireGuard | [35868899899](https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35868899899), `2f7ae227…` | Linux namespace real-link log: three ping replies, zero loss; no Android integration receipt |
 | OpenVPN | [35868899934](https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35868899934), `2f7ae227…` | Linux namespaces and real TLS peer/product-runtime job successful; no mobile support inference |
 | Xray contracts | [35877948152](https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35877948152), `6ddccb75…`, job `107238663220` | **30 tests, one failure:** `hostRuntimeValidatesStartsAndCleansProtectedConfig`, assertion at test line 81 |
 | Xray real paths | Same run, job `107238663604` | **Seven tests, one failure:** `realVlessVisionRealityDataPath`, latest log line 113 |
-| Mihomo/OpenConnect | [35868899981](https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35868899981), `2f7ae227…` | Contracts/exact-binary checks and OpenConnect contracts successful; real Mihomo group **three tests, one failure:** TUIC v5, line 197 |
+| Mihomo/OpenConnect | [35868899981](https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35868899981), `2f7ae227…` | Contracts and OpenConnect contracts successful; the exact-binary test task was **FROM-CACHE**. The separate real Mihomo group executed **three tests, one failure:** TUIC v5, line 197 |
 | Recent scheduled green | [42265814098](https://github.com/DashSaman/PVN-amirrezagol/actions/runs/42265814098), 2026-11-06 | Agent-state validation only; not a new app build |
 
 These are the relevant inspected historical runs, not a claim that every suite ran at the current candidate SHA. Path-filtered CI makes that distinction necessary. [R11]
+
+**Relationship to the reviewed HEAD:** comparing `6ddccb75a699f08d050d62901db2041b97072f11` with the baseline shows changes only to the desktop controller and UI; no Xray runtime, test or workflow changed after that failing Xray run. Comparing `2f7ae227871dd5e7a046e8ef8fcb2741c5403168` with the baseline shows no Mihomo, foundation or root build change. Those retained failures concern code still present at HEAD; a fresh execution at HEAD remains **NOT RUN**. [R31][R32]
 
 **Newly identified stale-register gap:** the existing broken-CI register lists REALITY and TUIC but omits the Xray cleanup-contract failure. The test calls `prepared.stop`, observes `DISCONNECTED`, then fails because `runtimeConfig` still exists. Root cause is unproven; reproduce deterministic cleanup/concurrency failure before changing code. Do not erase assertions or add arbitrary sleeps to hide it. [R12][R13]
 
@@ -78,7 +80,7 @@ These are the relevant inspected historical runs, not a claim that every suite r
 | Android unit/instrumentation directories | **Absent** from inspected tree; no Android lifecycle test suite |
 | Apple app/extension tests | **Absent** with the app/extension itself |
 
-**False-green hazard:** real Xray test methods return normally when fixture executable/TLS environment variables are absent. A successful Gradle exit can therefore contain no real interoperability exercise. Required release jobs must fail on missing prerequisites and record expected executed case IDs/counts, failures and skips. `NO-SOURCE`, `SKIPPED`, task caching or an early return cannot satisfy a required runtime gate. [R14]
+**False-green hazard:** real Xray test methods and Mihomo's `runProtocolCase` (lines 104–107) return normally when fixture executable/TLS environment variables are absent. A successful Gradle exit can therefore contain no real interoperability exercise. Required release jobs must fail on missing prerequisites and record expected executed case IDs/counts, failures and skips. `NO-SOURCE`, `SKIPPED`, task caching or an early return cannot satisfy a required runtime gate. [R14][R33]
 
 ## 4. Release blocker and critical-bug register
 
@@ -101,6 +103,8 @@ Severity describes release impact, not a CVSS score or a claim of demonstrated e
 | **B13 Blocker for Play secure-path claim** | VLESS RAW/security=none is accepted and generated with no outer TLS/REALITY. Existing RAW CI is lab compatibility evidence. [R21][G02] | Public Play capability policy must enforce encrypted device-to-endpoint paths; reject or separately justify any plaintext path. Do not confuse VLESS's inner `encryption:none` with absent encryption when TLS/REALITY is present. **C3** |
 | **B14 Blocker for Store release** | Publisher verification, privacy/deletion disclosures, commerce reconciliation and actual Store approvals not evidenced. [R01][R02] | Execute current channel gates with Chat05; real backend purchase verification before enabling purchase. External-provider import remains independent of account availability. **Owner + Chat05/C4** |
 
+**B08 initialization evidence:** `ProfileRepository` initializes `cache = load()` at line 25; `load()` assigns the decoded `subscriptionIds` map at line 85; the later property initializer at line 69 then replaces that map with an empty `linkedMapOf()`. This is an observed declaration-order defect. Duplicate refresh entries or loss of associations in subsequent writes are inferred consequences requiring the restart regression below. [R18]
+
 ### Risks requiring tests, not invented findings
 
 - Android config already includes **IPv4 and IPv6** addresses/default routes. Its DNS constants do not prove correct DNS relay or a leak. [R04]
@@ -122,7 +126,7 @@ This is the plan for a scoped release audit, not a completed penetration test. U
 | SEC01 — untrusted import → canonical profile | Malformed/oversized URI, duplicate fields, JSON/YAML nesting, invalid Unicode, embedded credentials, unsupported security/transport, hostile redirects and interrupted subscription fetch | Bounded parsing/download; no shell execution; unsupported/lossy options explicit; accepted profile preserves security fields; no secret in display/error; last working config survives failure |
 | SEC02 — app traffic → TUN → engine → peer | Exercise TCP and UDP from an ordinary test app for each admitted tuple; correct/incorrect auth; invalid CA/hostname/REALITY key; endpoint outage; occupied listener | Supported traffic traverses the authenticated/encrypted path; unsupported traffic is explicitly rejected or blocked according to declared capability, with no silent direct fallback. Retain transfer or expected-block receipts and truthful state |
 | SEC03 — DNS and bootstrap | Controlled A/AAAA names through UDP53/TCP53, Android Private DNS off/auto/strict and app DoH; unique query IDs; resolver outage | Correlate device traffic, gateway capture and authoritative DNS/egress receipts. No protected DNS outside approved policy; bootstrap endpoint lookup is separately identified and minimized |
-| SEC04 — IPv6 and routes | IPv4-only, dual stack, IPv6-only/NAT64/464XLAT, multi-A/AAAA endpoints, endpoint-address change, subnet/LAN overlap, MTU-sensitive transfer | Each family either traverses the approved tunnel or is deliberately blocked; never silently falls through. Check routing tables AND packets; absence of an IPv6 route alone is not proof of a leak [A01] |
+| SEC04 — IPv6 and routes | IPv4-only, dual stack, IPv6-only/NAT64/464XLAT, multi-A/AAAA endpoints, endpoint-address change, subnet/LAN overlap, MTU-sensitive transfer | Each family either traverses the approved tunnel or is deliberately blocked; never silently falls through. Check routing tables AND packets; send ordinary-app TCP/UDP canaries to the VPN server's **same IP on a different controlled port** to detect address-wide bypass of non-transport traffic. Absence of an IPv6 route alone is not proof of a leak [A01] |
 | SEC05 — kill switch | Ordinary mode, temporary reconnect mode and OS always-on+lockdown tested separately; kill engine/service; remove network; restore network | With promised lockdown enabled, protected test-app TCP/UDP/DNS never appear directly on underlying egress. UI states actual policy. Explicit stop does not reconnect. Document OS/control-plane exceptions |
 | SEC06 — secret at rest → transient config | Import/delete; connect/stop/failure; crash then restart; key invalidation; backup/restore; profile migration; subscription URL persistence | Keystore/DPAPI/Keychain boundary works; transient plaintext absent after cleanup and next-start recovery; intended backup excludes secrets/runtime config; no orphan credentials; no unsupported guarantee of forensic secure erase |
 | SEC07 — errors/logs/support | Synthetic credential, UUID/password, tokenized URL, encoded token, auth header, exception and native-crash canaries | Canaries absent from exported logs, UI reasons, CI output and support bundles; redaction before persistence/upload; only deliberate user export |
@@ -167,6 +171,14 @@ Do not invent the OS support policy. The source's `minSdk=26` is not evidence of
 | DEV11 Windows recovery | Preconfigure synthetic proxy/PAC; connect/stop; partial registry failure; hard-kill/restart; external proxy edit | Exact restore/startup reconciliation; no whole-device/UDP/DNS claim from proxy-only success |
 | DEV12 Upgrade | Install prior approved signed fixture, import profiles, install candidate, restart, interrupted migration and downgrade attempt | Signer continuity, preserved profiles, explicit schema compatibility; no destructive automatic reinstall workaround |
 
+### Deterministic regression receipts for C1/C2 and Z1
+
+All of the following are **PROPOSED / NOT RUN**:
+
+- **Stop during start:** hold session A's resolver/start dependency on a test latch, request stop and await its completion, then release the latch. Assert no engine spawn, TUN creation or late CONNECTED; session A cannot mutate a later session B, and A owns no open handles. This makes DEV08 reproducible without relying on rapid tapping. [R04]
+- **Subscription restart:** persist a synthetic profile associated with `test-subscription`, reconstruct `ProfileRepository`, and assert the association survives. Refresh once, verify old entries are replaced once, unrelated profiles survive and only superseded credentials are removed; reconstruct again and recheck. Test injected write failure separately. [R18][R07]
+- **Credential cleanup and transfer:** use synthetic credential canaries across disconnect, failed connect, profile deletion, crash followed by restart and supported backup/device-transfer restoration. After cleanup, no runtime credential canary may remain in app files or backup output; a deleted profile must leave no reusable linked secret. Inspect the merged manifest and both applicable backup-rule formats. Missing source-manifest rules alone do not prove that an actual backup occurred. [R04][R15][R16][R22]
+
 **Proposed endurance workload:** 100 connect/disconnect cycles, 20 handoff cycles and an eight-hour sustained/idle soak for release-critical paths across the agreed matrix. These are test repetitions, not measured performance claims. Go requires zero observed protected-traffic leaks, false-connected states, crashes/ANRs or destructive data loss in those runs. Establish real cold-start/connect/reconnect/CPU/memory/battery baselines first, then ratify numeric performance budgets; do not invent a p95 promise now. [R01]
 
 **Architecture caveat:** the current Android service shares the app process. “Kill UI process while service survives” is not a valid assumption for this build. Test activity destruction separately from process death; if a dedicated VPN process is introduced later, add that distinct case.
@@ -206,6 +218,8 @@ The first contract should expose prepare/start/stop/reconcile, observable platfo
 | iOS/iPadOS | KMP models, policy, subscriptions/accounts and compatible import/config logic | New host + Packet Tunnel extension, `NETunnelProviderManager`/`NETunnelProviderProtocol`, packet flow/network settings, Keychain and controlled App Group sharing; embedded native engine bridge |
 | macOS App Store | Shared contracts plus compatible Apple packet-tunnel engine components | Appropriate app/system extension, Keychain, entitlement/signing and real sleep/wake/route tests |
 | macOS direct distribution | Same business logic | Developer ID system-extension packaging, correct entitlement values, notarization and installation/uninstallation/recovery evidence |
+
+**Current desktop storage boundary:** Windows secrets use DPAPI, but the non-Windows branch writes plaintext bytes to owner-only (0600) files. That branch also applies to macOS; file permissions do not provide Keychain protection. A macOS release must replace this fallback with Keychain-backed storage and migration tests. This source observation is not a demonstrated unauthorized read. [R27]
 
 Apple's custom packet-tunnel manager belongs to the NEVPNManager family. iOS cannot reuse a JVM/subprocess engine launcher: Apple DTS states iOS apps cannot spawn child processes. Use an extension-safe native library with explicit start/stop, packet I/O and bounded memory ownership. A KMP target or simulator compile does not demonstrate extension execution. Do not assume a fixed universal extension memory limit; measure the selected OS/device budget. [A04][A05][A06]
 
@@ -274,14 +288,14 @@ Official requirements were rechecked on the review date. Console/account-specifi
 | G-VPN | Complete VpnService declaration; describe VPN use in listing; encrypt device-to-endpoint traffic. Provide relevant in-app prominent disclosure/affirmative consent and demonstration requested by Console. No traffic monetization manipulation. [G02] |
 | G-ORG | VpnService-approved apps require organization account selection and the applicable identity/D-U-N-S verification. Existing publisher/account status is not evidenced here. [G03] |
 | G-PACKAGE | New Play applications use AAB and Play App Signing. Produce/inspect bundle-derived APKs; app ID and signer ownership must be ratified before first upload. [G04][G05] |
-| G-NATIVE | Every shipped native component must work with the declared ABI and 16 KB environment; target35+ compatibility applies. See date qualification below. [G06] |
+| G-NATIVE | New native app bundles must support **64-bit-only devices and 16 KB page sizes**. Every shipped native component must work with the declared ABI/page size; an arm64 directory alone does not prove execution. See update-date qualification below. [G06][G15] |
 | G-FGS | Match manifest service type, permission and explanation to behavior and Play foreground-service declaration; test user initiation, restart and notification restrictions. [A03] |
 | G-PRIVACY | Complete Data Safety from actual app/backend/SDK inventory; accessible accurate privacy policy; test diagnostics and traffic behavior against disclosures. [G07] |
 | G-DELETE | If accounts can be created, provide in-app deletion and external web deletion resource with associated-data/retention behavior. No account-deletion fiction while backend remains undefined. [G08] |
 | G-COMMERCE | Digital VPN purchase flow must follow Play payments policy; alternative billing/linking depends on regional programs and enrollment. If billing is added now, choose a supported exact **v8+** Billing Library version; v7's final extension ended 2026-11-01. [G09][G10] |
-| G-REGION | Check current Android developer/package verification for intended channels/regions. September 30 rollout covers participating stores in Brazil, Indonesia, Singapore and Thailand; do not generalize this to a worldwide ban on sideloading. [G11] |
+| G-REGION | Check current Android developer/package verification for intended channels/regions. The September 30, 2026 rollout covers participating stores in Brazil, Indonesia, Singapore and Thailand on certified devices running Android 7+; do not generalize this to a worldwide ban on sideloading. [G11] |
 
-**16 KB date qualification:** current Android guidance states target35+ compatibility and dates **app-update** blocking to 2027-02-01; the earlier official announcement said new apps/updates from 2025-11-01, with a later extension announcement. Do not assume the new update wording exempts a new PVNetwork app. Require actual 16 KB compatibility and capture the submitted AAB's current Play Console checks. A successful `zipalign` alone does not prove ELF compatibility or native runtime behavior. [G06][G12][G13]
+**16 KB date qualification:** current Android guidance states target35+ compatibility and dates **app-update** blocking to 2027-02-01; the earlier official announcement said new apps/updates from 2025-11-01, with a later extension announcement. The current Play technical-quality page separately requires 64-bit-only-device and 16 KB support for new native bundles, so the update date does not exempt a new PVNetwork app. Require actual 16 KB compatibility and capture the submitted AAB's current Play Console checks. A successful `zipalign` alone does not prove ELF compatibility or native runtime behavior. [G06][G12][G13][G15]
 
 ### Apple App Store / Apple platforms
 
@@ -399,15 +413,29 @@ Extract native files into a temporary evidence directory and inspect **every** p
 
 ### 10.5 Windows and future Apple
 
-On a real Windows build runner:
+On a real Windows build runner, build the existing application image and assert that output was actually created:
 
 ```powershell
-gradle --no-daemon :apps:desktop:test :apps:desktop:packageDistributionForCurrentOS --stacktrace
+$ErrorActionPreference = 'Stop'
+gradle --no-daemon :apps:desktop:clean :apps:desktop:test :apps:desktop:createDistributable --rerun-tasks --no-build-cache --stacktrace
+if ($LASTEXITCODE -ne 0) { throw 'Desktop build or tests failed' }
+$qaImageRoot = Join-Path $PWD 'apps/desktop/build/compose/binaries/main/app'
+if (-not (Test-Path -LiteralPath $qaImageRoot -PathType Container)) { throw 'Missing application image' }
+$qaLaunchers = @(Get-ChildItem -LiteralPath $qaImageRoot -Filter 'PVNetwork.exe' -File -Recurse)
+if ($qaLaunchers.Count -ne 1) { throw 'Expected exactly one PVNetwork launcher in the application image' }
+Get-FileHash -Algorithm SHA256 -LiteralPath $qaLaunchers[0].FullName
+```
+
+The current `nativeDistributions` block declares no `targetFormats`; its aggregate `packageDistributionForCurrentOS` task is not sufficient installer evidence. **PROPOSED:** configure the approved Windows installer format, invoke its concrete packaging task, and assert the expected installer exists. Record the actual app-image/output layout if the pinned plugin configuration changes. [R28]
+
+After the explicit archive/installer and signing steps, set `QA_WINDOWS_PACKAGE` and `QA_WINDOWS_EXE` to the final artifacts and inspect them:
+
+```powershell
 Get-FileHash -Algorithm SHA256 -LiteralPath $env:QA_WINDOWS_PACKAGE
 Get-AuthenticodeSignature -LiteralPath $env:QA_WINDOWS_EXE
 ```
 
-Record signature status and approved publisher/certificate. Validate installer and every required executable, with timestamp/chain verification as appropriate. A ZIP itself is not an Authenticode-signed executable. Run DEV11, install/upgrade/uninstall and future full-tunnel tests separately.
+Record signature status and compare publisher/certificate with the independently approved identity; missing, invalid or wrong-identity signatures block promotion. Validate the installer and every required executable, with timestamp/chain verification as appropriate. A ZIP itself is not an Authenticode-signed executable. Run DEV11, install/upgrade/uninstall and future full-tunnel tests separately.
 
 For Apple, **no executable app/extension build command can be asserted today** because no project/scheme exists. After creation, use `xcodebuild -list` on the actual project, then its committed shared scheme for build/test/archive/export. Retain provisioning/entitlement and signature inspection plus real-device receipts. Existing foundation `compileKotlinIosArm64` and `compileKotlinIosSimulatorArm64` commands do not replace this.
 
@@ -440,6 +468,8 @@ Each checkbox starts **OPEN / NOT RUN**, except documentary observations express
 - **GO for public signed Android RC:** all RC01–RC11 applicable gates satisfied, with exact physical-device evidence and valid release identity. Current decision remains **NO-GO**.
 - **GO for Store publication:** additionally actual channel acceptance, resolved submission requirements and rollout plan. Neither a six-day target nor an internal build guarantees approval.
 - **GO for broader protocol/platform claims:** only the exact independently evidenced tuples; do not turn 93 completed research entries into a support count.
+
+**Apply gates to the selected distribution channel:** an identified direct-distribution APK needs RC01–RC09, applicable RC10 privacy/commerce behavior and RC13 recovery evidence. Play publisher/Console approval in RC11–RC12 is a Play promotion gate, not proof that a sideloaded APK is safe or unsafe. Direct distribution still needs its applicable publisher, territory, privacy and Android verification requirements. No channel waives the tunnel, credential, native-provenance, device or signing gates; any capability exclusion requires Chat03/07 approval and truthful UI/listing.
 
 Rollback means stopping rollout and delivering an approved corrective build/config rollback as the channel permits. Do not promise arbitrary binary downgrades over installed Android versions. Preserve schema compatibility and last approved config/core inputs; never silently fetch “latest” during emergency recovery.
 
@@ -559,3 +589,8 @@ Repository links below are pinned to the reviewed commit unless they intentional
 
 [R30]: https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35897687631/job/107305599562
 [G14]: https://support.google.com/googleplay/android-developer/answer/16559646?hl=en
+
+[R31]: https://github.com/DashSaman/PVN-amirrezagol/compare/6ddccb75a699f08d050d62901db2041b97072f11...78dcd4511dbb830a999cc8c1796f2a38f88587e8
+[R32]: https://github.com/DashSaman/PVN-amirrezagol/compare/2f7ae227871dd5e7a046e8ef8fcb2741c5403168...78dcd4511dbb830a999cc8c1796f2a38f88587e8
+[R33]: https://github.com/DashSaman/PVN-amirrezagol/blob/78dcd4511dbb830a999cc8c1796f2a38f88587e8/engines/mihomo-adapter/src/jvmTest/kotlin/com/pvnetwork/engine/mihomo/JvmHostMihomoRealBinaryInteropTest.kt
+[G15]: https://support.google.com/googleplay/android-developer/answer/17492799?hl=en
