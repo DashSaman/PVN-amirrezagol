@@ -5,7 +5,8 @@
 **Source baseline:** `78dcd4511dbb830a999cc8c1796f2a38f88587e8` (`main`).  
 **Coordination baseline:** `ed21086e3e74772ab4dc31825eb87336f917fd67` on `docs/preflight-2026-11-06`.  
 **Delivery branch:** `prep/2026-11-06/06-platform-qa-release`.  
-**Exclusive deliverable:** `docs/preflight-2026-11-06/06-platform-qa-release.md`.
+**Exclusive deliverable:** `docs/preflight-2026-11-06/06-platform-qa-release.md`.  
+**Independent PR:** [#4 — platform QA, security and release gates](https://github.com/DashSaman/PVN-amirrezagol/pull/4).
 
 ## 1. Decision and evidence discipline
 
@@ -32,7 +33,7 @@ The 93-entry V1/V2 research campaign is documented complete; it was not restarte
 |---|---|---|
 | Android source | `apps/android`; app ID `com.pvnetwork.client`; minSdk 26, targetSdk 36, compileSdk 37; arm64-v8a only; real VpnService → hev JNI → Xray process implementation | Implementation exists; no physical-device certification. API compatibility defect is B01 below |
 | Android historical build | M4 run **35897687631**, 2026-09-23, baseline SHA, completed successfully; job runs `assembleDebug` | Historical debug-build receipt, not production signing or usable tunnel evidence |
-| Android historical artifact | Upload log names `pvnetwork-android-debug-apk`, ID `10767671232`; uploaded ZIP 25,885,734 bytes; ZIP SHA-256 `133224685f66c425328dee587cefa4f65540944bd3879bf6b6b79890f584ca32` | ZIP hash is not the APK hash. APK bytes/certificate were not inspected |
+| Android historical artifact | Upload log names `pvnetwork-android-debug-apk`, ID `10767671232`; uploaded ZIP 25,885,734 bytes; ZIP SHA-256 `133224685f66c425328dee587cefa4f65540944bd3879bf6b6b79890f584ca32` [R30] | ZIP hash is not the APK hash. APK bytes/certificate were not inspected |
 | Android currently available artifact | Run artifacts API now returns `total_count: 0`; current public release has no APK asset | No current downloadable APK was established. Retention is 14 days, consistent with disappearance; exact expiry/deletion cause is UNKNOWN |
 | Windows available asset | Prerelease `v0.1.0-preview` contains only `PVNetwork-Windows-0.3.0.zip`, 80,765,944 bytes; GitHub metadata digest `3683a3c4df7bb1ab7d4873a3b035b87b551f7c7f0f2492ff42e1c52ae5674e80` | Asset existence observed; bytes, signer, installation and exact source provenance unverified |
 | Windows historical execution | M-P2 document reports Windows 11 launch and six real Xray binary cases: VLESS RAW, VLESS Vision+TLS, VMess RAW, Trojan TLS, Shadowsocks RAW, VLESS XHTTP | DOCUMENTED local Windows evidence. Does not certify all traffic, UDP, DNS or crash recovery |
@@ -119,7 +120,7 @@ This is the plan for a scoped release audit, not a completed penetration test. U
 | Audit ID / boundary | Required exercise | Acceptance evidence |
 |---|---|---|
 | SEC01 — untrusted import → canonical profile | Malformed/oversized URI, duplicate fields, JSON/YAML nesting, invalid Unicode, embedded credentials, unsupported security/transport, hostile redirects and interrupted subscription fetch | Bounded parsing/download; no shell execution; unsupported/lossy options explicit; accepted profile preserves security fields; no secret in display/error; last working config survives failure |
-| SEC02 — app traffic → TUN → engine → peer | Bidirectional TCP and UDP markers from an ordinary app on the test device; correct/incorrect auth; invalid CA/hostname/REALITY key; endpoint outage; occupied listener | Exact authenticated/encrypted path, expected egress and correct failure state; no plaintext fallback or persistent false CONNECTED |
+| SEC02 — app traffic → TUN → engine → peer | Exercise TCP and UDP from an ordinary test app for each admitted tuple; correct/incorrect auth; invalid CA/hostname/REALITY key; endpoint outage; occupied listener | Supported traffic traverses the authenticated/encrypted path; unsupported traffic is explicitly rejected or blocked according to declared capability, with no silent direct fallback. Retain transfer or expected-block receipts and truthful state |
 | SEC03 — DNS and bootstrap | Controlled A/AAAA names through UDP53/TCP53, Android Private DNS off/auto/strict and app DoH; unique query IDs; resolver outage | Correlate device traffic, gateway capture and authoritative DNS/egress receipts. No protected DNS outside approved policy; bootstrap endpoint lookup is separately identified and minimized |
 | SEC04 — IPv6 and routes | IPv4-only, dual stack, IPv6-only/NAT64/464XLAT, multi-A/AAAA endpoints, endpoint-address change, subnet/LAN overlap, MTU-sensitive transfer | Each family either traverses the approved tunnel or is deliberately blocked; never silently falls through. Check routing tables AND packets; absence of an IPv6 route alone is not proof of a leak [A01] |
 | SEC05 — kill switch | Ordinary mode, temporary reconnect mode and OS always-on+lockdown tested separately; kill engine/service; remove network; restore network | With promised lockdown enabled, protected test-app TCP/UDP/DNS never appear directly on underlying egress. UI states actual policy. Explicit stop does not reconnect. Document OS/control-plane exceptions |
@@ -154,7 +155,7 @@ Do not invent the OS support policy. The source's `minSdk=26` is not evidence of
 | Case | Procedure | GO criterion / retained receipt |
 |---|---|---|
 | DEV01 Permission and install | Clean install; first connect; accept/refuse consent; notification denied; another VPN takes over; revoke VPN consent | Correct UI/notification; no unsolicited connect or stuck service; actual system ownership follows state |
-| DEV02 Exact first tunnel | Import sanitized fixture for each admitted protocol+transport+security tuple; transfer bidirectional TCP/UDP marker and DNS query | Test app uses VPN egress; authentication/encryption negative cases fail; build/core/version tuple attached |
+| DEV02 Exact first tunnel | Import a sanitized fixture for each admitted tuple; exercise bidirectional TCP/UDP markers and DNS | Supported traffic uses approved VPN egress; unsupported traffic is explicitly blocked/rejected without direct fallback; auth/encryption negatives fail. Attach transfer or expected-block receipts and build/core/version tuple |
 | DEV03 Network families | Repeat DEV02 on IPv4-only, dual-stack and IPv6-only/NAT64/464XLAT lab networks | Expected family behavior and no unapproved protected-traffic egress; unsupported case blocked visibly |
 | DEV04 DNS | UDP/TCP fallback, A/AAAA, Private DNS variants, app DoH, resolver failure and endpoint bootstrap | Correlated capture/resolver receipts; no silent policy downgrade |
 | DEV05 Handoff | Wi-Fi→cellular→Wi-Fi during TCP/UDP/DNS streams; DHCP/IP change; airplane/offline; reconnect after restoration | No unauthorized bypass, no retry storm; recovery measured against approved baseline budget; explicit disconnect cancels pending work |
@@ -223,12 +224,12 @@ Branch listing reports `main.protected=false`; repository rulesets listing retur
 
 ### Native production selection
 
-Current Android source packages Xray v26.7.28 and hev 2.17.1. The Xray gate document permits v26.7.28 only as an ephemeral CI fixture; the current bundling therefore lacks reconciled production approval. [R02][R03][R26]
+The Android build declares Xray v26.7.28; M-P2 historically identifies the bundled hev component as 2.17.1. The committed native binaries were not independently version- or hash-verified in this review. The Xray gate document permits v26.7.28 only as an ephemeral CI fixture; the current bundling therefore lacks reconciled production approval. [R02][R03][R26]
 
 A bounded live upstream check changes the old availability premise:
 
 - Official v26.7.28 metadata still says prerelease; its Android archive digest matches the declared download pin.
-- Official `releases/latest` now resolves to **v26.10.31**, non-prerelease, published 2026-10-31; tag commit `a4a3dff5b20c2faae567b742c172c7b95e75c083`.
+- Official `releases/latest` now resolves to **v26.10.31**, non-prerelease, published 2026-10-31; tag commit `a4a3dff5b20c2faae567b742c172c7b95e75c083`. [U03]
 - Official asset metadata gives Android arm64 archive SHA-256 `ee7878bb47ce28ff5b068e2d173ba1a9fab20ca1aec94191644919ec08ba5f1d`; Windows x64 archive `2e04a9995a6f2ad1b28c0bb25c708ecb2695e43a1c9c7889c4b6ac2b48cf7a6a`.
 - This is a **candidate for review**, not an approved dependency or a local hash verification. The release notes describe an MPTCP security update; review applicability to actual OS/kernel/listener configuration without asserting an untested exploit. [U01][U02]
 
@@ -250,6 +251,8 @@ The older GHSA affected range remains historical documentation: the advisory cou
 | 10. Channel promotion | Internal QA → relevant internal/closed Store channel → approved RC → staged rollout; independent Store acceptance and post-release observations |
 
 SBOM must include resolved Kotlin/Java transitive dependencies, JNI/C sources and submodules, Xray/Go modules and build metadata, native libraries and packaged desktop JRE/components. A `go.mod`, a `gradle dependencies` listing or a research dossier alone is insufficient. Inventory the **actual final artifact**, reconcile it with source inputs and retain notices/source material required by Chat02's licensing conclusion.
+
+**Store-delivered engine updates:** Play prohibits self-updating executable/native code from outside its update mechanism; Apple's self-contained-code rule also restricts downloaded functionality. Keep native engine upgrades in approved app/Store updates. The current build-time Xray download is distinct from an in-app runtime download and is not itself evidence of that policy violation. [G14][A08]
 
 ### Android signing and secret management
 
@@ -292,7 +295,7 @@ Official requirements were rechecked on the review date. Console/account-specifi
 | A-DEVICE | Real host+extension installation, consent, lock/unlock, cellular handoff, extension restart, NAT64 and resource tests required; simulator compile is insufficient. [R01] |
 | A-MAC | Choose Mac App Store versus direct Developer ID packaging; follow TN3134 and notarization/signing requirements for the direct route. [A06][A12] |
 
-**Store NO-GO** persists until actual publisher ownership, identities/entitlements, privacy/support URLs, billing/deletion integration, territories, review package and exact candidate checks are recorded. Internal testing and TestFlight are not App Review approval. Store approval is not evidence that all protocol combinations work.
+**Store NO-GO** persists until actual publisher ownership, identities/entitlements, privacy/support URLs, billing integration where purchases are offered and account deletion where account creation is offered, consistent with the selected launch scope, territories, review package and exact candidate checks are recorded. Internal testing and TestFlight are not App Review approval. Store approval is not evidence that all protocol combinations work.
 
 
 ## 10. Test and release commands
@@ -487,7 +490,7 @@ Approved Android minimum and first supported capability tuples; whole-device ver
 **BLOCKED/UNKNOWN:** device/signing/Store/account/backend evidence that this environment cannot supply.  
 **Final product verdict:** **NO-GO for production publication at the inspected baseline.**
 
-The independent PR for this single-file report targets `main` from the delivery branch stated at the top; it must be reviewed with the other preflight reports and must not auto-merge.
+The independent [PR #4](https://github.com/DashSaman/PVN-amirrezagol/pull/4) targets `main` from the delivery branch stated at the top. It contains only this report, remains unmerged, and is ready for Chat07 reconciliation with the other preflight reports.
 
 ## 14. Source register and retrieval limits
 
@@ -553,3 +556,6 @@ Repository links below are pinned to the reviewed commit unless they intentional
 [U01]: https://api.github.com/repos/XTLS/Xray-core/releases/tags/v26.10.31
 [U02]: https://api.github.com/repos/XTLS/Xray-core/releases/tags/v26.7.28
 [U03]: https://api.github.com/repos/XTLS/Xray-core/git/ref/tags/v26.10.31
+
+[R30]: https://github.com/DashSaman/PVN-amirrezagol/actions/runs/35897687631/job/107305599562
+[G14]: https://support.google.com/googleplay/android-developer/answer/16559646?hl=en
